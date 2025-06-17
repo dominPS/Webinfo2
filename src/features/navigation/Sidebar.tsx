@@ -106,6 +106,50 @@ const LogoutButton = styled.button`
   }
 `;
 
+const CollapseButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 32px;
+  background: ${props => props.theme.colors.primary};
+  border: none;
+  border-radius: 0 16px 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+  z-index: 2000;
+  transition: background 0.2s;
+  padding: 0;
+  &:hover {
+    background: ${props => props.theme.colors.primary};
+  }
+`;
+
+const CollapseIcon = styled.span`
+  display: block;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 2px;
+  user-select: none;
+`;
+
+const CollapsedSidebarContainer = styled(SidebarContainer)`
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  padding: 0;
+  align-items: center;
+  .logo {
+    justify-content: center;
+    padding: 0;
+  }
+`;
+
 interface NavItem {
   path: string;
   translationKey: string;
@@ -169,22 +213,41 @@ export const Sidebar: React.FC = () => {
     }
   };
 
+  const [collapsed, setCollapsed] = React.useState(false);
+
   return (
-    <SidebarContainer>
-      <SidebarHeader>
-        <Logo />
-      </SidebarHeader>
-      <NavContainer>
-        {navigationItems.map((item) => (
-          <NavItem key={item.path} to={item.path}>
-            {t(`navigation.${item.translationKey}`, {
-              defaultValue: item.translationKey
-            })}
-          </NavItem>
-        ))}
-      </NavContainer>      <LogoutButton onClick={handleAuthAction}>
-        {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
-      </LogoutButton>
-    </SidebarContainer>
+    <>
+      {collapsed ? (
+        <CollapsedSidebarContainer>
+          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
+            <Logo onlyIcon />
+          </SidebarHeader>
+          <CollapseButton onClick={() => setCollapsed(false)} title={t('navigation.expandSidebar')}>
+            <CollapseIcon>{'>'}</CollapseIcon>
+          </CollapseButton>
+        </CollapsedSidebarContainer>
+      ) : (
+        <SidebarContainer>
+          <SidebarHeader>
+            <Logo />
+          </SidebarHeader>
+          <CollapseButton onClick={() => setCollapsed(true)} title={t('navigation.collapseSidebar')}>
+            <CollapseIcon>{'<'}</CollapseIcon>
+          </CollapseButton>
+          <NavContainer>
+            {navigationItems.map((item) => (
+              <NavItem key={item.path} to={item.path}>
+                {t(`navigation.${item.translationKey}`, {
+                  defaultValue: item.translationKey
+                })}
+              </NavItem>
+            ))}
+          </NavContainer>
+          <LogoutButton onClick={handleAuthAction}>
+            {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
+          </LogoutButton>
+        </SidebarContainer>
+      )}
+    </>
   );
 };

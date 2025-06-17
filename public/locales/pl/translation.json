@@ -61,5 +61,9 @@
     "login": "Zaloguj",
     "logout": "Wyloguj",
     "notifications": "Powiadomienia"
+  },
+  "sidebar": {
+    "collapseSidebar": "Zwiń pasek boczny",
+    "expandSidebar": "Rozwiń pasek boczny"
   }
 }
