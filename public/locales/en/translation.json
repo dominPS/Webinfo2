@@ -1,0 +1,22 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "calendar": "Calendar",
+    "reports": "Reports",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "header": {
+    "notifications": "Notifications",
+    "profile": "Profile"
+  },
+  "languages": {
+    "en": "English",
+    "pl": "Polish",
+    "fr": "French",
+    "de": "German",
+    "uk": "Ukrainian"
+  }
+}

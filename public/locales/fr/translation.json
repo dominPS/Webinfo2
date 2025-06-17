@@ -1,0 +1,23 @@
+{
+  "navigation": {
+    "dashboard": "Tableau de bord",
+    "projects": "Projets",
+    "tasks": "Tâches",
+    "calendar": "Calendrier",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "header": {
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "language": "Langue"
+  },
+  "languages": {
+    "en": "Anglais",
+    "pl": "Polonais",
+    "fr": "Français",
+    "de": "Allemand",
+    "uk": "Ukrainien"
+  }
+}
