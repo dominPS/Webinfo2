@@ -6,6 +6,7 @@ import { Sidebar } from '@/features/navigation/Sidebar';
 import { LanguageSelector } from '@/shared/components/LanguageSelector';
 import { ReportsLogo } from '@/shared/components/ReportsLogo';
 import { TopMenu } from '@/shared/components/TopMenu';
+import { Clock } from '@/shared/components/Clock';
 
 const SIDEBAR_WIDTH = 320;
 const TOP_SPACING = 40;
@@ -35,6 +36,15 @@ const TopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+`;
+
+const TopBarCenter = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
 `;
 
 const TopBarLeft = styled.div`
@@ -90,12 +100,14 @@ export const MainLayout = () => {
   return (
     <MainContainer>
       <Sidebar />
-      <ContentContainer>
-        <TopBar>
+      <ContentContainer>        <TopBar>
           <TopBarLeft>
             <TopMenu />
             <ReportsLogo />
           </TopBarLeft>
+          <TopBarCenter>
+            <Clock />
+          </TopBarCenter>
           <TopBarRight>
             <LanguageSelector />
             <NotificationButton title={t('header.notifications')}>
