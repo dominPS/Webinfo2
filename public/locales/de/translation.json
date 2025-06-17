@@ -38,5 +38,13 @@
     "username": "Max Mustermann",
     "logout": "Abmelden",
     "menu": "Menü"
+  },
+  "homepage": {
+    "title": "WebInfo®",
+    "welcome": "Willkommen im WebInfo-System. Bitte melden Sie sich an, um WebInfo-Inhalte zu durchsuchen.",
+    "loginInstructions": "Sie können sich mit Benutzername und Passwort anmelden:",
+    "employeeLogin": "employee / employee - Mitarbeiteransicht",
+    "managerLogin": "manager / manager - Führungskraft-Ansicht",
+    "adminLogin": "admin / admin - Ansicht mit Verwaltungsfunktionen"
   }
 }

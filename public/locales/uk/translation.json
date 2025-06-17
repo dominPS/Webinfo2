@@ -38,5 +38,13 @@
     "username": "Іван Петренко",
     "logout": "Вийти",
     "menu": "Меню"
+  },
+  "homepage": {
+    "title": "WebInfo®",
+    "welcome": "Ласкаво просимо до системи WebInfo. Увійдіть, щоб переглядати вміст WebInfo.",
+    "loginInstructions": "Ви можете увійти за допомогою логіна та пароля:",
+    "employeeLogin": "employee / employee - вигляд працівника",
+    "managerLogin": "manager / manager - вигляд керівника",
+    "adminLogin": "admin / admin - вигляд з адміністративними функціями"
   }
 }

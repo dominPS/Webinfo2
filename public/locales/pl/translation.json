@@ -38,5 +38,13 @@
     "username": "Jan Kowalski",
     "logout": "Wyloguj się",
     "menu": "Menu"
+  },
+  "homepage": {
+    "title": "WebInfo®",
+    "welcome": "Witaj w systemie WebInfo. Zaloguj się, aby móc przeglądać zawartość WebInfo.",
+    "loginInstructions": "Możesz zalogować się przy pomocy loginu i hasła:",
+    "employeeLogin": "pracownik / pracownik - widok pracownika",
+    "managerLogin": "kierownik / kierownik - widok kierownika",
+    "adminLogin": "admin / admin - widok z funkcjami administracyjnymi"
   }
 }

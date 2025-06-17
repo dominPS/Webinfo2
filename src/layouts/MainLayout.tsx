@@ -6,6 +6,7 @@ import { Sidebar } from '@/features/navigation/Sidebar';
 import { LanguageSelector } from '@/shared/components/LanguageSelector';
 import { ReportsLogo } from '@/shared/components/ReportsLogo';
 import { TopMenu } from '@/shared/components/TopMenu';
+import { Footer } from '@/shared/components/Footer';
 
 const SIDEBAR_WIDTH = 320;
 const TOP_SPACING = 40;
@@ -23,6 +24,13 @@ const ContentContainer = styled.div`
   margin-left: ${SIDEBAR_WIDTH}px;
   padding: 0 ${props => props.theme.spacing.xl};
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - ${TOP_SPACING * 2}px);
+`;
+
+const MainContent = styled.div`
+  flex: 1;
 `;
 
 const TopBar = styled.div`
@@ -104,9 +112,11 @@ export const MainLayout = () => {
             <ProfileButton>
               👤 John Doe
             </ProfileButton>
-          </TopBarRight>
-        </TopBar>
-        <Outlet />
+          </TopBarRight>        </TopBar>
+        <MainContent>
+          <Outlet />
+        </MainContent>
+        <Footer />
       </ContentContainer>
     </MainContainer>
   );

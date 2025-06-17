@@ -38,5 +38,13 @@
     "username": "Jean Dupont",
     "logout": "Déconnexion",
     "menu": "Menu"
+  },
+  "homepage": {
+    "title": "WebInfo®",
+    "welcome": "Bienvenue dans le système WebInfo. Veuillez vous connecter pour parcourir le contenu WebInfo.",
+    "loginInstructions": "Vous pouvez vous connecter avec nom d'utilisateur et mot de passe:",
+    "employeeLogin": "employee / employee - vue employé",
+    "managerLogin": "manager / manager - vue gestionnaire",
+    "adminLogin": "admin / admin - vue avec fonctions administratives"
   }
 }

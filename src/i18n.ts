@@ -18,10 +18,11 @@ i18n
   .init({
     fallbackLng: 'pl',
     supportedLngs: Object.keys(availableLanguages),
-    debug: true, // Enable debug temporarily to see what's happening
+    debug: false,
     interpolation: {
       escapeValue: false,
-    },    backend: {
+    },
+    backend: {
       loadPath: '/locales/{{lng}}/translation.json',
     },
     defaultNS: 'translation',
