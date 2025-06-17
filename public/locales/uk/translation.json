@@ -23,10 +23,10 @@
     "settlement": "Розрахунок",
     "absencePlan": "План відсутності",
     "monthlyAbsencePlan": "Місячний план відсутності",
-    "schedule": "Розклад",
-    "projectsActivities": "Проекти / Діяльність",
+    "schedule": "Розклад",    "projectsActivities": "Проекти / Діяльність",
     "employeeReview": "Огляд працівників",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "login": "Увійти"
   },
   "languages": {
     "en": "Англійська",
@@ -38,6 +38,16 @@
     "username": "Іван Петренко",
     "logout": "Вийти",
     "menu": "Меню"
+  },
+  "login": {
+    "title": "Вхід",
+    "username": "Ім'я користувача",
+    "password": "Пароль",
+    "usernamePlaceholder": "Введіть ім'я користувача",
+    "passwordPlaceholder": "Введіть пароль",
+    "loginButton": "Увійти",
+    "demoCredentials": "Натисніть, щоб заповнити демо-дані:",
+    "invalidCredentials": "Невірне ім'я користувача або пароль"
   },
   "homepage": {
     "title": "WebInfo®",

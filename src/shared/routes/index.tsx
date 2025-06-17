@@ -5,6 +5,7 @@ import { LicensesPage } from '@/features/licenses/LicensesPage';
 import { ClientsPage } from '@/features/clients/ClientsPage';
 import { InvoicesPage } from '@/features/invoices/InvoicesPage';
 import { SettingsPage } from '@/features/settings/SettingsPage';
+import { LoginPage } from '@/features/auth/LoginPage';
 import {
   MobileAppsPage,
   AssignmentsPage,
@@ -29,6 +30,10 @@ import {
 } from '@/features/pages';
 
 export const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
   {
     path: '/',
     element: <MainLayout />,

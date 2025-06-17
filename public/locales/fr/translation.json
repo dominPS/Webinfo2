@@ -23,10 +23,10 @@
     "settlement": "Règlement",
     "absencePlan": "Plan d'absence",
     "monthlyAbsencePlan": "Plan d'absence mensuel",
-    "schedule": "Planning",
-    "projectsActivities": "Projets / Activités",
+    "schedule": "Planning",    "projectsActivities": "Projets / Activités",
     "employeeReview": "Revue des employés",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "login": "Connexion"
   },
   "languages": {
     "en": "Anglais",
@@ -38,6 +38,16 @@
     "username": "Jean Dupont",
     "logout": "Déconnexion",
     "menu": "Menu"
+  },
+  "login": {
+    "title": "Connexion",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "usernamePlaceholder": "Entrez le nom d'utilisateur",
+    "passwordPlaceholder": "Entrez le mot de passe",
+    "loginButton": "Se connecter",
+    "demoCredentials": "Cliquez pour remplir les données de démonstration:",
+    "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide"
   },
   "homepage": {
     "title": "WebInfo®",

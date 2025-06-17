@@ -23,10 +23,10 @@
     "settlement": "Settlement",
     "absencePlan": "Absence Plan",
     "monthlyAbsencePlan": "Monthly Absence Plan",
-    "schedule": "Schedule",
-    "projectsActivities": "Projects / Activities",
+    "schedule": "Schedule",    "projectsActivities": "Projects / Activities",
     "employeeReview": "Employee Review",
-    "logout": "Logout"
+    "logout": "Logout",
+    "login": "Login"
   },
   "languages": {
     "en": "English",
@@ -38,13 +38,26 @@
     "username": "John Smith",
     "logout": "Logout",
     "menu": "Menu"
-  },
-  "homepage": {
+  },  "homepage": {
     "title": "WebInfo®",
     "welcome": "Welcome to the WebInfo system. Please log in to browse WebInfo content.",
     "loginInstructions": "You can log in using username and password:",
     "employeeLogin": "employee / employee - employee view",
     "managerLogin": "manager / manager - manager view",
     "adminLogin": "admin / admin - view with administrative functions"
+  },  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "loginButton": "Log In",
+    "demoCredentials": "Click to fill demo credentials:",
+    "invalidCredentials": "Invalid username or password"
+  },
+  "header": {
+    "login": "Login",
+    "logout": "Logout",
+    "notifications": "Notifications"
   }
 }

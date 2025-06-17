@@ -23,10 +23,10 @@
     "settlement": "Abrechnung",
     "absencePlan": "Abwesenheitsplan",
     "monthlyAbsencePlan": "Monatlicher Abwesenheitsplan",
-    "schedule": "Zeitplan",
-    "projectsActivities": "Projekte / Aktivitäten",
+    "schedule": "Zeitplan",    "projectsActivities": "Projekte / Aktivitäten",
     "employeeReview": "Mitarbeiterbeurteilung",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "login": "Anmelden"
   },
   "languages": {
     "en": "Englisch",
@@ -38,6 +38,16 @@
     "username": "Max Mustermann",
     "logout": "Abmelden",
     "menu": "Menü"
+  },
+  "login": {
+    "title": "Anmeldung",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "usernamePlaceholder": "Benutzername eingeben",
+    "passwordPlaceholder": "Passwort eingeben",
+    "loginButton": "Anmelden",
+    "demoCredentials": "Klicken Sie, um Demo-Daten zu füllen:",
+    "invalidCredentials": "Ungültiger Benutzername oder Passwort"
   },
   "homepage": {
     "title": "WebInfo®",

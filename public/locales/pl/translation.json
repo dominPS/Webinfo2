@@ -23,10 +23,10 @@
     "settlement": "Rozliczenie",
     "absencePlan": "Plan absencji",
     "monthlyAbsencePlan": "Miesięczny plan absencji",
-    "schedule": "Grafik",
-    "projectsActivities": "Projekty / Czynności",
+    "schedule": "Grafik",    "projectsActivities": "Projekty / Czynności",
     "employeeReview": "Przegląd pracowników",
-    "logout": "Wyloguj się"
+    "logout": "Wyloguj się",
+    "login": "Zaloguj się"
   },
   "languages": {
     "en": "Angielski",
@@ -38,13 +38,26 @@
     "username": "Jan Kowalski",
     "logout": "Wyloguj się",
     "menu": "Menu"
-  },
-  "homepage": {
+  },  "homepage": {
     "title": "WebInfo®",
     "welcome": "Witaj w systemie WebInfo. Zaloguj się, aby móc przeglądać zawartość WebInfo.",
     "loginInstructions": "Możesz zalogować się przy pomocy loginu i hasła:",
     "employeeLogin": "pracownik / pracownik - widok pracownika",
     "managerLogin": "kierownik / kierownik - widok kierownika",
     "adminLogin": "admin / admin - widok z funkcjami administracyjnymi"
+  },  "login": {
+    "title": "Logowanie",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "usernamePlaceholder": "Wprowadź nazwę użytkownika",
+    "passwordPlaceholder": "Wprowadź hasło",
+    "loginButton": "Zaloguj się",
+    "demoCredentials": "Kliknij, aby wypełnić dane demo:",
+    "invalidCredentials": "Nieprawidłowa nazwa użytkownika lub hasło"
+  },
+  "header": {
+    "login": "Zaloguj",
+    "logout": "Wyloguj",
+    "notifications": "Powiadomienia"
   }
 }

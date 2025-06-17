@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '@/shared/components/Logo';
+import { useAuth } from '@/hooks/useAuth';
 
 const SIDEBAR_WIDTH = 320;
 const TOP_SPACING = 40;
@@ -136,6 +137,8 @@ export const Sidebar: React.FC = () => {
   const { t, i18n } = useTranslation('translation', {
     useSuspense: false
   });
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
 
   // Force update hook
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
@@ -154,9 +157,13 @@ export const Sidebar: React.FC = () => {
     };
   }, [i18n]);
 
-  const handleLogout = () => {
-    // Add logout logic here
-    console.log('Logging out...');
+  const handleAuthAction = () => {
+    if (isLoggedIn) {
+      logout();
+      console.log('Logged out');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -172,9 +179,8 @@ export const Sidebar: React.FC = () => {
             })}
           </NavItem>
         ))}
-      </NavContainer>
-      <LogoutButton onClick={handleLogout}>
-        {t('navigation.logout')}
+      </NavContainer>      <LogoutButton onClick={handleAuthAction}>
+        {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
       </LogoutButton>
     </SidebarContainer>
   );
