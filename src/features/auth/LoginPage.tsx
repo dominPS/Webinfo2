@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useUIState } from '@/hooks/useUIState';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -115,6 +116,7 @@ const DemoOption = styled.div`
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const { login } = useAuth();
+  const { setShowLoginForm } = useUIState();
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -123,10 +125,9 @@ export const LoginPage: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
     const success = login(username, password);
     if (success) {
-      navigate('/');
+      setShowLoginForm(false);
     } else {
       setError(t('login.invalidCredentials'));
     }

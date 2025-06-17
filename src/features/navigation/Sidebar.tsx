@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '@/shared/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
+import { useUIState } from '@/hooks/useUIState';
 
 const SIDEBAR_WIDTH = 320;
 const TOP_SPACING = 40;
@@ -138,6 +139,7 @@ export const Sidebar: React.FC = () => {
     useSuspense: false
   });
   const { isLoggedIn, logout } = useAuth();
+  const { setShowLoginForm } = useUIState();
   const navigate = useNavigate();
 
   // Force update hook
@@ -160,9 +162,10 @@ export const Sidebar: React.FC = () => {
   const handleAuthAction = () => {
     if (isLoggedIn) {
       logout();
+      setShowLoginForm(false);
       console.log('Logged out');
     } else {
-      navigate('/login');
+      setShowLoginForm(true);
     }
   };
 

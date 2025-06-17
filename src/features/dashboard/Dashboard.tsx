@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import { LoginPage } from '@/features/auth/LoginPage';
+import { useUIState } from '@/hooks/useUIState';
+import { useAuth } from '@/hooks/useAuth';
 
 const Container = styled.div`
   padding: ${props => props.theme.spacing.xl};
@@ -50,12 +53,31 @@ const LoginOption = styled.div`
 
 export const Dashboard = () => {
   const { t } = useTranslation();
+  const { showLoginForm } = useUIState();
+  const { isLoggedIn, user } = useAuth();
+
+  if (showLoginForm && !isLoggedIn) {
+    return <LoginPage />;
+  }
+
+  if (isLoggedIn && user) {
+    return (
+      <Container>
+        <Title>{t('homepage.title')}</Title>
+        <WelcomeText>
+          {t('homepage.loggedInAs', { username: user.username })}
+        </WelcomeText>
+        <WelcomeText>
+          {t('homepage.loggedInWelcome')}
+        </WelcomeText>
+      </Container>
+    );
+  }
 
   return (
     <Container>
       <Title>{t('homepage.title')}</Title>
       <WelcomeText>{t('homepage.welcome')}</WelcomeText>
-      
       <LoginSection>
         <LoginInstructions>{t('homepage.loginInstructions')}</LoginInstructions>
         <LoginOption>{t('homepage.employeeLogin')}</LoginOption>

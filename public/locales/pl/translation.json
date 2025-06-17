@@ -44,7 +44,9 @@
     "loginInstructions": "Możesz zalogować się przy pomocy loginu i hasła:",
     "employeeLogin": "pracownik / pracownik - widok pracownika",
     "managerLogin": "kierownik / kierownik - widok kierownika",
-    "adminLogin": "admin / admin - widok z funkcjami administracyjnymi"
+    "adminLogin": "admin / admin - widok z funkcjami administracyjnymi",
+    "loggedInAs": "Jesteś zalogowany jako {{username}}.",
+    "loggedInWelcome": "Witaj w systemie WebInfo. Kliknij w przyciski menu, aby przeglądać swoje dane RCP."
   },  "login": {
     "title": "Logowanie",
     "username": "Nazwa użytkownika",
