@@ -1,17 +1,32 @@
 {
-  "navigation": {
-    "dashboard": "Tableau de bord",
-    "projects": "Projets",
-    "tasks": "Tâches",
-    "calendar": "Calendrier",
-    "reports": "Rapports",
-    "settings": "Paramètres",
-    "logout": "Déconnexion"
+  "topMenu": {
+    "licenses": "Licences",
+    "clients": "Clients",
+    "invoices": "Factures",
+    "settings": "Paramètres"
   },
-  "header": {
-    "notifications": "Notifications",
-    "profile": "Profil",
-    "language": "Langue"
+  "navigation": {
+    "mobileApps":"Applications mobiles",
+    "assignments": "Affectations",
+    "mapRegistrations": "Enregistrements sur la carte",
+    "attendanceList": "Liste de présence",
+    "scheduleAttendance": "Présence planifiée",
+    "employeeData": "Données des employés",
+    "reserveVehicle": "Réserver un véhicule",
+    "canteen": "Cantine",
+    "vacationPlan": "Plan de congés",
+    "weekendWork": "Travail de weekend",
+    "employeeRequests": "Demandes des employés",
+    "vacations": "Congés",
+    "monthlySummary": "Résumé mensuel",
+    "examsAndTraining": "Examens et formation",
+    "settlement": "Règlement",
+    "absencePlan": "Plan d'absence",
+    "monthlyAbsencePlan": "Plan d'absence mensuel",
+    "schedule": "Planning",
+    "projectsActivities": "Projets / Activités",
+    "employeeReview": "Revue des employés",
+    "logout": "Déconnexion"
   },
   "languages": {
     "en": "Anglais",
@@ -19,5 +34,9 @@
     "fr": "Français",
     "de": "Allemand",
     "uk": "Ukrainien"
+  },  "common": {
+    "username": "Jean Dupont",
+    "logout": "Déconnexion",
+    "menu": "Menu"
   }
 }

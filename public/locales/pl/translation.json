@@ -1,16 +1,32 @@
 {
-  "navigation": {
-    "dashboard": "Panel główny",
-    "projects": "Projekty",
-    "tasks": "Zadania",
-    "calendar": "Kalendarz",
-    "reports": "Raporty",
-    "settings": "Ustawienia",
-    "logout": "Wyloguj"
+  "topMenu": {
+    "licenses": "Licencje",
+    "clients": "Klienci",
+    "invoices": "Faktury",
+    "settings": "Ustawienia"
   },
-  "header": {
-    "notifications": "Powiadomienia",
-    "profile": "Profil"
+  "navigation": {
+    "mobileApps": "Aplikacje mobilne",
+    "assignments": "Przypisania",
+    "mapRegistrations": "Rejestracje na mapie",
+    "attendanceList": "Lista obecności",
+    "scheduleAttendance": "Obecność na grafiku",
+    "employeeData": "Dane pracownika",
+    "reserveVehicle": "Rezerwuj pojazd",
+    "canteen": "Kantyna",
+    "vacationPlan": "Plan urlopów",
+    "weekendWork": "Praca w weekend",
+    "employeeRequests": "Wnioski pracowników",
+    "vacations": "Urlopy",
+    "monthlySummary": "Podsumowanie msc-a",
+    "examsAndTraining": "Badania i szkolenia",
+    "settlement": "Rozliczenie",
+    "absencePlan": "Plan absencji",
+    "monthlyAbsencePlan": "Miesięczny plan absencji",
+    "schedule": "Grafik",
+    "projectsActivities": "Projekty / Czynności",
+    "employeeReview": "Przegląd pracowników",
+    "logout": "Wyloguj się"
   },
   "languages": {
     "en": "Angielski",
@@ -18,5 +34,9 @@
     "fr": "Francuski",
     "de": "Niemiecki",
     "uk": "Ukraiński"
+  },  "common": {
+    "username": "Jan Kowalski",
+    "logout": "Wyloguj się",
+    "menu": "Menu"
   }
 }

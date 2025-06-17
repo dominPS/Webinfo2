@@ -32,14 +32,24 @@ const NavContainer = styled.div`
   flex: 1;
   padding: 0 30px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 
   &::-webkit-scrollbar {
     width: 6px;
   }
 
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -70,6 +80,7 @@ const NavItem = styled(NavLink)`
 
 const LogoutButton = styled.button`
   margin: 24px 30px;
+  padding: 0 16px;
   height: 40px;
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -81,15 +92,72 @@ const LogoutButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  width: calc(100% - 60px);
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
   }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
+interface NavItem {
+  path: string;
+  translationKey: string;
+}
+
+const navigationItems: NavItem[] = [
+  { path: '/mobile-apps', translationKey: 'mobileApps' },
+  { path: '/assignments', translationKey: 'assignments' },
+  { path: '/map-registrations', translationKey: 'mapRegistrations' },
+  { path: '/attendance-list', translationKey: 'attendanceList' },
+  { path: '/schedule-attendance', translationKey: 'scheduleAttendance' },
+  { path: '/employee-data', translationKey: 'employeeData' },
+  { path: '/reserve-vehicle', translationKey: 'reserveVehicle' },
+  { path: '/canteen', translationKey: 'canteen' },
+  { path: '/vacation-plan', translationKey: 'vacationPlan' },
+  { path: '/weekend-work', translationKey: 'weekendWork' },
+  { path: '/employee-requests', translationKey: 'employeeRequests' },
+  { path: '/vacations', translationKey: 'vacations' },
+  { path: '/monthly-summary', translationKey: 'monthlySummary' },
+  { path: '/exams-and-training', translationKey: 'examsAndTraining' },
+  { path: '/settlement', translationKey: 'settlement' },
+  { path: '/absence-plan', translationKey: 'absencePlan' },
+  { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan' },
+  { path: '/schedule', translationKey: 'schedule' },
+  { path: '/projects-activities', translationKey: 'projectsActivities' },
+  { path: '/employee-review', translationKey: 'employeeReview' }
+];
+
 export const Sidebar: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation('translation', {
+    useSuspense: false
+  });
+
+  // Force update hook
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+  // Force rerender when language changes
+  React.useEffect(() => {
+    const handleLanguageChanged = () => {
+      console.log('Language changed to:', i18n.language);
+      // Force rerender
+      forceUpdate();
+    };
+
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, [i18n]);
+
+  const handleLogout = () => {
+    // Add logout logic here
+    console.log('Logging out...');
+  };
 
   return (
     <SidebarContainer>
@@ -97,15 +165,16 @@ export const Sidebar: React.FC = () => {
         <Logo />
       </SidebarHeader>
       <NavContainer>
-        <NavItem to="/">{t('navigation.dashboard')}</NavItem>
-        <NavItem to="/projects">{t('navigation.projects')}</NavItem>
-        <NavItem to="/tasks">{t('navigation.tasks')}</NavItem>
-        <NavItem to="/calendar">{t('navigation.calendar')}</NavItem>
-        <NavItem to="/reports">{t('navigation.reports')}</NavItem>
-        <NavItem to="/settings">{t('navigation.settings')}</NavItem>
+        {navigationItems.map((item) => (
+          <NavItem key={item.path} to={item.path}>
+            {t(`navigation.${item.translationKey}`, {
+              defaultValue: item.translationKey
+            })}
+          </NavItem>
+        ))}
       </NavContainer>
-      <LogoutButton>
-        🚪 {t('navigation.logout')}
+      <LogoutButton onClick={handleLogout}>
+        {t('navigation.logout')}
       </LogoutButton>
     </SidebarContainer>
   );

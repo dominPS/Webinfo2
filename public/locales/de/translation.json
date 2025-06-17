@@ -1,17 +1,32 @@
 {
-  "navigation": {
-    "dashboard": "Dashboard",
-    "projects": "Projekte",
-    "tasks": "Aufgaben",
-    "calendar": "Kalender",
-    "reports": "Berichte",
-    "settings": "Einstellungen",
-    "logout": "Abmelden"
+  "topMenu": {
+    "licenses": "Lizenzen",
+    "clients": "Kunden",
+    "invoices": "Rechnungen",
+    "settings": "Einstellungen"
   },
-  "header": {
-    "notifications": "Benachrichtigungen",
-    "profile": "Profil",
-    "language": "Sprache"
+  "navigation": {
+    "mobileApps":"Mobile Apps",
+    "assignments": "Zuweisungen",
+    "mapRegistrations": "Kartenregistrierungen",
+    "attendanceList": "Anwesenheitsliste",
+    "scheduleAttendance": "Zeitplan-Anwesenheit",
+    "employeeData": "Mitarbeiterdaten",
+    "reserveVehicle": "Fahrzeug reservieren",
+    "canteen": "Kantine",
+    "vacationPlan": "Urlaubsplan",
+    "weekendWork": "Wochenendarbeit",
+    "employeeRequests": "Mitarbeiteranträge",
+    "vacations": "Urlaub",
+    "monthlySummary": "Monatliche Zusammenfassung",
+    "examsAndTraining": "Prüfungen und Schulungen",
+    "settlement": "Abrechnung",
+    "absencePlan": "Abwesenheitsplan",
+    "monthlyAbsencePlan": "Monatlicher Abwesenheitsplan",
+    "schedule": "Zeitplan",
+    "projectsActivities": "Projekte / Aktivitäten",
+    "employeeReview": "Mitarbeiterbeurteilung",
+    "logout": "Abmelden"
   },
   "languages": {
     "en": "Englisch",
@@ -19,5 +34,9 @@
     "fr": "Französisch",
     "de": "Deutsch",
     "uk": "Ukrainisch"
+  },  "common": {
+    "username": "Max Mustermann",
+    "logout": "Abmelden",
+    "menu": "Menü"
   }
 }

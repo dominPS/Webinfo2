@@ -1,16 +1,32 @@
 {
-  "navigation": {
-    "dashboard": "Dashboard",
-    "projects": "Projects",
-    "tasks": "Tasks",
-    "calendar": "Calendar",
-    "reports": "Reports",
-    "settings": "Settings",
-    "logout": "Logout"
+  "topMenu": {
+    "licenses": "Licenses",
+    "clients": "Clients",
+    "invoices": "Invoices",
+    "settings": "Settings"
   },
-  "header": {
-    "notifications": "Notifications",
-    "profile": "Profile"
+  "navigation": {
+    "mobileApps":"Mobile Apps",
+    "assignments": "Assignments",
+    "mapRegistrations": "Map Registrations",
+    "attendanceList": "Attendance List",
+    "scheduleAttendance": "Schedule Attendance",
+    "employeeData": "Employee Data",
+    "reserveVehicle": "Reserve Vehicle",
+    "canteen": "Canteen",
+    "vacationPlan": "Vacation Plan",
+    "weekendWork": "Weekend Work",
+    "employeeRequests": "Employee Requests",
+    "vacations": "Vacations",
+    "monthlySummary": "Monthly Summary",
+    "examsAndTraining": "Exams and Training",
+    "settlement": "Settlement",
+    "absencePlan": "Absence Plan",
+    "monthlyAbsencePlan": "Monthly Absence Plan",
+    "schedule": "Schedule",
+    "projectsActivities": "Projects / Activities",
+    "employeeReview": "Employee Review",
+    "logout": "Logout"
   },
   "languages": {
     "en": "English",
@@ -18,5 +34,9 @@
     "fr": "French",
     "de": "German",
     "uk": "Ukrainian"
+  },  "common": {
+    "username": "John Smith",
+    "logout": "Logout",
+    "menu": "Menu"
   }
 }

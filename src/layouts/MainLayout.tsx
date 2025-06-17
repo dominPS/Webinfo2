@@ -4,7 +4,8 @@ import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sidebar } from '@/features/navigation/Sidebar';
 import { LanguageSelector } from '@/shared/components/LanguageSelector';
-import { TasksLogo } from '@/shared/components/TasksLogo';
+import { ReportsLogo } from '@/shared/components/ReportsLogo';
+import { TopMenu } from '@/shared/components/TopMenu';
 
 const SIDEBAR_WIDTH = 320;
 const TOP_SPACING = 40;
@@ -39,6 +40,7 @@ const TopBar = styled.div`
 const TopBarLeft = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 `;
 
 const TopBarRight = styled.div`
@@ -91,7 +93,8 @@ export const MainLayout = () => {
       <ContentContainer>
         <TopBar>
           <TopBarLeft>
-            <TasksLogo />
+            <TopMenu />
+            <ReportsLogo />
           </TopBarLeft>
           <TopBarRight>
             <LanguageSelector />

@@ -16,19 +16,25 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'pl',
     supportedLngs: Object.keys(availableLanguages),
-    debug: false,
+    debug: true, // Enable debug temporarily to see what's happening
     interpolation: {
       escapeValue: false,
-    },
-    backend: {
+    },    backend: {
       loadPath: '/locales/{{lng}}/translation.json',
     },
+    defaultNS: 'translation',
+    fallbackNS: 'translation',
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
     },
+    react: {
+      useSuspense: false
+    },
+    ns: ['translation'],
+    preload: ['en', 'pl', 'fr', 'de', 'uk']
   });
 
 export default i18n;

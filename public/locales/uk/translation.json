@@ -1,17 +1,32 @@
 {
-  "navigation": {
-    "dashboard": "Панель керування",
-    "projects": "Проекти",
-    "tasks": "Завдання",
-    "calendar": "Календар",
-    "reports": "Звіти",
-    "settings": "Налаштування",
-    "logout": "Вийти"
+  "topMenu": {
+    "licenses": "Ліцензії",
+    "clients": "Клієнти",
+    "invoices": "Рахунки",
+    "settings": "Налаштування"
   },
-  "header": {
-    "notifications": "Сповіщення",
-    "profile": "Профіль",
-    "language": "Мова"
+  "navigation": {
+    "mobileApps":"Мобільні додатки",
+    "assignments": "Призначення",
+    "mapRegistrations": "Реєстрації на карті",
+    "attendanceList": "Список відвідування",
+    "scheduleAttendance": "Відвідування за розкладом",
+    "employeeData": "Дані працівника",
+    "reserveVehicle": "Забронювати транспорт",
+    "canteen": "Їдальня",
+    "vacationPlan": "План відпусток",
+    "weekendWork": "Робота на вихідних",
+    "employeeRequests": "Запити працівників",
+    "vacations": "Відпустки",
+    "monthlySummary": "Місячний підсумок",
+    "examsAndTraining": "Іспити та навчання",
+    "settlement": "Розрахунок",
+    "absencePlan": "План відсутності",
+    "monthlyAbsencePlan": "Місячний план відсутності",
+    "schedule": "Розклад",
+    "projectsActivities": "Проекти / Діяльність",
+    "employeeReview": "Огляд працівників",
+    "logout": "Вийти"
   },
   "languages": {
     "en": "Англійська",
@@ -19,5 +34,9 @@
     "fr": "Французька",
     "de": "Німецька",
     "uk": "Українська"
+  },  "common": {
+    "username": "Іван Петренко",
+    "logout": "Вийти",
+    "menu": "Меню"
   }
 }
