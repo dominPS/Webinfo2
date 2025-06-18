@@ -20,6 +20,7 @@ const SidebarContainer = styled.aside`
   display: flex;
   flex-direction: column;
   box-shadow: ${props => props.theme.shadows.medium};
+  z-index: 10; /* Higher z-index to appear in front of the collapse button */
 `;
 
 const SidebarHeader = styled.div`
@@ -109,44 +110,33 @@ const LogoutButton = styled.button`
 const CollapseButton = styled.button`
   position: absolute;
   top: 50%;
-  right: -29.5px;
+  right: -16px;
   transform: translateY(-50%);
-  width: 59px;
-  height: 59px;
-  background: transparent;
+  width: 16px;
+  height: 32px;
+  background: ${props => props.theme.colors.primary};
   border: none;
+  border-radius: 0 16px 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   cursor: pointer;
-  z-index: 2000;
+  z-index: 5; /* Lower z-index to appear behind the sidebar */
+  transition: background 0.2s;
   padding: 0;
-  transition: transform 0.3s ease;
-  
   &:hover {
-    transform: translateY(-50%) scale(1.05);
-  }
-  
-  &:active {
-    transform: translateY(-50%) scale(0.95);
-  }
-  
-  svg {
-    width: 59px;
-    height: 59px;
+    background: ${props => props.theme.colors.primary};
   }
 `;
 
 const CollapseIcon = styled.span`
   display: block;
-  color: white;
-  font-size: 1.5rem;
+  color: transparent; /* Make the text transparent instead of white */
+  font-size: 1.2rem;
   font-weight: bold;
-  position: absolute;
+  margin-right: 2px;
   user-select: none;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const CollapsedSidebarContainer = styled(SidebarContainer)`
@@ -225,29 +215,24 @@ export const Sidebar: React.FC = () => {
   };
 
   const [collapsed, setCollapsed] = React.useState(false);
-
   return (
     <>
       {collapsed ? (
-        <CollapsedSidebarContainer>          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
+        <CollapsedSidebarContainer>
+          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
             <Logo onlyIcon />
           </SidebarHeader>
           <CollapseButton onClick={() => setCollapsed(false)} title={t('navigation.expandSidebar')}>
-            <svg width="59" height="59" viewBox="0 0 59 59" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="29.5" cy="29.5" r="29.5" fill="#646FFF"/>
-              <CollapseIcon>{'>'}</CollapseIcon>
-            </svg>
+            {/* No content inside button to remove any white elements */}
           </CollapseButton>
         </CollapsedSidebarContainer>
       ) : (
-        <SidebarContainer>          <SidebarHeader>
+        <SidebarContainer>
+          <SidebarHeader>
             <Logo />
           </SidebarHeader>
           <CollapseButton onClick={() => setCollapsed(true)} title={t('navigation.collapseSidebar')}>
-            <svg width="59" height="59" viewBox="0 0 59 59" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="29.5" cy="29.5" r="29.5" fill="#646FFF"/>
-              <CollapseIcon>{'<'}</CollapseIcon>
-            </svg>
+            {/* No content inside button to remove any white elements */}
           </CollapseButton>
           <NavContainer>
             {navigationItems.map((item) => (
