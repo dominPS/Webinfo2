@@ -109,33 +109,44 @@ const LogoutButton = styled.button`
 const CollapseButton = styled.button`
   position: absolute;
   top: 50%;
-  right: -16px;
+  right: -29.5px;
   transform: translateY(-50%);
-  width: 16px;
-  height: 32px;
-  background: ${props => props.theme.colors.primary};
+  width: 59px;
+  height: 59px;
+  background: transparent;
   border: none;
-  border-radius: 0 16px 16px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   cursor: pointer;
   z-index: 2000;
-  transition: background 0.2s;
   padding: 0;
+  transition: transform 0.3s ease;
+  
   &:hover {
-    background: ${props => props.theme.colors.primary};
+    transform: translateY(-50%) scale(1.05);
+  }
+  
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+  
+  svg {
+    width: 59px;
+    height: 59px;
   }
 `;
 
 const CollapseIcon = styled.span`
   display: block;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-right: 2px;
+  position: absolute;
   user-select: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const CollapsedSidebarContainer = styled(SidebarContainer)`
@@ -218,21 +229,25 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       {collapsed ? (
-        <CollapsedSidebarContainer>
-          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
+        <CollapsedSidebarContainer>          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
             <Logo onlyIcon />
           </SidebarHeader>
           <CollapseButton onClick={() => setCollapsed(false)} title={t('navigation.expandSidebar')}>
-            <CollapseIcon>{'>'}</CollapseIcon>
+            <svg width="59" height="59" viewBox="0 0 59 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="29.5" cy="29.5" r="29.5" fill="#646FFF"/>
+              <CollapseIcon>{'>'}</CollapseIcon>
+            </svg>
           </CollapseButton>
         </CollapsedSidebarContainer>
       ) : (
-        <SidebarContainer>
-          <SidebarHeader>
+        <SidebarContainer>          <SidebarHeader>
             <Logo />
           </SidebarHeader>
           <CollapseButton onClick={() => setCollapsed(true)} title={t('navigation.collapseSidebar')}>
-            <CollapseIcon>{'<'}</CollapseIcon>
+            <svg width="59" height="59" viewBox="0 0 59 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="29.5" cy="29.5" r="29.5" fill="#646FFF"/>
+              <CollapseIcon>{'<'}</CollapseIcon>
+            </svg>
           </CollapseButton>
           <NavContainer>
             {navigationItems.map((item) => (
