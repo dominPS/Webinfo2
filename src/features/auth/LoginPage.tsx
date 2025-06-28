@@ -128,6 +128,7 @@ export const LoginPage: React.FC = () => {
     const success = login(username, password);
     if (success) {
       setShowLoginForm(false);
+      navigate('/'); // Navigate to Dashboard on successful login
     } else {
       setError(t('login.invalidCredentials'));
     }

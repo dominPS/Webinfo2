@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import { LoginPage } from '@/features/auth/LoginPage';
-import { useUIState } from '@/hooks/useUIState';
+// import { LoginPage } from '@/features/auth/LoginPage'; // No longer needed
 import { useAuth } from '@/hooks/useAuth';
+// import { useUIState } from '@/hooks/useUIState'; // No longer needed
 
 const Container = styled.div`
   padding: ${props => props.theme.spacing.xl};
@@ -53,12 +53,13 @@ const LoginOption = styled.div`
 
 export const Dashboard = () => {
   const { t } = useTranslation();
-  const { showLoginForm } = useUIState();
+  // const { showLoginForm } = useUIState(); // Removed
   const { isLoggedIn, user } = useAuth();
 
-  if (showLoginForm && !isLoggedIn) {
-    return <LoginPage />;
-  }
+  // This block is removed as LoginPage is no longer rendered here
+  // if (showLoginForm && !isLoggedIn) {
+  //   return <LoginPage />;
+  // }
 
   if (isLoggedIn && user) {
     return (

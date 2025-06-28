@@ -6,6 +6,7 @@
     "settings": "Ustawienia"
   },
   "navigation": {
+    "dashboard": "Pulpit",
     "mobileApps": "Aplikacje mobilne",
     "assignments": "Przypisania",
     "mapRegistrations": "Rejestracje na mapie",

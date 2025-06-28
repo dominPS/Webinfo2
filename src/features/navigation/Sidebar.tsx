@@ -156,6 +156,7 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
+  { path: '/', translationKey: 'dashboard' }, // Added Dashboard link
   { path: '/mobile-apps', translationKey: 'mobileApps' },
   { path: '/assignments', translationKey: 'assignments' },
   { path: '/map-registrations', translationKey: 'mapRegistrations' },
@@ -183,7 +184,7 @@ export const Sidebar: React.FC = () => {
     useSuspense: false
   });
   const { isLoggedIn, logout } = useAuth();
-  const { setShowLoginForm } = useUIState();
+  const { setShowLoginForm } = useUIState(); // Keeping this for now, as it might be used by other parts of the app or intended for future.
   const navigate = useNavigate();
 
   // Force update hook
@@ -192,7 +193,7 @@ export const Sidebar: React.FC = () => {
   // Force rerender when language changes
   React.useEffect(() => {
     const handleLanguageChanged = () => {
-      console.log('Language changed to:', i18n.language);
+      // console.log('Language changed to:', i18n.language); // Removed
       // Force rerender
       forceUpdate();
     };
@@ -207,9 +208,10 @@ export const Sidebar: React.FC = () => {
     if (isLoggedIn) {
       logout();
       setShowLoginForm(false);
-      console.log('Logged out');
+      // console.log('Logged out'); // Removed
+      navigate('/');
     } else {
-      setShowLoginForm(true);
+      navigate('/login');
     }
   };
 

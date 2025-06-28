@@ -6,6 +6,7 @@
     "settings": "Налаштування"
   },
   "navigation": {
+    "dashboard": "Панель приладів",
     "mobileApps":"Мобільні додатки",
     "assignments": "Призначення",
     "mapRegistrations": "Реєстрації на карті",

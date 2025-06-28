@@ -6,6 +6,7 @@
     "settings": "Paramètres"
   },
   "navigation": {
+    "dashboard": "Tableau de bord",
     "mobileApps":"Applications mobiles",
     "assignments": "Affectations",
     "mapRegistrations": "Enregistrements sur la carte",
