@@ -25,6 +25,7 @@
     "monthlyAbsencePlan": "Plan d'absence mensuel",
     "schedule": "Planning",    "projectsActivities": "Projets / Activités",
     "employeeReview": "Revue des employés",
+    "employeeEvaluation": "Évaluation des employés",
     "logout": "Déconnexion",
     "login": "Connexion"
   },

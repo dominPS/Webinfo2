@@ -25,6 +25,7 @@
     "monthlyAbsencePlan": "Monthly Absence Plan",
     "schedule": "Schedule",    "projectsActivities": "Projects / Activities",
     "employeeReview": "Employee Review",
+    "employeeEvaluation": "Employee Evaluation",
     "logout": "Logout",
     "login": "Login"
   },

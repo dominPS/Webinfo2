@@ -163,6 +163,7 @@ const navigationItems: NavItem[] = [
   { path: '/attendance-list', translationKey: 'attendanceList' },
   { path: '/schedule-attendance', translationKey: 'scheduleAttendance' },
   { path: '/employee-data', translationKey: 'employeeData' },
+  { path: '/employee-evaluation', translationKey: 'employeeEvaluation' },
   { path: '/reserve-vehicle', translationKey: 'reserveVehicle' },
   { path: '/canteen', translationKey: 'canteen' },
   { path: '/vacation-plan', translationKey: 'vacationPlan' },

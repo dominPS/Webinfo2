@@ -25,6 +25,7 @@
     "monthlyAbsencePlan": "Miesięczny plan absencji",
     "schedule": "Grafik",    "projectsActivities": "Projekty / Czynności",
     "employeeReview": "Przegląd pracowników",
+    "employeeEvaluation": "Ocena pracowników",
     "logout": "Wyloguj się",
     "login": "Zaloguj się"
   },

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Global } from '@emotion/react'
-import { globalStyles } from '@/shared/styles/global'
+import { globalStyles } from './shared/styles/global'
 import { App } from './App'
 import './i18n'
 

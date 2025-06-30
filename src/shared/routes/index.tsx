@@ -27,6 +27,7 @@ import {
   SchedulePage,
   ProjectsActivitiesPage,
   EmployeeReviewPage,
+  EmployeeEvaluationPage,
 } from '@/features/pages';
 
 export const router = createBrowserRouter([
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
       {
         path: 'employee-review',
         element: <EmployeeReviewPage translationKey="employeeReview" />,
+      },
+      {
+        path: 'employee-evaluation',
+        element: <EmployeeEvaluationPage translationKey="employeeEvaluation" />,
       },
       {
         path: '*',
