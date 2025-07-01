@@ -31,22 +31,24 @@
   },
   "languages": {
     "en": "English",
-    "pl": "Polish",
-    "fr": "French",
-    "de": "German",
-    "uk": "Ukrainian"
-  },  "common": {
+    "pl": "Polish"
+  },
+  "common": {
     "username": "John Smith",
     "logout": "Logout",
-    "menu": "Menu"
-  },  "homepage": {
+    "menu": "Menu",
+    "cancel": "Cancel",
+    "submit": "Submit Evaluation"
+  },
+  "homepage": {
     "title": "WebInfo®",
     "welcome": "Welcome to the WebInfo system. Please log in to browse WebInfo content.",
     "loginInstructions": "You can log in using username and password:",
     "employeeLogin": "employee / employee - employee view",
     "managerLogin": "manager / manager - manager view",
     "adminLogin": "admin / admin - view with administrative functions"
-  },  "login": {
+  },
+  "login": {
     "title": "Login",
     "username": "Username",
     "password": "Password",
@@ -60,5 +62,159 @@
     "login": "Login",
     "logout": "Logout",
     "notifications": "Notifications"
+  },
+  "pages": {
+    "employeeEvaluation": {
+      "description": "Evaluate employee performance and provide feedback"
+    },
+    "employeeReview": {
+      "description": "View and manage employee review sessions"
+    }
+  },
+  "employees": {
+    "johnSmith": "John Smith",
+    "janeDoe": "Jane Doe",
+    "michaelJohnson": "Michael Johnson",
+    "sarahWilliams": "Sarah Williams",
+    "robertBrown": "Robert Brown",
+    "emilyDavis": "Emily Davis"
+  },
+  "evaluation": {
+    "selectEmployee": "Select an employee to evaluate:",
+    "selectPlaceholder": "-- Select an employee --",
+    "instructions": "Please select an employee from the dropdown to begin the evaluation process.",
+    "performance": {
+      "title": "Job Performance",
+      "description": "Quality and quantity of work, meeting deadlines, achieving goals"
+    },
+    "teamwork": {
+      "title": "Teamwork",
+      "description": "Collaboration, cooperation, and relationships with colleagues"
+    },
+    "communication": {
+      "title": "Communication",
+      "description": "Clarity, effectiveness, and appropriateness of communication"
+    },
+    "initiative": {
+      "title": "Initiative & Innovation",
+      "description": "Self-motivation, problem-solving, and creative thinking"
+    },
+    "leadership": {
+      "title": "Leadership",
+      "description": "Guiding others, taking responsibility, and setting an example"
+    },
+    "comments": {
+      "title": "Additional Comments",
+      "placeholder": "Provide any additional feedback or observations..."
+    }
+  },
+  "review": {
+    "tabs": {
+      "all": "All Reviews",
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "overdue": "Overdue"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "overdue": "Overdue"
+    },
+    "noReviews": "No reviews found.",
+    "unknown": "Unknown",
+    "actions": {
+      "schedule": "Schedule Review",
+      "edit": "Edit Review",
+      "print": "Print"
+    },
+    "details": {
+      "employeeInfo": "Employee Information",
+      "name": "Name",
+      "department": "Department",
+      "position": "Position",
+      "manager": "Manager",
+      "reviewInfo": "Review Information",
+      "type": "Type",
+      "status": "Status",
+      "objective": "Objective",
+      "feedback": "Feedback",
+      "strengths": "Strengths",
+      "developmentAreas": "Development Areas",
+      "goals": "Goals"
+    },
+    "schedule": {
+      "title": "Schedule New Review",
+      "employee": "Employee",
+      "selectEmployee": "-- Select Employee --",
+      "type": "Review Type",
+      "date": "Review Date",
+      "objective": "Objective",
+      "objectivePlaceholder": "What is the purpose of this review?",
+      "notes": "Preparation Notes",
+      "notesPlaceholder": "Add any preparation notes or topics to cover during the review",
+      "submit": "Schedule Review",
+      "titlePlaceholder": "e.g., Quarterly Performance Review"
+    },
+    "types": {
+      "quarterly": "Quarterly Check-in",
+      "annual": "Annual Performance Review",
+      "probation": "Probation Review",
+      "pip": "Performance Improvement Plan",
+      "other": "Other"
+    },
+    "mockData": {
+      "department": {
+        "engineering": "Engineering",
+        "marketing": "Marketing",
+        "sales": "Sales",
+        "hr": "Human Resources",
+        "finance": "Finance"
+      },
+      "position": {
+        "seniorDeveloper": "Senior Developer",
+        "marketingSpecialist": "Marketing Specialist",
+        "salesRepresentative": "Sales Representative",
+        "hrManager": "HR Manager",
+        "accountant": "Accountant"
+      },
+      "objective": {
+        "annual": "Assess performance over the past year and set goals for the coming year.",
+        "quarterly": "Review progress on goals and provide mid-term feedback.",
+        "probation": "Evaluate performance during the probation period.",
+        "pip": "Review progress on performance improvement plan."
+      },
+      "notes": {
+        "john": "John has shown excellent progress in technical skills and team collaboration.",
+        "jane": "Jane consistently meets sales targets and builds strong client relationships.",
+        "michael": "Michael needs to improve time management and meeting deadlines."
+      },
+      "feedback": {
+        "exceeded": "Exceeded project delivery expectations",
+        "problemSolving": "Demonstrated strong problem-solving skills",
+        "mentored": "Mentored junior team members effectively",
+        "communication": "Improved communication with stakeholders",
+        "clientRelationships": "Built strong client relationships",
+        "salesTargets": "Consistently met or exceeded sales targets",
+        "teamwork": "Shown excellent teamwork and collaboration"
+      },
+      "development": {
+        "documentation": "Documentation could be more thorough",
+        "architecture": "Consider taking on more architectural responsibilities",
+        "timeManagement": "Improve time management skills",
+        "delegation": "Could delegate tasks more effectively",
+        "communication": "Enhance communication with cross-functional teams"
+      },
+      "goals": {
+        "certification": "Complete Advanced System Design certification",
+        "leadProject": "Lead at least one major project initiative",
+        "codeReview": "Improve code review process for the team",
+        "training": "Participate in leadership training program",
+        "clientRetention": "Develop client retention strategy",
+        "processImprovement": "Identify and implement one major process improvement"
+      }
+    }
+  },
+  "dateFormat": {
+    "locale": "en-US"
   }
 }

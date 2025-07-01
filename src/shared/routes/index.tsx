@@ -1,12 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { MainLayout } from '@/layouts/MainLayout';
-import { Dashboard } from '@/features/dashboard/Dashboard';
 import { LicensesPage } from '@/features/licenses/LicensesPage';
 import { ClientsPage } from '@/features/clients/ClientsPage';
 import { InvoicesPage } from '@/features/invoices/InvoicesPage';
 import { SettingsPage } from '@/features/settings/SettingsPage';
-import { LoginPage } from '@/features/auth/LoginPage';
 import {
+  DashboardPage,
+  LoginPage,
+  NotFoundPage,
+  EmployeeReviewPage,
+  EmployeeEvaluationPage,
   MobileAppsPage,
   AssignmentsPage,
   MapRegistrationsPage,
@@ -26,9 +29,7 @@ import {
   MonthlyAbsencePlanPage,
   SchedulePage,
   ProjectsActivitiesPage,
-  EmployeeReviewPage,
-  EmployeeEvaluationPage,
-} from '@/features/pages';
+} from '@/pages';
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <DashboardPage />,
       },
       {
         path: 'licenses',
@@ -137,15 +138,15 @@ export const router = createBrowserRouter([
       },
       {
         path: 'employee-review',
-        element: <EmployeeReviewPage translationKey="employeeReview" />,
+        element: <EmployeeReviewPage />,
       },
       {
         path: 'employee-evaluation',
-        element: <EmployeeEvaluationPage translationKey="employeeEvaluation" />,
+        element: <EmployeeEvaluationPage />,
       },
       {
         path: '*',
-        element: <div>Page not found</div>,
+        element: <NotFoundPage />,
       },
     ],
   },

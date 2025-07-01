@@ -17,5 +17,5 @@ export { BasePage as AbsencePlanPage } from '@/shared/components/BasePage';
 export { BasePage as MonthlyAbsencePlanPage } from '@/shared/components/BasePage';
 export { BasePage as SchedulePage } from '@/shared/components/BasePage';
 export { BasePage as ProjectsActivitiesPage } from '@/shared/components/BasePage';
-export { BasePage as EmployeeReviewPage } from '@/shared/components/BasePage';
-export { BasePage as EmployeeEvaluationPage } from '@/shared/components/BasePage';
+export { EmployeeReviewPage } from '@/features/employeeReview';
+export { EmployeeEvaluationPage } from '@/features/employeeEvaluation';

@@ -31,15 +31,16 @@
   },
   "languages": {
     "en": "Angielski",
-    "pl": "Polski",
-    "fr": "Francuski",
-    "de": "Niemiecki",
-    "uk": "Ukraiński"
-  },  "common": {
+    "pl": "Polski"
+  },
+  "common": {
     "username": "Jan Kowalski",
     "logout": "Wyloguj się",
-    "menu": "Menu"
-  },  "homepage": {
+    "menu": "Menu",
+    "cancel": "Anuluj",
+    "submit": "Zatwierdź ocenę"
+  },
+  "homepage": {
     "title": "WebInfo®",
     "welcome": "Witaj w systemie WebInfo. Zaloguj się, aby móc przeglądać zawartość WebInfo.",
     "loginInstructions": "Możesz zalogować się przy pomocy loginu i hasła:",
@@ -48,7 +49,8 @@
     "adminLogin": "admin / admin - widok z funkcjami administracyjnymi",
     "loggedInAs": "Jesteś zalogowany jako {{username}}.",
     "loggedInWelcome": "Witaj w systemie WebInfo. Kliknij w przyciski menu, aby przeglądać swoje dane RCP."
-  },  "login": {
+  },
+  "login": {
     "title": "Logowanie",
     "username": "Nazwa użytkownika",
     "password": "Hasło",
@@ -66,5 +68,51 @@
   "sidebar": {
     "collapseSidebar": "Zwiń pasek boczny",
     "expandSidebar": "Rozwiń pasek boczny"
+  },
+  "pages": {
+    "employeeEvaluation": {
+      "description": "Oceniaj wyniki pracowników i przekazuj informacje zwrotne"
+    },
+    "employeeReview": {
+      "description": "Przeglądaj i zarządzaj sesjami oceny pracowników"
+    }
+  },
+  "employees": {
+    "johnSmith": "Jan Kowalski",
+    "janeDoe": "Anna Nowak",
+    "michaelJohnson": "Michał Wiśniewski",
+    "sarahWilliams": "Sara Kowalczyk",
+    "robertBrown": "Robert Brązowy",
+    "emilyDavis": "Emilia Dawidowska"
+  },
+  "review": {
+    "tabs": {
+      "all": "Wszystkie oceny",
+      "scheduled": "Zaplanowane",
+      "completed": "Zakończone",
+      "overdue": "Zaległe"
+    },
+    "status": {
+      "scheduled": "Zaplanowane",
+      "completed": "Zakończone",
+      "overdue": "Zaległe"
+    },
+    "noReviews": "Nie znaleziono ocen.",
+    "unknown": "Nieznany",
+    "actions": {
+      "schedule": "Zaplanuj ocenę",
+      "edit": "Edytuj ocenę",
+      "print": "Drukuj"
+    },
+    "types": {
+      "quarterly": "Kwartalna ocena",
+      "annual": "Roczna ocena wyników",
+      "probation": "Ocena okresu próbnego",
+      "pip": "Plan poprawy wyników",
+      "other": "Inne"
+    }
+  },
+  "dateFormat": {
+    "locale": "pl-PL"
   }
 }

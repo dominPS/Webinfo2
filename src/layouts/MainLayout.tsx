@@ -110,7 +110,7 @@ export const MainLayout = () => {
               🔔
             </NotificationButton>
             <ProfileButton>
-              👤 John Doe
+              👤 Test
             </ProfileButton>
           </TopBarRight>        </TopBar>
         <MainContent>

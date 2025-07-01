@@ -5,10 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 export const availableLanguages = {
   en: 'English',
-  pl: 'Polski',
-  fr: 'Français',
-  de: 'Deutsch',
-  uk: 'Українська'
+  pl: 'Polski'
 };
 
 i18n
@@ -35,7 +32,7 @@ i18n
       useSuspense: false
     },
     ns: ['translation'],
-    preload: ['en', 'pl', 'fr', 'de', 'uk']
+    preload: ['en', 'pl']
   });
 
 export default i18n;
