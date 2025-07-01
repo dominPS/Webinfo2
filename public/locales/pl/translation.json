@@ -95,15 +95,42 @@
     },
     "worker": {
       "title": "Ocena pracownicza",
-      "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik"
+      "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik",
+      "dashboardDescription": "Zarządzaj swoimi samooocenami, planami rozwoju i przeglądami wyników",
+      "controls": {
+        "whiteValues": "Wartości \"WHITE\"",
+        "selfAssessment": "Samoocena",
+        "idp": "IDP (Indywidualny Plan Rozwoju)",
+        "annualReview": "Roczna ocena"
+      }
     },
     "leader": {
       "title": "Ocena kierownicza",
-      "description": "Oceń wydajność członków zespołu i przekaż opinię jako kierownik"
+      "description": "Oceń wydajność członków zespołu i przekaż opinię jako kierownik",
+      "dashboardDescription": "Zarządzaj ocenami zespołu, planami rozwoju i przeglądami wyników",
+      "controls": {
+        "meAndDirectReports": "Ja i moi bezpośredni podwładni",
+        "dashboard": "Pulpit główny",
+        "helpContactHR": "Pomoc i kontakt z HR",
+        "idp": "IDP (Indywidualny Plan Rozwoju)",
+        "annualReview": "Roczna ocena",
+        "selfAssessment": "Samoocena",
+        "whiteValues": "Wartości \"WHITE\""
+      }
     },
     "hr": {
       "title": "Ocena HR",
-      "description": "Oceń wydajność pracowników i przekaż opinię jako HR"
+      "description": "Oceń wydajność pracowników i przekaż opinię jako HR",
+      "dashboardDescription": "Zarządzaj procesami oceny, formami ocen i raportowaniem dla organizacji",
+      "controls": {
+        "dashboard": "Pulpit główny",
+        "managingAssessmentRounds": "Zarządzanie rundami ocen",
+        "assessmentForms": "Formularze ocen",
+        "monitoringProgress": "Monitorowanie postępu ocen",
+        "reportingAnalysis": "Raportowanie i analiza",
+        "competencyManagement": "Zarządzanie kompetencjami",
+        "integrationsSettings": "Integracje i ustawienia systemu"
+      }
     },
     "selectEmployee": "Wybierz pracownika do oceny:",
     "selectPlaceholder": "-- Wybierz pracownika --",

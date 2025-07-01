@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import EvaluationForm from './components/EvaluationForm';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -11,11 +10,12 @@ const PageContainer = styled.div`
 `;
 
 const PageHeader = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  text-align: center;
 `;
 
 const PageTitle = styled.h1`
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 600;
   color: ${props => props.theme.colors.text.primary};
   margin-bottom: 8px;
@@ -23,51 +23,61 @@ const PageTitle = styled.h1`
 
 const PageDescription = styled.p`
   color: ${props => props.theme.colors.text.secondary};
+  font-size: 16px;
 `;
 
-const ContentSection = styled.section`
-  margin-bottom: 32px;
+const ControlsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
-const EmployeeSelector = styled.div`
-  margin-bottom: 24px;
-`;
+const ControlButton = styled.button`
+  padding: 24px;
+  border: 2px solid ${props => props.theme.colors.primary};
+  border-radius: 12px;
+  background-color: white;
+  color: ${props => props.theme.colors.primary};
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-const SelectLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-`;
+  &:hover {
+    background-color: ${props => props.theme.colors.primary};
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 
-const Select = styled.select`
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.border};
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}33;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 /**
  * Leader Evaluation Page
- * This page allows leaders to evaluate their team members
+ * This page provides leader dashboard controls for managing team evaluations and development
  */
 const LeaderEvaluationPage: React.FC = () => {
   const { t } = useTranslation();
-  const [selectedEmployee, setSelectedEmployee] = useState('');
 
-  // Mock employee data - in a real app, this would come from an API or state
-  const employees = [
-    { id: 'emp001', name: t('employees.johnSmith', 'John Smith') },
-    { id: 'emp002', name: t('employees.janeDoe', 'Jane Doe') },
-    { id: 'emp003', name: t('employees.michaelJohnson', 'Michael Johnson') },
-    { id: 'emp004', name: t('employees.sarahWilliams', 'Sarah Williams') }
-  ];
-
-  const handleEvaluationSubmit = (data: any) => {
-    // In a real app, this would send the data to an API
-    console.log('Leader evaluation submitted:', data);
-    alert('Evaluation submitted successfully!');
-    setSelectedEmployee('');
+  const handleControlClick = (controlType: string) => {
+    // In a real app, this would navigate to specific sections or open modals
+    console.log(`Leader Control clicked: ${controlType}`);
+    alert(`${controlType} functionality coming soon!`);
   };
 
   return (
@@ -75,38 +85,39 @@ const LeaderEvaluationPage: React.FC = () => {
       <PageHeader>
         <PageTitle>{t('evaluation.leader.title', 'Leader Evaluation')}</PageTitle>
         <PageDescription>
-          {t('evaluation.leader.description', 'Evaluate team member performance and provide feedback as a leader')}
+          {t('evaluation.leader.dashboardDescription', 'Manage your team evaluations, development plans, and performance reviews')}
         </PageDescription>
       </PageHeader>
 
-      <ContentSection>
-        <EmployeeSelector>
-          <SelectLabel>{t('evaluation.selectEmployee', 'Select an employee to evaluate:')}</SelectLabel>
-          <Select 
-            value={selectedEmployee}
-            onChange={(e) => setSelectedEmployee(e.target.value)}
-          >
-            <option value="">{t('evaluation.selectPlaceholder', '-- Select an employee --')}</option>
-            {employees.map(employee => (
-              <option key={employee.id} value={employee.id}>
-                {employee.name}
-              </option>
-            ))}
-          </Select>
-        </EmployeeSelector>
-
-        {selectedEmployee && (
-          <EvaluationForm 
-            employeeId={selectedEmployee}
-            employeeName={employees.find(e => e.id === selectedEmployee)?.name || ''}
-            onSubmit={handleEvaluationSubmit}
-          />
-        )}
+      <ControlsGrid>
+        <ControlButton onClick={() => handleControlClick('dashboard')}>
+          {t('evaluation.leader.controls.dashboard', 'Dashboard')}
+        </ControlButton>
         
-        {!selectedEmployee && (
-          <p>{t('evaluation.instructions', 'Please select an employee from the dropdown to begin the evaluation process.')}</p>
-        )}
-      </ContentSection>
+        <ControlButton onClick={() => handleControlClick('whiteValues')}>
+          {t('evaluation.leader.controls.whiteValues', '"WHITE" Values')}
+        </ControlButton>
+        
+        <ControlButton onClick={() => handleControlClick('meAndDirectReports')}>
+          {t('evaluation.leader.controls.meAndDirectReports', 'Me and My Direct Reports')}
+        </ControlButton>
+        
+        <ControlButton onClick={() => handleControlClick('helpContactHR')}>
+          {t('evaluation.leader.controls.helpContactHR', 'Help and Contact with HR')}
+        </ControlButton>
+        
+        <ControlButton onClick={() => handleControlClick('idp')}>
+          {t('evaluation.leader.controls.idp', 'IDP (Individual Development Plan)')}
+        </ControlButton>
+        
+        <ControlButton onClick={() => handleControlClick('annualReview')}>
+          {t('evaluation.leader.controls.annualReview', 'Annual Review')}
+        </ControlButton>
+        
+        <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+          {t('evaluation.leader.controls.selfAssessment', 'Self-Assessment')}
+        </ControlButton>
+      </ControlsGrid>
     </PageContainer>
   );
 };

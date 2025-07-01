@@ -89,15 +89,42 @@
     },
     "worker": {
       "title": "Worker Evaluation",
-      "description": "Evaluate employee performance and provide feedback as a worker"
+      "description": "Evaluate employee performance and provide feedback as a worker",
+      "dashboardDescription": "Manage your self-evaluations, development plans, and performance reviews",
+      "controls": {
+        "whiteValues": "\"WHITE\" Values",
+        "selfAssessment": "Self-Assessment",
+        "idp": "IDP (Individual Development Plan)",
+        "annualReview": "Annual Review"
+      }
     },
     "leader": {
       "title": "Leader Evaluation",
-      "description": "Evaluate team member performance and provide feedback as a leader"
+      "description": "Evaluate team member performance and provide feedback as a leader",
+      "dashboardDescription": "Manage your team evaluations, development plans, and performance reviews",
+      "controls": {
+        "meAndDirectReports": "Me and My Direct Reports",
+        "dashboard": "Dashboard",
+        "helpContactHR": "Help and Contact with HR",
+        "idp": "IDP (Individual Development Plan)",
+        "annualReview": "Annual Review",
+        "selfAssessment": "Self-Assessment",
+        "whiteValues": "\"WHITE\" Values"
+      }
     },
     "hr": {
       "title": "HR Evaluation",
-      "description": "Evaluate employee performance and provide feedback as HR"
+      "description": "Evaluate employee performance and provide feedback as HR",
+      "dashboardDescription": "Manage evaluation processes, assessments, and reporting for the organization",
+      "controls": {
+        "dashboard": "Dashboard",
+        "managingAssessmentRounds": "Managing assessment rounds",
+        "assessmentForms": "Assessment forms",
+        "monitoringProgress": "Monitorowanie postępu ocen",
+        "reportingAnalysis": "Reporting and analysis",
+        "competencyManagement": "Zarządzanie kompetencjami",
+        "integrationsSettings": "Integrations and system settings"
+      }
     },
     "selectEmployee": "Select an employee to evaluate:",
     "selectPlaceholder": "-- Select an employee --",
