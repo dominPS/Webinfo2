@@ -77,7 +77,8 @@
     "michaelJohnson": "Michael Johnson",
     "sarahWilliams": "Sarah Williams",
     "robertBrown": "Robert Brown",
-    "emilyDavis": "Emily Davis"
+    "emilyDavis": "Emily Davis",
+    "annaRodriguez": "Anna Rodriguez"
   },
   "evaluation": {
     "selectEmployee": "Select an employee to evaluate:",
@@ -151,6 +152,7 @@
     },
     "schedule": {
       "title": "Schedule New Review",
+      "reviewTitle": "Review Title",
       "employee": "Employee",
       "selectEmployee": "-- Select Employee --",
       "type": "Review Type",

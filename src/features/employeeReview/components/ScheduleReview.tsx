@@ -161,7 +161,7 @@ const ScheduleReview: React.FC<ScheduleReviewProps> = ({ onSubmit, onCancel }) =
         </FormGroup>
         
         <FormGroup>
-          <Label htmlFor="title">{t('review.schedule.title', 'Review Title')}</Label>
+          <Label htmlFor="title">{t('review.schedule.reviewTitle', 'Review Title')}</Label>
           <Input
             id="title"
             name="title"
