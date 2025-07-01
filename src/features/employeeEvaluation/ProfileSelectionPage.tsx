@@ -62,8 +62,20 @@ const ProfileSelectionPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleProfileSelect = (profile: string) => {
-    // All profiles navigate to the same employee evaluation page
-    navigate('/employee-evaluation/form');
+    // Navigate to the appropriate evaluation page based on profile
+    switch (profile) {
+      case 'worker':
+        navigate('/employee-evaluation/worker');
+        break;
+      case 'leader':
+        navigate('/employee-evaluation/leader');
+        break;
+      case 'hr':
+        navigate('/employee-evaluation/hr');
+        break;
+      default:
+        navigate('/employee-evaluation/worker');
+    }
   };
 
   return (

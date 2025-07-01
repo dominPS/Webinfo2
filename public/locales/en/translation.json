@@ -87,6 +87,18 @@
       "leader": "Leader",
       "hr": "HR"
     },
+    "worker": {
+      "title": "Worker Evaluation",
+      "description": "Evaluate employee performance and provide feedback as a worker"
+    },
+    "leader": {
+      "title": "Leader Evaluation",
+      "description": "Evaluate team member performance and provide feedback as a leader"
+    },
+    "hr": {
+      "title": "HR Evaluation",
+      "description": "Evaluate employee performance and provide feedback as HR"
+    },
     "selectEmployee": "Select an employee to evaluate:",
     "selectPlaceholder": "-- Select an employee --",
     "instructions": "Please select an employee from the dropdown to begin the evaluation process.",

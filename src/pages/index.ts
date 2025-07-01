@@ -4,10 +4,23 @@ import NotFoundPage from './NotFound';
 import EmployeeReviewPage from './EmployeeReview';
 import EmployeeEvaluationPage from './EmployeeEvaluation';
 import ProfileSelectionPage from './ProfileSelection';
+import WorkerEvaluationPage from './WorkerEvaluation';
+import LeaderEvaluationPage from './LeaderEvaluation';
+import HREvaluationPage from './HREvaluation';
 import { BasePage } from '@/shared/components/BasePage';
 
 // Named exports for each page
-export { DashboardPage, LoginPage, NotFoundPage, EmployeeReviewPage, EmployeeEvaluationPage, ProfileSelectionPage };
+export { 
+  DashboardPage, 
+  LoginPage, 
+  NotFoundPage, 
+  EmployeeReviewPage, 
+  EmployeeEvaluationPage, 
+  ProfileSelectionPage,
+  WorkerEvaluationPage,
+  LeaderEvaluationPage,
+  HREvaluationPage
+};
 
 // Placeholder pages (can be gradually replaced with real implementations)
 export const MobileAppsPage = BasePage;

@@ -93,6 +93,18 @@
       "leader": "Kierownik",
       "hr": "HR"
     },
+    "worker": {
+      "title": "Ocena pracownicza",
+      "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik"
+    },
+    "leader": {
+      "title": "Ocena kierownicza",
+      "description": "Oceń wydajność członków zespołu i przekaż opinię jako kierownik"
+    },
+    "hr": {
+      "title": "Ocena HR",
+      "description": "Oceń wydajność pracowników i przekaż opinię jako HR"
+    },
     "selectEmployee": "Wybierz pracownika do oceny:",
     "selectPlaceholder": "-- Wybierz pracownika --",
     "instructions": "Proszę wybrać pracownika z listy rozwijanej, aby rozpocząć proces oceny.",

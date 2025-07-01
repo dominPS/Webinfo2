@@ -11,6 +11,9 @@ import {
   EmployeeReviewPage,
   EmployeeEvaluationPage,
   ProfileSelectionPage,
+  WorkerEvaluationPage,
+  LeaderEvaluationPage,
+  HREvaluationPage,
   MobileAppsPage,
   AssignmentsPage,
   MapRegistrationsPage,
@@ -144,6 +147,18 @@ export const router = createBrowserRouter([
       {
         path: 'employee-evaluation',
         element: <ProfileSelectionPage />,
+      },
+      {
+        path: 'employee-evaluation/worker',
+        element: <WorkerEvaluationPage />,
+      },
+      {
+        path: 'employee-evaluation/leader',
+        element: <LeaderEvaluationPage />,
+      },
+      {
+        path: 'employee-evaluation/hr',
+        element: <HREvaluationPage />,
       },
       {
         path: 'employee-evaluation/form',
