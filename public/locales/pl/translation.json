@@ -38,7 +38,8 @@
     "logout": "Wyloguj się",
     "menu": "Menu",
     "cancel": "Anuluj",
-    "submit": "Zatwierdź ocenę"
+    "submit": "Zatwierdź ocenę",
+    "backToDashboard": "Powrót do Dashboard"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -280,5 +281,67 @@
   },
   "dateFormat": {
     "locale": "pl-PL"
+  },
+  "idp": {
+    "flow": {
+      "title": "Plan Rozwoju Indywidualnego (IDP)"
+    },
+    "myIdp": {
+      "title": "MOJE IDP",
+      "description": "Zarządzaj swoim planem rozwoju indywidualnego na rok 2025"
+    },
+    "addGoal": {
+      "title": "DODAJ CEL IDP"
+    },
+    "plan2025": {
+      "title": "PLAN NA ROK 2025"
+    },
+    "review": {
+      "title": "PRZEGLĄD I ZATWIERDZENIE",
+      "message": "Plan został przesłany do przeglądu. Oczekiwanie na decyzję przełożonego."
+    },
+    "final": {
+      "title": "PLAN ZATWIERDZONY",
+      "message": "Możliwość zapisu przed wydrukiem w trakcie edycji planu. Możliwość powrotu do edycji."
+    },
+    "training": {
+      "info": "Trening info o Celach - Plan rozkład 70/20/10"
+    },
+    "plan": {
+      "info": "Data utworzenia: Narzędzia oceny Szczegóły celu Oczekiwany wynik",
+      "category": "Kategoria",
+      "description": "Opis",
+      "year": "Rok",
+      "status": "Status"
+    },
+    "form": {
+      "goalTitle": "Tytuł celu",
+      "goalTitlePlaceholder": "Wprowadź tytuł celu rozwoju",
+      "goalDescription": "Opis celu",
+      "goalDescriptionPlaceholder": "Opisz szczegółowo swój cel rozwoju",
+      "category": "Kategoria (70/20/10)"
+    },
+    "categories": {
+      "70": "70% - Doświadczenie w pracy",
+      "20": "20% - Mentoring/Coaching",
+      "10": "10% - Szkolenia formalne"
+    },
+    "actions": {
+      "addGoal": "DODAJ CEL IDP",
+      "cancel": "ANULUJ",
+      "draft": "SZKIC",
+      "save": "ZAPISZ",
+      "submit": "WYŚLIJ",
+      "needsCorrection": "DO KOREKTY",
+      "approve": "ZATWIERDŹ",
+      "print": "WYDRUKUJ",
+      "editAgain": "POWRÓT DO EDYCJI"
+    },
+    "status": {
+      "draft": "Szkic",
+      "submitted": "Przesłany",
+      "approved": "Zatwierdzony",
+      "correction_needed": "Wymaga korekty"
+    }
   }
 }

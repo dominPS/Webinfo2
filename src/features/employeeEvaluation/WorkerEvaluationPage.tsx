@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../shared/components/Icon';
 import { whiteValuesIcon, selfAssessmentIcon, idpIcon, annualReviewIcon } from '../../shared/assets/icons/evaluation';
+import IDPFlow from './components/IDPFlow';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -77,12 +78,44 @@ const ControlButton = styled.button`
  */
 const WorkerEvaluationPage: React.FC = () => {
   const { t } = useTranslation();
+  const [activeFlow, setActiveFlow] = useState<string | null>(null);
 
   const handleControlClick = (controlType: string) => {
-    // In a real app, this would navigate to specific sections or open modals
-    console.log(`Worker Control clicked: ${controlType}`);
-    alert(`${controlType} functionality coming soon!`);
+    if (controlType === 'idp') {
+      setActiveFlow('idp');
+    } else {
+      // In a real app, this would navigate to specific sections or open modals
+      console.log(`Worker Control clicked: ${controlType}`);
+      alert(`${controlType} functionality coming soon!`);
+    }
   };
+
+  const handleBackToDashboard = () => {
+    setActiveFlow(null);
+  };
+
+  // If IDP flow is active, show it instead of the main dashboard
+  if (activeFlow === 'idp') {
+    return (
+      <PageContainer>
+        <button 
+          onClick={handleBackToDashboard}
+          style={{
+            marginBottom: '16px',
+            padding: '8px 16px',
+            backgroundColor: '#6b7280',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+        >
+          ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+        </button>
+        <IDPFlow />
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
