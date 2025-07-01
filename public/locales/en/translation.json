@@ -328,7 +328,11 @@
       "goalTitlePlaceholder": "Enter development goal title",
       "goalDescription": "Goal Description",
       "goalDescriptionPlaceholder": "Describe your development goal in detail",
-      "category": "Goal Category"
+      "category": "Goal Category",
+      "goalType": "Goal Type",
+      "goalDetails": "Goal Details",
+      "goalDetailsPlaceholder": "Enter your goal details...",
+      "goalResultsPlaceholder": "Describe expected results..."
     },
     "categories": {
       "business": "Business Goal",

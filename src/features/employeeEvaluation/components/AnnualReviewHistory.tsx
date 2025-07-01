@@ -48,28 +48,7 @@ const YearTabs = styled.div`
 `;
 
 const ScrollableReviewsContainer = styled.div`
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-  padding-right: 8px;
-  padding-bottom: 300px;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
+  padding-bottom: 40px;
 `;
 
 const YearTab = styled.button<{ isActive: boolean }>`

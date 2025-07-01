@@ -301,7 +301,7 @@
       "empty": "Brak zapisanych celów na rok 2025."
     },
     "pastPlans": {
-      "title": "POPRZEDNIE PLANY IDP",
+      "title": "Historia Planów IDP",
       "description": "Przeglądaj swoje poprzednie plany rozwoju",
       "year2024": "Plan Rozwoju 2024",
       "year2023": "Plan Rozwoju 2023",
@@ -332,7 +332,7 @@
     "plan": {
       "info": "Data utworzenia: Narzędzia oceny Szczegóły celu Oczekiwany wynik",
       "category": "Kategoria",
-      "description": "Opis",
+      "description": "Opis Celu",
       "year": "Rok",
       "status": "Status"
     },
@@ -341,7 +341,11 @@
       "goalTitlePlaceholder": "Wprowadź tytuł celu rozwoju",
       "goalDescription": "Opis celu",
       "goalDescriptionPlaceholder": "Opisz szczegółowo swój cel rozwoju",
-      "category": "Kategoria celu"
+      "category": "Kategoria celu",
+      "goalType": "Typ celu",
+      "goalDetails": "Szczegóły celu",
+      "goalDetailsPlaceholder": "Wpisz szczegóły swojego celu...",
+      "goalResultsPlaceholder": "Opisz oczekiwane wyniki..."
     },
     "categories": {
       "business": "Cel Biznesowy",

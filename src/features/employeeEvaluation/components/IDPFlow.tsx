@@ -50,29 +50,8 @@ const StepHeader = styled.div`
 `;
 
 const ScrollableContainer = styled.div`
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
   margin-bottom: 16px;
-  padding-right: 8px;
-  padding-bottom: 300px;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
+  padding-bottom: 40px;
 `;
 
 const GoalsContainer = styled.div`
@@ -173,10 +152,148 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
 `;
 
 const GoalForm = styled.div`
-  background-color: #f9fafb;
-  padding: 16px;
-  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
   margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const FormHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+`;
+
+const FormTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+`;
+
+const CompanyLogo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2563eb;
+`;
+
+const RadioGroup = styled.div`
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+`;
+
+const RadioOption = styled.label<{ checked?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #f9fafb;
+  }
+`;
+
+const RadioInput = styled.input`
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+`;
+
+const RadioLabel = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+`;
+
+const TextAreaGroup = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+`;
+
+const TextAreaContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TextAreaLabel = styled.label`
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+`;
+
+const StyledTextArea = styled.textarea`
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  line-height: 1.5;
+  
+  &:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+`;
+
+const ModernButton = styled.button<{ variant: 'cancel' | 'save' }>`
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  
+  ${props => props.variant === 'cancel' ? `
+    background-color: #f3f4f6;
+    color: #374151;
+    
+    &:hover {
+      background-color: #e5e7eb;
+    }
+  ` : `
+    background-color: #2563eb;
+    color: white;
+    
+    &:hover {
+      background-color: #1d4ed8;
+    }
+  `}
+  
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
 const FormGroup = styled.div`
@@ -325,6 +442,7 @@ const IDPFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<FlowStep>('my-idp');
   const [goals, setGoals] = useState<IDPGoal[]>([]);
   const [showIdpModal, setShowIdpModal] = useState(false);
+  const [selectedPastYear, setSelectedPastYear] = useState<2024 | 2023>(2024);
   const [newGoal, setNewGoal] = useState({
     title: '',
     description: '',
@@ -429,56 +547,73 @@ const IDPFlow: React.FC = () => {
       {/* Step 2: Add IDP Goal */}
       {currentStep === 'add-goal' && (
         <FlowStep isActive={true}>
-          <StepHeader>
-            <StepTitle>{t('idp.addGoal.title', 'Add IDP Goal')}</StepTitle>
-          </StepHeader>
-          
-          <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
-            {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
-          </InfoBadge>
-
           <GoalForm>
-            <FormGroup>
-              <Label>{t('idp.form.goalTitle', 'Goal Title')}</Label>
-              <Input
-                value={newGoal.title}
-                onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
-                placeholder={t('idp.form.goalTitlePlaceholder', 'Enter development goal title')}
-              />
-            </FormGroup>
+            <FormHeader>
+              <FormTitle>{t('idp.addGoal.title', 'Dodaj Cel')}</FormTitle>
+              <CompanyLogo>
+                🔲 WHITE
+              </CompanyLogo>
+            </FormHeader>
             
-            <FormGroup>
-              <Label>{t('idp.form.goalDescription', 'Goal Description')}</Label>
-              <TextArea
-                value={newGoal.description}
-                onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
-                placeholder={t('idp.form.goalDescriptionPlaceholder', 'Describe your development goal in detail')}
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label>{t('idp.form.category', 'Goal Category')}</Label>
-              <Select
-                value={newGoal.category}
-                onChange={(e) => setNewGoal({...newGoal, category: e.target.value as 'business' | 'development'})}
-              >
-                <option value="business">{t('idp.categories.business', 'Business Goal')}</option>
-                <option value="development">{t('idp.categories.development', 'Development Goal')}</option>
-              </Select>
-            </FormGroup>
-          </GoalForm>
+            <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
+              {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
+            </InfoBadge>
 
-          <ActionButtons>
-            <ActionButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-              {t('idp.actions.cancel', 'Cancel')}
-            </ActionButton>
-            <ActionButton variant="draft" onClick={handleSaveDraft}>
-              {t('idp.actions.draft', 'Draft')}
-            </ActionButton>
-            <ActionButton variant="save" onClick={handleAddGoal}>
-              {t('idp.actions.save', 'Save')}
-            </ActionButton>
-          </ActionButtons>
+            <FormGroup>
+              <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
+              <RadioGroup>
+                <RadioOption>
+                  <RadioInput
+                    type="radio"
+                    name="goalType"
+                    value="business"
+                    checked={newGoal.category === 'business'}
+                    onChange={(e) => setNewGoal({...newGoal, category: 'business'})}
+                  />
+                  <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
+                </RadioOption>
+                <RadioOption>
+                  <RadioInput
+                    type="radio"
+                    name="goalType"
+                    value="development"
+                    checked={newGoal.category === 'development'}
+                    onChange={(e) => setNewGoal({...newGoal, category: 'development'})}
+                  />
+                  <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
+                </RadioOption>
+              </RadioGroup>
+            </FormGroup>
+
+            <TextAreaGroup>
+              <TextAreaContainer>
+                <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
+                <StyledTextArea
+                  value={newGoal.title}
+                  onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
+                  placeholder={t('idp.form.goalDetailsPlaceholder', 'Wpisz szczegóły swojego celu...')}
+                />
+              </TextAreaContainer>
+              
+              <TextAreaContainer>
+                <TextAreaLabel>{t('idp.form.goalDescription', 'Wyniki celu')}</TextAreaLabel>
+                <StyledTextArea
+                  value={newGoal.description}
+                  onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
+                  placeholder={t('idp.form.goalResultsPlaceholder', 'Opisz oczekiwane wyniki...')}
+                />
+              </TextAreaContainer>
+            </TextAreaGroup>
+
+            <ButtonGroup>
+              <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
+                {t('idp.actions.cancel', 'Anuluj')}
+              </ModernButton>
+              <ModernButton variant="save" onClick={handleAddGoal}>
+                {t('idp.actions.save', 'Zapisz')}
+              </ModernButton>
+            </ButtonGroup>
+          </GoalForm>
         </FlowStep>
       )}
 
@@ -662,59 +797,136 @@ const IDPFlow: React.FC = () => {
       {/* Past Plans Section */}
       {currentStep === 'past-plans' && (
         <FlowStep isActive={true}>
-          <StepHeader>
-            <StepTitle>{t('idp.pastPlans.title', 'Past IDP Plans')}</StepTitle>
-          </StepHeader>
-          
-          <p>{t('idp.pastPlans.description', 'View your previous development plans')}</p>
-          
-          <ScrollableContainer>
-            {/* 2024 Plans */}
-            <YearSection>
-              <YearTitle>
-                {t('idp.pastPlans.year2024', '2024 Development Plan')}
-              </YearTitle>
+          <GoalForm>
+            <FormHeader>
+              <FormTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</FormTitle>
+              <CompanyLogo>
+                🔲 WHITE
+              </CompanyLogo>
+            </FormHeader>
+            
+            <RadioGroup style={{ marginBottom: '24px' }}>
+              <RadioOption>
+                <RadioInput
+                  type="radio"
+                  name="pastYear"
+                  value="2024"
+                  checked={selectedPastYear === 2024}
+                  onChange={() => setSelectedPastYear(2024)}
+                />
+                <RadioLabel>2024</RadioLabel>
+              </RadioOption>
+              <RadioOption>
+                <RadioInput
+                  type="radio"
+                  name="pastYear"
+                  value="2023"
+                  checked={selectedPastYear === 2023}
+                  onChange={() => setSelectedPastYear(2023)}
+                />
+                <RadioLabel>2023</RadioLabel>
+              </RadioOption>
+            </RadioGroup>
+
+            <ScrollableContainer>
               <GoalsContainer>
-                {mockPastPlans[2024].map((goal) => (
-                  <PlanBox key={goal.id} style={{ backgroundColor: '#f3f4f6', color: '#374151' }}>
-                    <PlanTitle style={{ color: '#1f2937' }}>{goal.title}</PlanTitle>
-                    <PlanDetails>
-                      <div><strong>{t('idp.plan.category', 'Category')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                      <div><strong>{t('idp.plan.description', 'Description')}:</strong> {goal.description}</div>
-                      <div><strong>{t('idp.plan.year', 'Year')}:</strong> {goal.year}</div>
-                      <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
-                    </PlanDetails>
-                  </PlanBox>
+                {(mockPastPlans[selectedPastYear] as IDPGoal[])?.map((goal: IDPGoal) => (
+                  <div key={goal.id} style={{
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    marginBottom: '16px',
+                    backgroundColor: 'white'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '16px'
+                    }}>
+                      <h4 style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#2563eb',
+                        margin: '0'
+                      }}>
+                        {String(t(`idp.categories.${goal.category}`, goal.category))} {goal.year} - {goal.title}
+                      </h4>
+                      <div style={{
+                        display: 'flex',
+                        gap: '12px',
+                        alignItems: 'center'
+                      }}>
+                        <span style={{
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          backgroundColor: goal.status === 'approved' ? '#10b981' : 
+                                          goal.status === 'submitted' ? '#3b82f6' : '#6b7280',
+                          color: 'white'
+                        }}>
+                          {String(t(`idp.status.${goal.status}`, goal.status))}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap: '16px'
+                    }}>
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.description', 'Opis Celu')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {goal.description}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.category', 'Kategoria')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {String(t(`idp.categories.${goal.category}`, goal.category))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </GoalsContainer>
-            </YearSection>
+            </ScrollableContainer>
 
-            {/* 2023 Plans */}
-            <YearSection>
-              <YearTitle>
-                {t('idp.pastPlans.year2023', '2023 Development Plan')}
-              </YearTitle>
-              <GoalsContainer>
-                {mockPastPlans[2023].map((goal) => (
-                  <PlanBox key={goal.id} style={{ backgroundColor: '#f3f4f6', color: '#374151' }}>
-                    <PlanTitle style={{ color: '#1f2937' }}>{goal.title}</PlanTitle>
-                    <PlanDetails>
-                      <div><strong>{t('idp.plan.category', 'Category')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                      <div><strong>{t('idp.plan.description', 'Description')}:</strong> {goal.description}</div>
-                      <div><strong>{t('idp.plan.year', 'Year')}:</strong> {goal.year}</div>
-                      <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
-                    </PlanDetails>
-                  </PlanBox>
-                ))}
-              </GoalsContainer>
-            </YearSection>
-          </ScrollableContainer>
-
-          <ActionButtons>
-            <ActionButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-              {t('idp.actions.backToMain', 'Back to Main')}
-            </ActionButton>
-          </ActionButtons>
+            <ButtonGroup>
+              <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
+                {t('idp.actions.backToMain', 'Powrót do głównej')}
+              </ModernButton>
+            </ButtonGroup>
+          </GoalForm>
         </FlowStep>
       )}
 

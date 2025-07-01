@@ -23,10 +23,28 @@ const ContentContainer = styled.div`
   flex: 1;
   margin-left: ${SIDEBAR_WIDTH}px;
   padding: 0 ${props => props.theme.spacing.xl};
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${TOP_SPACING * 2}px);
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
 `;
 
 const MainContent = styled.div`

@@ -11,7 +11,7 @@ const PageContainer = styled.div`
   background-color: ${props => props.theme.colors.background};
   border-radius: 8px;
   box-shadow: ${props => props.theme.shadows.small};
-  min-height: calc(100vh - 48px);
+  min-height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
 `;
@@ -101,27 +101,7 @@ const BackButton = styled.button`
 
 const ContentWrapper = styled.div`
   flex: 1;
-  overflow-y: auto;
-  padding-right: 4px;
-  padding-bottom: 200px;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
+  padding-bottom: 80px;
 `;
 
 /**
@@ -152,10 +132,10 @@ const WorkerEvaluationPage: React.FC = () => {
   if (activeFlow === 'idp') {
     return (
       <PageContainer>
-        <BackButton onClick={handleBackToDashboard}>
-          ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-        </BackButton>
         <ContentWrapper>
+          <BackButton onClick={handleBackToDashboard}>
+            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+          </BackButton>
           <IDPFlow />
         </ContentWrapper>
       </PageContainer>
@@ -166,10 +146,10 @@ const WorkerEvaluationPage: React.FC = () => {
   if (activeFlow === 'annualReview') {
     return (
       <PageContainer>
-        <BackButton onClick={handleBackToDashboard}>
-          ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-        </BackButton>
         <ContentWrapper>
+          <BackButton onClick={handleBackToDashboard}>
+            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+          </BackButton>
           <AnnualReviewHistory />
         </ContentWrapper>
       </PageContainer>
