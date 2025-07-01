@@ -290,6 +290,23 @@
       "title": "MOJE IDP",
       "description": "Zarządzaj swoim planem rozwoju indywidualnego na rok 2025"
     },
+    "drafts": {
+      "title": "SZKICE CELÓW",
+      "description": "Przeglądaj i zarządzaj swoimi szkicami celów",
+      "empty": "Brak szkiców celów. Zacznij od dodania nowego celu."
+    },
+    "savedGoals": {
+      "title": "ZAPISANE CELE",
+      "description": "Przeglądaj swoje przesłane i zatwierdzone cele na rok 2025",
+      "empty": "Brak zapisanych celów na rok 2025."
+    },
+    "pastPlans": {
+      "title": "POPRZEDNIE PLANY IDP",
+      "description": "Przeglądaj swoje poprzednie plany rozwoju",
+      "year2024": "Plan Rozwoju 2024",
+      "year2023": "Plan Rozwoju 2023",
+      "empty": "Brak dostępnych poprzednich planów."
+    },
     "addGoal": {
       "title": "DODAJ CEL IDP"
     },
@@ -304,8 +321,13 @@
       "title": "PLAN ZATWIERDZONY",
       "message": "Możliwość zapisu przed wydrukiem w trakcie edycji planu. Możliwość powrotu do edycji."
     },
-    "training": {
-      "info": "Trening info o Celach - Plan rozkład 70/20/10"
+    "info": {
+      "badge": "IDP info o Celach - Kategorie Celów"
+    },
+    "modal": {
+      "title": "Kategorie Celów IDP",
+      "alt": "Diagram kategorii celów IDP",
+      "description": "Cele Biznesowe koncentrują się na osiągnięciu konkretnych celów i wyników biznesowych. Cele Rozwojowe skupiają się na rozwoju osobistym i profesjonalnym oraz wzroście umiejętności."
     },
     "plan": {
       "info": "Data utworzenia: Narzędzia oceny Szczegóły celu Oczekiwany wynik",
@@ -319,15 +341,20 @@
       "goalTitlePlaceholder": "Wprowadź tytuł celu rozwoju",
       "goalDescription": "Opis celu",
       "goalDescriptionPlaceholder": "Opisz szczegółowo swój cel rozwoju",
-      "category": "Kategoria (70/20/10)"
+      "category": "Kategoria celu"
     },
     "categories": {
-      "70": "70% - Doświadczenie w pracy",
-      "20": "20% - Mentoring/Coaching",
-      "10": "10% - Szkolenia formalne"
+      "business": "Cel Biznesowy",
+      "development": "Cel Rozwojowy"
     },
     "actions": {
       "addGoal": "DODAJ CEL IDP",
+      "viewDrafts": "ZOBACZ SZKICE",
+      "viewSaved": "ZOBACZ ZAPISANE CELE",
+      "viewPastPlans": "POPRZEDNIE PLANY",
+      "editGoal": "EDYTUJ CEL",
+      "deleteGoal": "USUŃ CEL",
+      "backToMain": "POWRÓT DO GŁÓWNEJ",
       "cancel": "ANULUJ",
       "draft": "SZKIC",
       "save": "ZAPISZ",

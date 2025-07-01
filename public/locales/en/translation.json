@@ -277,6 +277,23 @@
       "title": "My IDP",
       "description": "Manage your individual development plan for 2025"
     },
+    "drafts": {
+      "title": "Draft Goals",
+      "description": "View and manage your draft goals",
+      "empty": "No draft goals yet. Start by adding a new goal."
+    },
+    "savedGoals": {
+      "title": "Saved Goals",
+      "description": "View your submitted and approved goals for 2025",
+      "empty": "No saved goals for 2025 yet."
+    },
+    "pastPlans": {
+      "title": "Past IDP Plans",
+      "description": "View your previous development plans",
+      "year2024": "2024 Development Plan",
+      "year2023": "2023 Development Plan",
+      "empty": "No past plans available."
+    },
     "addGoal": {
       "title": "Add IDP Goal"
     },
@@ -291,8 +308,13 @@
       "title": "Plan Approved",
       "message": "Ability to save before printing during plan editing. Ability to return to editing."
     },
-    "training": {
-      "info": "Training info about Goals - Plan breakdown 70/20/10"
+    "info": {
+      "badge": "IDP info about Goals - Goal Categories"
+    },
+    "modal": {
+      "title": "IDP Goal Categories",
+      "alt": "IDP goal categories diagram",
+      "description": "Business Goals focus on achieving specific business objectives and outcomes. Development Goals focus on personal and professional skill development and growth."
     },
     "plan": {
       "info": "Creation date: Assessment tools Goal details Expected outcome",
@@ -306,15 +328,20 @@
       "goalTitlePlaceholder": "Enter development goal title",
       "goalDescription": "Goal Description",
       "goalDescriptionPlaceholder": "Describe your development goal in detail",
-      "category": "Category (70/20/10)"
+      "category": "Goal Category"
     },
     "categories": {
-      "70": "70% - Work Experience",
-      "20": "20% - Mentoring/Coaching",
-      "10": "10% - Formal Training"
+      "business": "Business Goal",
+      "development": "Development Goal"
     },
     "actions": {
       "addGoal": "Add IDP Goal",
+      "viewDrafts": "View Drafts",
+      "viewSaved": "View Saved Goals",
+      "viewPastPlans": "Past Plans",
+      "editGoal": "Edit Goal",
+      "deleteGoal": "Delete Goal",
+      "backToMain": "Back to Main",
       "cancel": "Cancel",
       "draft": "Draft",
       "save": "Save",
