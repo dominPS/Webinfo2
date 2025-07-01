@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../shared/components/Icon';
@@ -11,12 +11,17 @@ import {
   annualReviewIcon, 
   selfAssessmentIcon 
 } from '../../shared/assets/icons/evaluation';
+import IDPFlow from './components/LeaderIDPFlow';
+import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
 
 const PageContainer = styled.div`
   padding: 24px;
   background-color: ${props => props.theme.colors.background};
   border-radius: 8px;
   box-shadow: ${props => props.theme.shadows.small};
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const PageHeader = styled.div`
@@ -80,29 +85,97 @@ const ControlButton = styled.button`
   }
 `;
 
+const BackButton = styled.button`
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+  
+  &:hover {
+    background-color: #4b5563;
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  padding-bottom: 80px;
+`;
+
 /**
  * Leader Evaluation Page
  * This page provides leader dashboard controls for managing team evaluations and development
  */
 const LeaderEvaluationPage: React.FC = () => {
   const { t } = useTranslation();
+  const [activeFlow, setActiveFlow] = useState<string | null>(null);
 
   const handleControlClick = (controlType: string) => {
-    // In a real app, this would navigate to specific sections or open modals
-    console.log(`Leader Control clicked: ${controlType}`);
-    alert(`${controlType} functionality coming soon!`);
+    if (controlType === 'idp') {
+      setActiveFlow('idp');
+    } else if (controlType === 'annualReview') {
+      setActiveFlow('annualReview');
+    } else {
+      // In a real app, this would navigate to specific sections or open modals
+      console.log(`Leader Control clicked: ${controlType}`);
+      alert(`${controlType} functionality coming soon!`);
+    }
   };
+
+  const handleBackToDashboard = () => {
+    setActiveFlow(null);
+  };
+
+  // If IDP flow is active, show it instead of the main dashboard
+  if (activeFlow === 'idp') {
+    return (
+      <PageContainer>
+        <ContentWrapper>
+          <BackButton onClick={handleBackToDashboard}>
+            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+          </BackButton>
+          <IDPFlow />
+        </ContentWrapper>
+      </PageContainer>
+    );
+  }
+
+  // If Annual Review flow is active, show it instead of the main dashboard
+  if (activeFlow === 'annualReview') {
+    return (
+      <PageContainer>
+        <ContentWrapper>
+          <BackButton onClick={handleBackToDashboard}>
+            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+          </BackButton>
+          <AnnualReviewHistory />
+        </ContentWrapper>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
-      <PageHeader>
-        <PageTitle>{t('evaluation.leader.title', 'Leader Evaluation')}</PageTitle>
-        <PageDescription>
-          {t('evaluation.leader.dashboardDescription', 'Manage your team evaluations, development plans, and performance reviews')}
-        </PageDescription>
-      </PageHeader>
+      <ContentWrapper>
+        <PageHeader>
+          <PageTitle>{t('evaluation.leader.title', 'Leader Evaluation')}</PageTitle>
+          <PageDescription>
+            {t('evaluation.leader.dashboardDescription', 'Manage your team evaluations, development plans, and performance reviews')}
+          </PageDescription>
+        </PageHeader>
 
-      <ControlsGrid>
+        <ControlsGrid>
         <ControlButton onClick={() => handleControlClick('dashboard')}>
           <Icon src={dashboardIcon} alt="Dashboard" size={32} />
           {t('evaluation.leader.controls.dashboard', 'Dashboard')}
@@ -137,7 +210,8 @@ const LeaderEvaluationPage: React.FC = () => {
           <Icon src={selfAssessmentIcon} alt="Self Assessment" size={32} />
           {t('evaluation.leader.controls.selfAssessment', 'Self-Assessment')}
         </ControlButton>
-      </ControlsGrid>
+        </ControlsGrid>
+      </ContentWrapper>
     </PageContainer>
   );
 };
