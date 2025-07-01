@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import Icon from '../../shared/components/Icon';
+import { whiteValuesIcon, selfAssessmentIcon, idpIcon, annualReviewIcon } from '../../shared/assets/icons/evaluation';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -47,8 +49,10 @@ const ControlButton = styled.button`
   transition: all 0.3s ease;
   min-height: 80px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
 
   &:hover {
     background-color: ${props => props.theme.colors.primary};
@@ -91,18 +95,22 @@ const WorkerEvaluationPage: React.FC = () => {
 
       <ControlsGrid>
         <ControlButton onClick={() => handleControlClick('whiteValues')}>
+          <Icon src={whiteValuesIcon} alt="White Values" size={32} />
           {t('evaluation.worker.controls.whiteValues', '"WHITE" Values')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+          <Icon src={selfAssessmentIcon} alt="Self Assessment" size={32} />
           {t('evaluation.worker.controls.selfAssessment', 'Self-Assessment')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('idp')}>
+          <Icon src={idpIcon} alt="Individual Development Plan" size={32} />
           {t('evaluation.worker.controls.idp', 'IDP (Individual Development Plan)')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('annualReview')}>
+          <Icon src={annualReviewIcon} alt="Annual Review" size={32} />
           {t('evaluation.worker.controls.annualReview', 'Annual Review')}
         </ControlButton>
       </ControlsGrid>

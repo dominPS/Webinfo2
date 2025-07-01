@@ -1,6 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import Icon from '../../shared/components/Icon';
+import { 
+  dashboardIcon, 
+  whiteValuesIcon, 
+  directReportsIcon, 
+  helpHrIcon, 
+  idpIcon, 
+  annualReviewIcon, 
+  selfAssessmentIcon 
+} from '../../shared/assets/icons/evaluation';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -47,7 +57,10 @@ const ControlButton = styled.button`
   transition: all 0.3s ease;
   min-height: 80px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 12px;
   justify-content: center;
 
   &:hover {
@@ -91,30 +104,37 @@ const LeaderEvaluationPage: React.FC = () => {
 
       <ControlsGrid>
         <ControlButton onClick={() => handleControlClick('dashboard')}>
+          <Icon src={dashboardIcon} alt="Dashboard" size={32} />
           {t('evaluation.leader.controls.dashboard', 'Dashboard')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('whiteValues')}>
+          <Icon src={whiteValuesIcon} alt="White Values" size={32} />
           {t('evaluation.leader.controls.whiteValues', '"WHITE" Values')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('meAndDirectReports')}>
+          <Icon src={directReportsIcon} alt="Direct Reports" size={32} />
           {t('evaluation.leader.controls.meAndDirectReports', 'Me and My Direct Reports')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('helpContactHR')}>
+          <Icon src={helpHrIcon} alt="Help and Contact HR" size={32} />
           {t('evaluation.leader.controls.helpContactHR', 'Help and Contact with HR')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('idp')}>
+          <Icon src={idpIcon} alt="Individual Development Plan" size={32} />
           {t('evaluation.leader.controls.idp', 'IDP (Individual Development Plan)')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('annualReview')}>
+          <Icon src={annualReviewIcon} alt="Annual Review" size={32} />
           {t('evaluation.leader.controls.annualReview', 'Annual Review')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+          <Icon src={selfAssessmentIcon} alt="Self Assessment" size={32} />
           {t('evaluation.leader.controls.selfAssessment', 'Self-Assessment')}
         </ControlButton>
       </ControlsGrid>
