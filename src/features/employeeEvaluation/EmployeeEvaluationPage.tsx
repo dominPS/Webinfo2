@@ -57,10 +57,10 @@ const EmployeeEvaluationPage: React.FC = () => {
 
   // Mock employee data - in a real app, this would come from an API or state
   const employees = [
-    { id: 'emp001', name: 'John Smith' },
-    { id: 'emp002', name: 'Jane Doe' },
-    { id: 'emp003', name: 'Michael Johnson' },
-    { id: 'emp004', name: 'Sarah Williams' }
+    { id: 'emp001', name: t('employees.johnSmith', 'John Smith') },
+    { id: 'emp002', name: t('employees.janeDoe', 'Jane Doe') },
+    { id: 'emp003', name: t('employees.michaelJohnson', 'Michael Johnson') },
+    { id: 'emp004', name: t('employees.sarahWilliams', 'Sarah Williams') }
   ];
 
   const handleEvaluationSubmit = (data: any) => {

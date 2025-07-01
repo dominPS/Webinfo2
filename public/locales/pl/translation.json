@@ -85,6 +85,35 @@
     "robertBrown": "Robert Brązowy",
     "emilyDavis": "Emilia Dawidowska"
   },
+  "evaluation": {
+    "selectEmployee": "Wybierz pracownika do oceny:",
+    "selectPlaceholder": "-- Wybierz pracownika --",
+    "instructions": "Proszę wybrać pracownika z listy rozwijanej, aby rozpocząć proces oceny.",
+    "performance": {
+      "title": "Wydajność w pracy",
+      "description": "Jakość i ilość pracy, dotrzymywanie terminów, osiąganie celów"
+    },
+    "teamwork": {
+      "title": "Praca zespołowa",
+      "description": "Współpraca, kooperacja i relacje z kolegami"
+    },
+    "communication": {
+      "title": "Komunikacja",
+      "description": "Jasność, skuteczność i odpowiedniość komunikacji"
+    },
+    "initiative": {
+      "title": "Inicjatywa i innowacyjność",
+      "description": "Samomotywacja, rozwiązywanie problemów i kreatywne myślenie"
+    },
+    "leadership": {
+      "title": "Przywództwo",
+      "description": "Przewodzenie innym, branie odpowiedzialności i dawanie przykładu"
+    },
+    "comments": {
+      "title": "Dodatkowe komentarze",
+      "placeholder": "Podaj dodatkowe opinie lub uwagi..."
+    }
+  },
   "review": {
     "tabs": {
       "all": "Wszystkie oceny",
@@ -104,13 +133,96 @@
       "edit": "Edytuj ocenę",
       "print": "Drukuj"
     },
+    "details": {
+      "employeeInfo": "Informacje o pracowniku",
+      "name": "Imię i nazwisko",
+      "department": "Dział",
+      "position": "Stanowisko",
+      "manager": "Kierownik",
+      "reviewInfo": "Informacje o ocenie",
+      "type": "Typ",
+      "status": "Status",
+      "objective": "Cel",
+      "feedback": "Opinia",
+      "strengths": "Mocne strony",
+      "developmentAreas": "Obszary rozwoju",
+      "goals": "Cele"
+    },
+    "schedule": {
+      "title": "Zaplanuj nową ocenę",
+      "employee": "Pracownik",
+      "selectEmployee": "-- Wybierz pracownika --",
+      "type": "Typ oceny",
+      "date": "Data oceny",
+      "objective": "Cel",
+      "objectivePlaceholder": "Jaki jest cel tej oceny?",
+      "notes": "Notatki przygotowawcze",
+      "notesPlaceholder": "Dodaj notatki przygotowawcze lub tematy do omówienia podczas oceny",
+      "submit": "Zaplanuj ocenę",
+      "titlePlaceholder": "np. Kwartalna ocena wydajności"
+    },
     "types": {
       "quarterly": "Kwartalna ocena",
       "annual": "Roczna ocena wyników",
       "probation": "Ocena okresu próbnego",
       "pip": "Plan poprawy wyników",
       "other": "Inne"
+    },
+    "mockData": {
+      "department": {
+        "engineering": "Inżynieria",
+        "marketing": "Marketing",
+        "sales": "Sprzedaż",
+        "hr": "Zasoby ludzkie",
+        "finance": "Finanse"
+      },
+      "position": {
+        "seniorDeveloper": "Starszy programista",
+        "marketingSpecialist": "Specjalista ds. marketingu",
+        "salesRepresentative": "Przedstawiciel handlowy",
+        "hrManager": "Kierownik HR",
+        "accountant": "Księgowy"
+      },
+      "objective": {
+        "annual": "Ocena wyników z ostatniego roku i wyznaczenie celów na nadchodzący rok.",
+        "quarterly": "Przegląd postępów w realizacji celów i przekazanie opinii śródrocznej.",
+        "probation": "Ocena wyników podczas okresu próbnego.",
+        "pip": "Przegląd postępów w planie poprawy wyników."
+      },
+      "notes": {
+        "john": "Jan wykazał doskonały postęp w umiejętnościach technicznych i współpracy zespołowej.",
+        "jane": "Anna konsekwentnie osiąga cele sprzedażowe i buduje silne relacje z klientami.",
+        "michael": "Michał musi poprawić zarządzanie czasem i dotrzymywanie terminów."
+      },
+      "feedback": {
+        "exceeded": "Przekroczył oczekiwania w realizacji projektów",
+        "problemSolving": "Wykazał silne umiejętności rozwiązywania problemów",
+        "mentored": "Skutecznie wspierał młodszych członków zespołu",
+        "communication": "Poprawił komunikację z interesariuszami",
+        "clientRelationships": "Zbudował silne relacje z klientami",
+        "salesTargets": "Konsekwentnie osiągał lub przekraczał cele sprzedażowe",
+        "teamwork": "Wykazał doskonałą pracę zespołową i współpracę"
+      },
+      "development": {
+        "documentation": "Dokumentacja mogłaby być bardziej szczegółowa",
+        "architecture": "Warto rozważyć przejęcie większej odpowiedzialności architektonicznej",
+        "timeManagement": "Poprawić umiejętności zarządzania czasem",
+        "delegation": "Mogłby skuteczniej delegować zadania",
+        "communication": "Wzmocnić komunikację z zespołami międzyfunkcyjnymi"
+      },
+      "goals": {
+        "certification": "Ukończyć certyfikat Zaawansowanego Projektowania Systemów",
+        "leadProject": "Poprowadzić co najmniej jedną dużą inicjatywę projektową",
+        "codeReview": "Poprawić proces przeglądu kodu dla zespołu",
+        "training": "Uczestniczyć w programie szkoleniowym przywództwa",
+        "clientRetention": "Opracować strategię utrzymania klientów",
+        "processImprovement": "Zidentyfikować i wdrożyć jedno znaczące ulepszenie procesu"
+      }
     }
+  },
+  "notFound": {
+    "message": "Strona, której szukasz, nie istnieje.",
+    "goHome": "Idź do strony głównej"
   },
   "dateFormat": {
     "locale": "pl-PL"
