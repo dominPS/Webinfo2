@@ -86,11 +86,11 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
 
   // Rating options
   const ratingOptions = [
-    { value: 1, label: '1 - Poor' },
-    { value: 2, label: '2 - Below Expectations' },
-    { value: 3, label: '3 - Meets Expectations' },
-    { value: 4, label: '4 - Exceeds Expectations' },
-    { value: 5, label: '5 - Outstanding' }
+    { value: 1, label: `1 - ${t('evaluation.ratings.poor', 'Poor')}` },
+    { value: 2, label: `2 - ${t('evaluation.ratings.belowExpectations', 'Below Expectations')}` },
+    { value: 3, label: `3 - ${t('evaluation.ratings.meetsExpectations', 'Meets Expectations')}` },
+    { value: 4, label: `4 - ${t('evaluation.ratings.exceedsExpectations', 'Exceeds Expectations')}` },
+    { value: 5, label: `5 - ${t('evaluation.ratings.outstanding', 'Outstanding')}` }
   ];
 
   const handleCriteriaChange = (criteria: string, value: number) => {

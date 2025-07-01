@@ -89,6 +89,13 @@
     "selectEmployee": "Wybierz pracownika do oceny:",
     "selectPlaceholder": "-- Wybierz pracownika --",
     "instructions": "Proszę wybrać pracownika z listy rozwijanej, aby rozpocząć proces oceny.",
+    "ratings": {
+      "poor": "Słabo",
+      "belowExpectations": "Poniżej oczekiwań",
+      "meetsExpectations": "Spełnia oczekiwania",
+      "exceedsExpectations": "Przekracza oczekiwania",
+      "outstanding": "Doskonale"
+    },
     "performance": {
       "title": "Wydajność w pracy",
       "description": "Jakość i ilość pracy, dotrzymywanie terminów, osiąganie celów"

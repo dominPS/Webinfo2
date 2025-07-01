@@ -83,6 +83,13 @@
     "selectEmployee": "Select an employee to evaluate:",
     "selectPlaceholder": "-- Select an employee --",
     "instructions": "Please select an employee from the dropdown to begin the evaluation process.",
+    "ratings": {
+      "poor": "Poor",
+      "belowExpectations": "Below Expectations",
+      "meetsExpectations": "Meets Expectations",
+      "exceedsExpectations": "Exceeds Expectations",
+      "outstanding": "Outstanding"
+    },
     "performance": {
       "title": "Job Performance",
       "description": "Quality and quantity of work, meeting deadlines, achieving goals"
