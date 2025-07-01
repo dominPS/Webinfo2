@@ -370,5 +370,29 @@
       "approved": "Zatwierdzony",
       "correction_needed": "Wymaga korekty"
     }
+  },
+  "annualReview": {
+    "history": {
+      "title": "Historia Ocen",
+      "noReviews": "Brak dostępnych ocen dla roku",
+      "employee": "Pracownik",
+      "generateReport": "Generuj raport", 
+      "sections": {
+        "goalDetails": "Szczegóły celu",
+        "goalType": "Typ celu",
+        "goalResults": "Wyniki celu"
+      },
+      "status": {
+        "A": "Ocena A",
+        "B": "Ocena B",
+        "C": "Ocena C", 
+        "D": "Ocena D"
+      },
+      "types": {
+        "IDP": "IDP",
+        "Performance": "Ocena Wyników",
+        "Annual": "Ocena Roczna"
+      }
+    }
   }
 }

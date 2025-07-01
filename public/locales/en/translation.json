@@ -358,6 +358,30 @@
       "correction_needed": "Correction Needed"
     }
   },
+  "annualReview": {
+    "history": {
+      "title": "Evaluation History",
+      "noReviews": "No evaluations available for year",
+      "employee": "Employee",
+      "generateReport": "Generate Report",
+      "sections": {
+        "goalDetails": "Goal Details",
+        "goalType": "Goal Type",
+        "goalResults": "Goal Results"
+      },
+      "status": {
+        "A": "Grade A",
+        "B": "Grade B", 
+        "C": "Grade C",
+        "D": "Grade D"
+      },
+      "types": {
+        "IDP": "Individual Development Plan",
+        "Performance": "Performance Review",
+        "Annual": "Annual Review"
+      }
+    }
+  },
   "dateFormat": {
     "locale": "en-US"
   }

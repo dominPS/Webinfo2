@@ -50,10 +50,11 @@ const StepHeader = styled.div`
 `;
 
 const ScrollableContainer = styled.div`
-  max-height: 400px;
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
   margin-bottom: 16px;
   padding-right: 8px;
+  padding-bottom: 300px;
   
   &::-webkit-scrollbar {
     width: 8px;
