@@ -25,8 +25,14 @@ const ContentContainer = styled.div`
   padding: 0 ${props => props.theme.spacing.xl};
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${TOP_SPACING * 2}px);
+  height: calc(100vh - ${TOP_SPACING * 2}px);
+`;
+
+const MainContent = styled.div`
+  flex: 1;
   overflow-y: auto;
+  padding-bottom: 40px;
+  min-height: 0; /* Allow flex child to shrink below content size */
   
   &::-webkit-scrollbar {
     width: 12px;
@@ -45,10 +51,6 @@ const ContentContainer = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
-`;
-
-const MainContent = styled.div`
-  flex: 1;
 `;
 
 const TopBar = styled.div`
