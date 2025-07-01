@@ -10,6 +10,7 @@ import {
   NotFoundPage,
   EmployeeReviewPage,
   EmployeeEvaluationPage,
+  ProfileSelectionPage,
   MobileAppsPage,
   AssignmentsPage,
   MapRegistrationsPage,
@@ -142,6 +143,10 @@ export const router = createBrowserRouter([
       },
       {
         path: 'employee-evaluation',
+        element: <ProfileSelectionPage />,
+      },
+      {
+        path: 'employee-evaluation/form',
         element: <EmployeeEvaluationPage />,
       },
       {

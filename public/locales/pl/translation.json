@@ -87,6 +87,12 @@
     "annaRodriguez": "Anna Rodriguez"
   },
   "evaluation": {
+    "chooseProfile": "Wybierz swój profil",
+    "profiles": {
+      "worker": "Pracownik",
+      "leader": "Kierownik",
+      "hr": "HR"
+    },
     "selectEmployee": "Wybierz pracownika do oceny:",
     "selectPlaceholder": "-- Wybierz pracownika --",
     "instructions": "Proszę wybrać pracownika z listy rozwijanej, aby rozpocząć proces oceny.",

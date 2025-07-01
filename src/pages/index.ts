@@ -3,10 +3,11 @@ import LoginPage from './Login';
 import NotFoundPage from './NotFound';
 import EmployeeReviewPage from './EmployeeReview';
 import EmployeeEvaluationPage from './EmployeeEvaluation';
+import ProfileSelectionPage from './ProfileSelection';
 import { BasePage } from '@/shared/components/BasePage';
 
 // Named exports for each page
-export { DashboardPage, LoginPage, NotFoundPage, EmployeeReviewPage, EmployeeEvaluationPage };
+export { DashboardPage, LoginPage, NotFoundPage, EmployeeReviewPage, EmployeeEvaluationPage, ProfileSelectionPage };
 
 // Placeholder pages (can be gradually replaced with real implementations)
 export const MobileAppsPage = BasePage;
