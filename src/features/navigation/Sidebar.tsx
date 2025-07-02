@@ -17,6 +17,18 @@ import EmployeeRequestsIcon from '@/shared/assets/icons/employeeRequests.png';
 import VacationsIcon from '@/shared/assets/icons/vacations.png';
 import VacationPlanIcon from '@/shared/assets/icons/vacationPlan.png';
 import WeekendWorkIcon from '@/shared/assets/icons/weekendWork.png';
+import {
+  MapRegistrationsIcon,
+  EmployeeEvaluationIcon,
+  MonthlySummaryIcon,
+  ExamsTrainingIcon,
+  SettlementIcon,
+  AbsencePlanIcon,
+  MonthlyAbsencePlanIcon,
+  ScheduleIcon,
+  ProjectsActivitiesIcon,
+  EmployeeReviewIcon
+} from '@/shared/components/PlaceholderIcons';
 
 const SIDEBAR_WIDTH = 280;
 const COLLAPSED_SIDEBAR_WIDTH = 50;
@@ -164,31 +176,31 @@ const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
 interface NavItem {
   path: string;
   translationKey: string;
-  icon?: string;
+  icon?: string | React.ComponentType<any>;
 }
 
 const navigationItems: NavItem[] = [
   { path: '/mobile-apps', translationKey: 'mobileApps', icon: MobileAppsIcon },
   { path: '/assignments', translationKey: 'assignments', icon: AssignmentsIcon },
-  { path: '/map-registrations', translationKey: 'mapRegistrations' },
+  { path: '/map-registrations', translationKey: 'mapRegistrations', icon: MapRegistrationsIcon },
   { path: '/attendance-list', translationKey: 'attendanceList', icon: AttendanceListIcon },
   { path: '/schedule-attendance', translationKey: 'scheduleAttendance', icon: ScheduleAttendanceIcon },
   { path: '/employee-data', translationKey: 'employeeData', icon: WorkerdetailsIcon },
-  { path: '/employee-evaluation', translationKey: 'employeeEvaluation' },
+  { path: '/employee-evaluation', translationKey: 'employeeEvaluation', icon: EmployeeEvaluationIcon },
   { path: '/reserve-vehicle', translationKey: 'reserveVehicle', icon: ReserveVehicleIcon },
   { path: '/canteen', translationKey: 'canteen', icon: CanteenIcon },
   { path: '/vacation-plan', translationKey: 'vacationPlan', icon: VacationPlanIcon },
   { path: '/weekend-work', translationKey: 'weekendWork', icon: WeekendWorkIcon },
   { path: '/employee-requests', translationKey: 'employeeRequests', icon: EmployeeRequestsIcon },
   { path: '/vacations', translationKey: 'vacations', icon: VacationsIcon },
-  { path: '/monthly-summary', translationKey: 'monthlySummary' },
-  { path: '/exams-and-training', translationKey: 'examsAndTraining' },
-  { path: '/settlement', translationKey: 'settlement' },
-  { path: '/absence-plan', translationKey: 'absencePlan' },
-  { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan' },
-  { path: '/schedule', translationKey: 'schedule' },
-  { path: '/projects-activities', translationKey: 'projectsActivities' },
-  { path: '/employee-review', translationKey: 'employeeReview' }
+  { path: '/monthly-summary', translationKey: 'monthlySummary', icon: MonthlySummaryIcon },
+  { path: '/exams-and-training', translationKey: 'examsAndTraining', icon: ExamsTrainingIcon },
+  { path: '/settlement', translationKey: 'settlement', icon: SettlementIcon },
+  { path: '/absence-plan', translationKey: 'absencePlan', icon: AbsencePlanIcon },
+  { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan', icon: MonthlyAbsencePlanIcon },
+  { path: '/schedule', translationKey: 'schedule', icon: ScheduleIcon },
+  { path: '/projects-activities', translationKey: 'projectsActivities', icon: ProjectsActivitiesIcon },
+  { path: '/employee-review', translationKey: 'employeeReview', icon: EmployeeReviewIcon }
 ];
 
 export const Sidebar: React.FC = () => {
@@ -267,7 +279,11 @@ export const Sidebar: React.FC = () => {
               title={isCollapsed ? translatedText : undefined}
             >
               {item.icon && (
-                <NavItemIcon src={item.icon} alt={`${item.translationKey} icon`} />
+                typeof item.icon === 'string' ? (
+                  <NavItemIcon src={item.icon} alt={`${item.translationKey} icon`} />
+                ) : (
+                  <item.icon width={20} height={20} fill="white" />
+                )
               )}
               <NavItemText $isCollapsed={isCollapsed}>
                 {translatedText}

@@ -96,7 +96,7 @@
       "description": "Evaluate employee performance and provide feedback as a worker",
       "dashboardDescription": "Manage your self-evaluations, development plans, and performance reviews",
       "controls": {
-        "whiteValues": "\"WHITE\" Values",
+        "whiteValues": "Company Values",
         "selfAssessment": "Self-Assessment",
         "idp": "IDP (Individual Development Plan)",
         "annualReview": "Annual Review"
@@ -113,7 +113,7 @@
         "idp": "IDP (Individual Development Plan)",
         "annualReview": "Annual Review",
         "selfAssessment": "Self-Assessment",
-        "whiteValues": "\"WHITE\" Values"
+        "whiteValues": "Company Values"
       }
     },
     "hr": {
@@ -390,7 +390,7 @@
     }
   },
   "whiteValues": {
-    "modalTitle": "\"WHITE\" Company Values",
+    "modalTitle": "Company Values",
     "slide1": {
       "title": "Wisdom - Making Smart Decisions"
     },

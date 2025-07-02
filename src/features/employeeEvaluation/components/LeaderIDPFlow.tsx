@@ -162,15 +162,6 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
   }
 `;
 
-const CompanyLogo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #126678;
-`;
-
 const RadioGroup = styled.div`
   display: flex;
   gap: 24px;
@@ -576,9 +567,6 @@ const LeaderIDPFlow: React.FC = () => {
         <FlowStep isActive={true}>
           <StepHeader>
             <StepTitle>{t('idp.addGoal.title', 'Dodaj Cel')}</StepTitle>
-            <CompanyLogo>
-              🔲 WHITE
-            </CompanyLogo>
           </StepHeader>
           
           <MainFormLayout>
@@ -833,9 +821,6 @@ const LeaderIDPFlow: React.FC = () => {
         <FlowStep isActive={true}>
           <StepHeader>
             <StepTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</StepTitle>
-            <CompanyLogo>
-              🔲 WHITE
-            </CompanyLogo>
           </StepHeader>
           
           <RadioGroup style={{ marginBottom: '24px' }}>

@@ -101,7 +101,7 @@
       "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik",
       "dashboardDescription": "Zarządzaj swoimi samooocenami, planami rozwoju i przeglądami wyników",
       "controls": {
-        "whiteValues": "Wartości \"WHITE\"",
+        "whiteValues": "Wartości firmy",
         "selfAssessment": "Samoocena",
         "idp": "IDP (Indywidualny Plan Rozwoju)",
         "annualReview": "Roczna ocena"
@@ -118,7 +118,7 @@
         "idp": "IDP (Indywidualny Plan Rozwoju)",
         "annualReview": "Roczna ocena",
         "selfAssessment": "Samoocena",
-        "whiteValues": "Wartości \"WHITE\""
+        "whiteValues": "Wartości firmy"
       }
     },
     "hr": {
@@ -399,7 +399,7 @@
     }
   },
   "whiteValues": {
-    "modalTitle": "Wartości firmy \"WHITE\"",
+    "modalTitle": "Wartości firmy",
     "slide1": {
       "title": "Mądrość - Podejmowanie Mądrych Decyzji"
     },

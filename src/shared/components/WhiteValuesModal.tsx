@@ -158,10 +158,10 @@ const SlideTitle = styled.h3`
 `;
 
 const whiteValuesSlides = [
-  { image: whiteV1, titleKey: 'whiteValues.slide1.title', title: 'WHITE Value 1' },
-  { image: whiteV2, titleKey: 'whiteValues.slide2.title', title: 'WHITE Value 2' },
-  { image: whiteV3, titleKey: 'whiteValues.slide3.title', title: 'WHITE Value 3' },
-  { image: whiteV4, titleKey: 'whiteValues.slide4.title', title: 'WHITE Value 4' },
+  { image: whiteV1, titleKey: 'whiteValues.slide1.title', title: 'Company Value 1' },
+  { image: whiteV2, titleKey: 'whiteValues.slide2.title', title: 'Company Value 2' },
+  { image: whiteV3, titleKey: 'whiteValues.slide3.title', title: 'Company Value 3' },
+  { image: whiteV4, titleKey: 'whiteValues.slide4.title', title: 'Company Value 4' },
 ];
 
 export const WhiteValuesModal: React.FC<WhiteValuesModalProps> = ({ isOpen, onClose }) => {

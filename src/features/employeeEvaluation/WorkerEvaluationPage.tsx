@@ -178,7 +178,7 @@ const WorkerEvaluationPage: React.FC = () => {
 
         <ControlsGrid>
           <ControlButton onClick={() => handleControlClick('whiteValues')}>
-            {t('evaluation.worker.controls.whiteValues', '"WHITE" Values')}
+            {t('evaluation.worker.controls.whiteValues', 'Company Values')}
           </ControlButton>
           
           <ControlButton onClick={() => handleControlClick('selfAssessment')}>

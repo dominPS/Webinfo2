@@ -182,7 +182,7 @@ const LeaderEvaluationPage: React.FC = () => {
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('whiteValues')}>
-          {t('evaluation.leader.controls.whiteValues', '"WHITE" Values')}
+          {t('evaluation.leader.controls.whiteValues', 'Company Values')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('meAndDirectReports')}>
