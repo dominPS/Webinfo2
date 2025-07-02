@@ -34,7 +34,7 @@ const FlowHeader = styled.div`
 const FlowTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
-  color: #2563eb;
+  color: #126678;
   margin-bottom: 8px;
 `;
 
@@ -70,7 +70,7 @@ const YearSection = styled.div`
 `;
 
 const YearTitle = styled.h4`
-  color: #2563eb;
+  color: #126678;
   font-weight: 600;
   margin-bottom: 16px;
   font-size: 16px;
@@ -90,7 +90,7 @@ const InfoBadge = styled.div<{ type: 'training' | 'plan' }>`
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  background-color: ${props => props.type === 'training' ? '#10b981' : '#2563eb'};
+  background-color: ${props => props.type === 'training' ? '#126678' : '#126678'};
   color: white;
   margin-bottom: 16px;
   cursor: pointer;
@@ -104,7 +104,7 @@ const InfoBadge = styled.div<{ type: 'training' | 'plan' }>`
 
 const PlanBox = styled.div`
   padding: 16px;
-  background-color: #2563eb;
+  background-color: #126678;
   color: white;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -138,21 +138,28 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
   
   background-color: ${props => {
     switch (props.variant) {
-      case 'cancel': return '#ef4444';
-      case 'draft': return '#8b5cf6';
-      case 'save': return '#6b7280';
-      case 'submit': return '#2563eb';
-      case 'approve': return '#10b981';
-      case 'correct': return '#f59e0b';
-      default: return '#6b7280';
+      case 'cancel': return 'white';
+      case 'draft': return '#126678';
+      case 'save': return '#126678';
+      case 'submit': return '#126678';
+      case 'approve': return '#126678';
+      case 'correct': return '#126678';
+      default: return '#126678';
     }
   }};
   
-  color: white;
+  color: ${props => props.variant === 'cancel' ? '#126678' : 'white'};
+  border: ${props => props.variant === 'cancel' ? '2px solid #126678' : 'none'};
 
   &:hover {
     opacity: 0.9;
     transform: translateY(-1px);
+    background-color: ${props => {
+      switch (props.variant) {
+        case 'cancel': return '#f8f9fa';
+        default: return '#0f5459';
+      }
+    }};
   }
 `;
 
@@ -187,7 +194,7 @@ const CompanyLogo = styled.div`
   gap: 8px;
   font-size: 16px;
   font-weight: 600;
-  color: #2563eb;
+  color: #126678;
 `;
 
 const RadioGroup = styled.div`
@@ -213,7 +220,7 @@ const RadioOption = styled.label<{ checked?: boolean }>`
 const RadioInput = styled.input`
   width: 16px;
   height: 16px;
-  accent-color: #2563eb;
+  accent-color: #126678;
 `;
 
 const RadioLabel = styled.span`
@@ -255,8 +262,8 @@ const StyledTextArea = styled.textarea`
   
   &:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    border-color: #126678;
+    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
   }
   
   &::placeholder {
@@ -281,18 +288,19 @@ const ModernButton = styled.button<{ variant: 'cancel' | 'save' }>`
   border: none;
   
   ${props => props.variant === 'cancel' ? `
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: white;
+    color: #126678;
+    border: 2px solid #126678;
     
     &:hover {
-      background-color: #e5e7eb;
+      background-color: #f8f9fa;
     }
   ` : `
-    background-color: #2563eb;
+    background-color: #126678;
     color: white;
     
     &:hover {
-      background-color: #1d4ed8;
+      background-color: #0f5459;
     }
   `}
   
@@ -352,10 +360,10 @@ const StatusMessage = styled.div<{ type: 'success' | 'warning' | 'info' }>`
   }};
   border-left: 4px solid ${props => {
     switch (props.type) {
-      case 'success': return '#10b981';
-      case 'warning': return '#f59e0b';
-      case 'info': return '#2563eb';
-      default: return '#6b7280';
+      case 'success': return '#126678';
+      case 'warning': return '#126678';
+      case 'info': return '#126678';
+      default: return '#126678';
     }
   }};
 `;
@@ -852,7 +860,7 @@ const LeaderIDPFlow: React.FC = () => {
                       <h4 style={{
                         fontSize: '16px',
                         fontWeight: '600',
-                        color: '#2563eb',
+                        color: '#126678',
                         margin: '0'
                       }}>
                         {String(t(`idp.categories.${goal.category}`, goal.category))} {goal.year} - {goal.title}
@@ -992,10 +1000,10 @@ const ModalCloseButton = styled.button`
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #6b7280;
+  color: #126678;
   
   &:hover {
-    color: #374151;
+    color: #0f5459;
   }
 `;
 

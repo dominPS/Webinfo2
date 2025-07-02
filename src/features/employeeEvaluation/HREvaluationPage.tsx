@@ -31,7 +31,7 @@ const PageHeader = styled.div`
 const PageTitle = styled.h1`
   font-size: 28px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #126678;
   margin-bottom: 8px;
 `;
 

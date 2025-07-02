@@ -41,7 +41,7 @@ const Title = styled.h1`
 
 const Logo = styled.div`
   font-weight: 600;
-  color: #2563eb;
+  color: #126678;
   font-size: 18px;
 `;
 
@@ -60,14 +60,15 @@ const YearTab = styled.button<{ isActive: boolean }>`
   padding: 8px 16px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  background-color: ${props => props.isActive ? '#2563eb' : 'white'};
-  color: ${props => props.isActive ? 'white' : '#374151'};
+  background-color: ${props => props.isActive ? '#126678' : 'white'};
+  color: ${props => props.isActive ? 'white' : '#126678'};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${props => props.isActive ? '#2563eb' : '#f3f4f6'};
+    background-color: ${props => props.isActive ? '#126678' : '#f8f9fa'};
+    border-color: #126678;
   }
 `;
 
@@ -89,7 +90,7 @@ const CardHeader = styled.div`
 const CardTitle = styled.h3`
   font-size: 18px;
   font-weight: 600;
-  color: #2563eb;
+  color: #126678;
 `;
 
 const StatusGroup = styled.div`
@@ -105,11 +106,11 @@ const StatusBadge = styled.span<{ status: string }>`
   font-weight: 600;
   background-color: ${props => {
     switch (props.status) {
-      case 'A': return '#10b981';
-      case 'B': return '#3b82f6';
-      case 'C': return '#f59e0b';
-      case 'D': return '#ef4444';
-      default: return '#6b7280';
+      case 'A': return '#126678'; // Primary color for excellent
+      case 'B': return '#1e7a8a'; // Slightly lighter for good
+      case 'C': return '#4a6670'; // Medium shade for satisfactory
+      case 'D': return '#6b5b73'; // Muted purple-gray for needs improvement
+      default: return '#8b7d85'; // Light gray-purple for unknown
     }
   }};
   color: white;
@@ -117,7 +118,7 @@ const StatusBadge = styled.span<{ status: string }>`
 
 const ReportButton = styled.button`
   padding: 6px 12px;
-  background-color: #2563eb;
+  background-color: #126678;
   color: white;
   border: none;
   border-radius: 6px;
@@ -127,7 +128,7 @@ const ReportButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #1d4ed8;
+    background-color: #0f5459;
   }
 `;
 

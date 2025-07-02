@@ -38,7 +38,7 @@ const PageHeader = styled.div`
 const PageTitle = styled.h1`
   font-size: 28px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #126678;
   margin-bottom: 8px;
 `;
 
@@ -94,7 +94,7 @@ const ControlButton = styled.button`
 const BackButton = styled.button`
   margin-bottom: 16px;
   padding: 6px 12px;
-  background-color: #6b7280;
+  background-color: #126678;
   color: white;
   border: none;
   border-radius: 6px;
@@ -105,7 +105,7 @@ const BackButton = styled.button`
   align-self: flex-start;
   
   &:hover {
-    background-color: #4b5563;
+    background-color: #0f5459;
     transform: translateY(-1px);
   }
   
