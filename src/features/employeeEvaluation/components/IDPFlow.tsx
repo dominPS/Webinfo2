@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../shared/components/Icon';
 import { idpIcon } from '../../../shared/assets/icons/evaluation';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
+import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
 
 interface IDPGoal {
   id: string;
@@ -163,30 +164,6 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
   }
 `;
 
-const GoalForm = styled.div`
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const FormHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
-`;
-
-const FormTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-`;
 
 const CompanyLogo = styled.div`
   display: flex;
@@ -231,14 +208,60 @@ const RadioLabel = styled.span`
 
 const TextAreaGroup = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
   margin-bottom: 24px;
+  align-items: start;
+`;
+
+const TextAreaColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 300px;
+  margin-top: 0;
+`;
+
+const MainFormLayout = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 24px;
+  align-items: stretch;
+`;
+
+const LeftFormSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  justify-content: space-between;
+`;
+
+const RightImageSection = styled.div`
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 100%;
+`;
+
+const IDPImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: contain;
 `;
 
 const TextAreaContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const TextAreaLabel = styled.label`
@@ -251,13 +274,14 @@ const TextAreaLabel = styled.label`
 
 const StyledTextArea = styled.textarea`
   width: 100%;
-  min-height: 120px;
-  padding: 12px;
+  min-height: 140px;
+  flex: 1;
+  padding: 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
-  resize: vertical;
+  resize: none;
   line-height: 1.5;
   
   &:focus {
@@ -273,15 +297,17 @@ const StyledTextArea = styled.textarea`
 
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 12px;
+  width: 100%;
+  flex-shrink: 0;
 `;
 
 const ModernButton = styled.button<{ variant: 'cancel' | 'save' }>`
-  padding: 10px 20px;
+  padding: 6px 16px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -560,73 +586,80 @@ const IDPFlow: React.FC = () => {
       {/* Step 2: Add IDP Goal */}
       {currentStep === 'add-goal' && (
         <FlowStep isActive={true}>
-          <GoalForm>
-            <FormHeader>
-              <FormTitle>{t('idp.addGoal.title', 'Dodaj Cel')}</FormTitle>
-              <CompanyLogo>
-                🔲 WHITE
-              </CompanyLogo>
-            </FormHeader>
-            
-            <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
-              {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
-            </InfoBadge>
+          <StepHeader>
+            <StepTitle>{t('idp.addGoal.title', 'Dodaj Cel')}</StepTitle>
+            <CompanyLogo>
+              🔲 WHITE
+            </CompanyLogo>
+          </StepHeader>
+          
+          <MainFormLayout>
+              <LeftFormSection>
+                <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
+                  {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
+                </InfoBadge>
 
-            <FormGroup>
-              <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
-              <RadioGroup>
-                <RadioOption>
-                  <RadioInput
-                    type="radio"
-                    name="goalType"
-                    value="business"
-                    checked={newGoal.category === 'business'}
-                    onChange={(e) => setNewGoal({...newGoal, category: 'business'})}
-                  />
-                  <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
-                </RadioOption>
-                <RadioOption>
-                  <RadioInput
-                    type="radio"
-                    name="goalType"
-                    value="development"
-                    checked={newGoal.category === 'development'}
-                    onChange={(e) => setNewGoal({...newGoal, category: 'development'})}
-                  />
-                  <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
-                </RadioOption>
-              </RadioGroup>
-            </FormGroup>
+                <FormGroup>
+                  <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
+                  <RadioGroup>
+                    <RadioOption>
+                      <RadioInput
+                        type="radio"
+                        name="goalType"
+                        value="business"
+                        checked={newGoal.category === 'business'}
+                        onChange={(e) => setNewGoal({...newGoal, category: 'business'})}
+                      />
+                      <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
+                    </RadioOption>
+                    <RadioOption>
+                      <RadioInput
+                        type="radio"
+                        name="goalType"
+                        value="development"
+                        checked={newGoal.category === 'development'}
+                        onChange={(e) => setNewGoal({...newGoal, category: 'development'})}
+                      />
+                      <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
+                    </RadioOption>
+                  </RadioGroup>
+                </FormGroup>
 
-            <TextAreaGroup>
-              <TextAreaContainer>
-                <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
-                <StyledTextArea
-                  value={newGoal.title}
-                  onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
-                  placeholder={t('idp.form.goalDetailsPlaceholder', 'Wpisz szczegóły swojego celu...')}
-                />
-              </TextAreaContainer>
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={newGoal.title}
+                    onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
+                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Wpisz szczegóły swojego celu...')}
+                  />
+                </TextAreaContainer>
+                
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalDescription', 'Wyniki celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={newGoal.description}
+                    onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
+                    placeholder={t('idp.form.goalResultsPlaceholder', 'Opisz oczekiwane wyniki...')}
+                  />
+                </TextAreaContainer>
+
+                <ButtonGroup>
+                  <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
+                    {t('idp.actions.cancel', 'Anuluj')}
+                  </ModernButton>
+                  <ModernButton variant="save" onClick={handleAddGoal}>
+                    {t('idp.actions.save', 'Zapisz')}
+                  </ModernButton>
+                </ButtonGroup>
+              </LeftFormSection>
               
-              <TextAreaContainer>
-                <TextAreaLabel>{t('idp.form.goalDescription', 'Wyniki celu')}</TextAreaLabel>
-                <StyledTextArea
-                  value={newGoal.description}
-                  onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
-                  placeholder={t('idp.form.goalResultsPlaceholder', 'Opisz oczekiwane wyniki...')}
+              <RightImageSection>
+                <IDPImage 
+                  src={idpWomenPerson} 
+                  alt={t('idp.form.imageAlt', 'IDP planning illustration')}
                 />
-              </TextAreaContainer>
-            </TextAreaGroup>
-
-            <ButtonGroup>
-              <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-                {t('idp.actions.cancel', 'Anuluj')}
-              </ModernButton>
-              <ModernButton variant="save" onClick={handleAddGoal}>
-                {t('idp.actions.save', 'Zapisz')}
-              </ModernButton>
-            </ButtonGroup>
-          </GoalForm>
+              </RightImageSection>
+            </MainFormLayout>
         </FlowStep>
       )}
 
@@ -810,15 +843,14 @@ const IDPFlow: React.FC = () => {
       {/* Past Plans Section */}
       {currentStep === 'past-plans' && (
         <FlowStep isActive={true}>
-          <GoalForm>
-            <FormHeader>
-              <FormTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</FormTitle>
-              <CompanyLogo>
-                🔲 WHITE
-              </CompanyLogo>
-            </FormHeader>
-            
-            <RadioGroup style={{ marginBottom: '24px' }}>
+          <StepHeader>
+            <StepTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</StepTitle>
+            <CompanyLogo>
+              🔲 WHITE
+            </CompanyLogo>
+          </StepHeader>
+          
+          <RadioGroup style={{ marginBottom: '24px' }}>
               <RadioOption>
                 <RadioInput
                   type="radio"
@@ -939,7 +971,6 @@ const IDPFlow: React.FC = () => {
                 {t('idp.actions.backToMain', 'Powrót do głównej')}
               </ModernButton>
             </ButtonGroup>
-          </GoalForm>
         </FlowStep>
       )}
 

@@ -4,11 +4,16 @@ import styled from '@emotion/styled';
 const FooterContainer = styled.footer`
   background: ${props => props.theme.colors.background};
   border-top: 1px solid ${props => props.theme.colors.border || '#e0e0e0'};
-  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
+  padding: 6px ${props => props.theme.spacing.md};
   margin-top: auto;
   color: ${props => props.theme.colors.text.secondary};
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 10px;
+  line-height: 1.2;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
 `;
 
 const FooterContent = styled.div`
@@ -18,7 +23,7 @@ const FooterContent = styled.div`
 `;
 
 const ServerInfo = styled.div`
-  margin-bottom: ${props => props.theme.spacing.xs};
+  margin-bottom: 2px;
   font-family: 'Roboto', monospace;
 `;
 
