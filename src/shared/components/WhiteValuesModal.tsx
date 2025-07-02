@@ -49,7 +49,7 @@ const ModalHeader = styled.div`
 const ModalTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
-  color: #1f2937;
+  color: #126678;
   margin: 0;
 `;
 
@@ -65,7 +65,7 @@ const CloseButton = styled.button`
 
   &:hover {
     background-color: #f3f4f6;
-    color: #374151;
+    color: #126678;
   }
 `;
 
@@ -92,7 +92,7 @@ const NavigationContainer = styled.div`
 `;
 
 const NavButton = styled.button`
-  background-color: #2563eb;
+  background-color: #126678;
   color: white;
   border: none;
   border-radius: 8px;
@@ -106,7 +106,7 @@ const NavButton = styled.button`
   gap: 8px;
 
   &:hover {
-    background-color: #1d4ed8;
+    background-color: #0f5560;
     transform: translateY(-1px);
   }
 
@@ -131,12 +131,12 @@ const IndicatorDot = styled.button<{ isActive: boolean }>`
   height: 12px;
   border-radius: 50%;
   border: none;
-  background-color: ${props => props.isActive ? '#2563eb' : '#d1d5db'};
+  background-color: ${props => props.isActive ? '#126678' : '#d1d5db'};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${props => props.isActive ? '#1d4ed8' : '#9ca3af'};
+    background-color: ${props => props.isActive ? '#0f5560' : '#9ca3af'};
   }
 `;
 
@@ -146,13 +146,13 @@ const SlideCounter = styled.div`
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: #126678;
 `;
 
 const SlideTitle = styled.h3`
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: #126678;
   margin: 0 0 16px 0;
   text-align: center;
 `;
