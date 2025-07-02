@@ -80,14 +80,14 @@ const ControlButton = styled.button`
 `;
 
 const BackButton = styled.button`
-  margin-bottom: 16px;
-  padding: 6px 12px;
+  margin-bottom: 12px;
+  padding: 5px 10px;
   background-color: #126678;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   transition: all 0.2s ease;
   align-self: flex-start;
