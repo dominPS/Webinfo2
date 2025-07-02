@@ -10,6 +10,10 @@ export interface Theme {
     };
     border: string;
   };
+  fonts: {
+    primary: string;
+    secondary: string;
+  };
   shadows: {
     small: string;
     medium: string;
@@ -41,6 +45,10 @@ export const lightTheme: Theme = {
     },
     border: '#E0E0E0',
   },
+  fonts: {
+    primary: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+    secondary: "'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+  },
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.1)',
     medium: '0 4px 8px rgba(0,0,0,0.1)',
@@ -71,6 +79,10 @@ export const darkTheme: Theme = {
       secondary: '#B0B0B0',
     },
     border: '#333333',
+  },
+  fonts: {
+    primary: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+    secondary: "'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
   },
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.2)',

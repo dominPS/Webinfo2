@@ -15,6 +15,11 @@ const PageContainer = styled.div`
   min-height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
+  font-family: ${props => props.theme.fonts.primary};
+  
+  * {
+    font-family: ${props => props.theme.fonts.primary};
+  }
 `;
 
 const PageHeader = styled.div`

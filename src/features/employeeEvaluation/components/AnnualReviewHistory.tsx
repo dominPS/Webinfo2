@@ -19,6 +19,11 @@ const HistoryContainer = styled.div`
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: ${props => props.theme.fonts.primary};
+  
+  * {
+    font-family: ${props => props.theme.fonts.primary};
+  }
 `;
 
 const Header = styled.div`
