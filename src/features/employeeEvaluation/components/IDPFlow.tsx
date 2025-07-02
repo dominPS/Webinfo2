@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import Icon from '../../../shared/components/Icon';
-import { idpIcon } from '../../../shared/assets/icons/evaluation';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
 
@@ -16,9 +14,9 @@ interface IDPGoal {
 }
 
 const FlowContainer = styled.div`
-  padding: 24px;
+  padding: 18px;
   background-color: white;
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: ${props => props.theme.fonts.primary};
   
@@ -29,21 +27,21 @@ const FlowContainer = styled.div`
 
 const FlowHeader = styled.div`
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 `;
 
 const FlowTitle = styled.h2`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #126678;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 `;
 
 const FlowStep = styled.div<{ isActive: boolean }>`
-  padding: 20px;
+  padding: 16px;
   border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
   background-color: ${props => props.isActive ? '#f8fafc' : 'white'};
   transition: all 0.3s ease;
 `;
@@ -51,30 +49,30 @@ const FlowStep = styled.div<{ isActive: boolean }>`
 const StepHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
 `;
 
 const ScrollableContainer = styled.div`
-  margin-bottom: 16px;
-  padding-bottom: 40px;
+  margin-bottom: 12px;
+  padding-bottom: 30px;
 `;
 
 const GoalsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 `;
 
 const YearSection = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 `;
 
 const YearTitle = styled.h4`
   color: #126678;
   font-weight: 600;
-  margin-bottom: 16px;
-  font-size: 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
 `;
 
 const StepTitle = styled.h3`
@@ -165,14 +163,7 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
 `;
 
 
-const CompanyLogo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #126678;
-`;
+
 
 const RadioGroup = styled.div`
   display: flex;
@@ -545,7 +536,6 @@ const IDPFlow: React.FC = () => {
   return (
     <FlowContainer>
       <FlowHeader>
-        <Icon src={idpIcon} alt="IDP" size={32} />
         <FlowTitle>{t('idp.flow.title', 'Plan Rozwoju Indywidualnego (IDP)')}</FlowTitle>
       </FlowHeader>
 
@@ -588,9 +578,6 @@ const IDPFlow: React.FC = () => {
         <FlowStep isActive={true}>
           <StepHeader>
             <StepTitle>{t('idp.addGoal.title', 'Dodaj Cel')}</StepTitle>
-            <CompanyLogo>
-              🔲 WHITE
-            </CompanyLogo>
           </StepHeader>
           
           <MainFormLayout>
@@ -845,9 +832,6 @@ const IDPFlow: React.FC = () => {
         <FlowStep isActive={true}>
           <StepHeader>
             <StepTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</StepTitle>
-            <CompanyLogo>
-              🔲 WHITE
-            </CompanyLogo>
           </StepHeader>
           
           <RadioGroup style={{ marginBottom: '24px' }}>

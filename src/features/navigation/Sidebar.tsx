@@ -7,9 +7,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUIState } from '@/hooks/useUIState';
 import { useSidebar } from '@/contexts/SidebarContext';
 
-const SIDEBAR_WIDTH = 320;
-const COLLAPSED_SIDEBAR_WIDTH = 60;
-const TOP_SPACING = 40;
+const SIDEBAR_WIDTH = 280;
+const COLLAPSED_SIDEBAR_WIDTH = 50;
+const TOP_SPACING = 30;
 
 const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
   width: ${props => props.$isCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
@@ -28,18 +28,18 @@ const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
 `;
 
 const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
-  height: ${props => props.$isCollapsed ? '80px' : '120px'};
+  height: ${props => props.$isCollapsed ? '60px' : '90px'};
   display: flex;
   align-items: center;
-  padding: ${props => props.$isCollapsed ? '0' : '0 46px'};
-  margin-bottom: ${props => props.$isCollapsed ? '0' : '32px'};
+  padding: ${props => props.$isCollapsed ? '0' : '0 36px'};
+  margin-bottom: ${props => props.$isCollapsed ? '0' : '24px'};
   justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
   transition: all 0.3s ease;
 `;
 
 const NavContainer = styled.div<{ $isCollapsed: boolean }>`
   flex: 1;
-  padding: ${props => props.$isCollapsed ? '0' : '0 30px'};
+  padding: ${props => props.$isCollapsed ? '0' : '0 24px'};
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;

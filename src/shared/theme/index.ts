@@ -60,11 +60,11 @@ export const lightTheme: Theme = {
     large: '16px',
   },
   spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
+    xs: '3px',
+    sm: '6px',
+    md: '12px',
+    lg: '18px',
+    xl: '24px',
   },
 };
 
@@ -95,10 +95,10 @@ export const darkTheme: Theme = {
     large: '16px',
   },
   spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
+    xs: '3px',
+    sm: '6px',
+    md: '12px',
+    lg: '18px',
+    xl: '24px',
   },
 };

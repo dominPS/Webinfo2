@@ -39,12 +39,6 @@ const Title = styled.h1`
   color: #1f2937;
 `;
 
-const Logo = styled.div`
-  font-weight: 600;
-  color: #126678;
-  font-size: 18px;
-`;
-
 const YearTabs = styled.div`
   display: flex;
   gap: 8px;
@@ -308,7 +302,6 @@ const LeaderAnnualReviewHistory: React.FC = () => {
     <HistoryContainer>
       <Header>
         <Title>{t('annualReview.history.title', 'Historia Ocen')}</Title>
-        <Logo>🔲 WHITE</Logo>
       </Header>
 
       <YearTabs>

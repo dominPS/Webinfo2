@@ -19,14 +19,14 @@ const ModalOverlay = styled.div<{ isOpen: boolean }>`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 20px;
+  padding: 16px;
 `;
 
 const ModalContent = styled.div`
   background: white;
-  border-radius: 12px;
-  max-width: 900px;
-  max-height: 90vh;
+  border-radius: 10px;
+  max-width: 800px;
+  max-height: 85vh;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -39,7 +39,7 @@ const ModalContent = styled.div`
 `;
 
 const ModalHeader = styled.div`
-  padding: 24px 24px 16px;
+  padding: 18px 18px 12px;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@ const ModalHeader = styled.div`
 `;
 
 const ModalTitle = styled.h2`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #126678;
   margin: 0;
@@ -71,13 +71,13 @@ const CloseButton = styled.button`
 
 const SlideshowContainer = styled.div`
   position: relative;
-  padding: 24px;
+  padding: 18px;
 `;
 
 const SlideImage = styled.img`
   width: 100%;
   height: auto;
-  max-height: 500px;
+  max-height: 400px;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);

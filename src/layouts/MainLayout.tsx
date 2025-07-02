@@ -9,9 +9,9 @@ import { TopMenu } from '@/shared/components/TopMenu';
 import { Footer } from '@/shared/components/Footer';
 import { useSidebar } from '@/contexts/SidebarContext';
 
-const SIDEBAR_WIDTH = 320;
-const COLLAPSED_SIDEBAR_WIDTH = 60;
-const TOP_SPACING = 40;
+const SIDEBAR_WIDTH = 280;
+const COLLAPSED_SIDEBAR_WIDTH = 50;
+const TOP_SPACING = 30;
 
 const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
   display: flex;
@@ -25,7 +25,7 @@ const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
 
 const ContentContainer = styled.div`
   flex: 1;
-  padding: 0 ${props => props.theme.spacing.xl};
+  padding: 0 ${props => props.theme.spacing.lg};
   display: flex;
   flex-direction: column;
   height: calc(100vh - ${TOP_SPACING * 2}px);
@@ -34,7 +34,7 @@ const ContentContainer = styled.div`
 const MainContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
   min-height: 0; /* Allow flex child to shrink below content size */
   
   &::-webkit-scrollbar {

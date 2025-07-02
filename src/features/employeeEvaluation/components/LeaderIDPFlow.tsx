@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import Icon from '../../../shared/components/Icon';
-import { idpIcon } from '../../../shared/assets/icons/evaluation';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
 
@@ -536,7 +534,6 @@ const LeaderIDPFlow: React.FC = () => {
   return (
     <FlowContainer>
       <FlowHeader>
-        <Icon src={idpIcon} alt="IDP" size={32} />
         <FlowTitle>{t('idp.flow.title', 'Plan Rozwoju Indywidualnego (IDP)')}</FlowTitle>
       </FlowHeader>
 

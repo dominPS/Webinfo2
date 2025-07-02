@@ -1,15 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import Icon from '../../shared/components/Icon';
-import { 
-  assessmentRoundsIcon, 
-  assessmentFormsIcon, 
-  monitoringProgressIcon, 
-  reportingAnalysisIcon, 
-  competencyManagementIcon, 
-  integrationsSettingsIcon 
-} from '../../shared/assets/icons/evaluation';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -49,22 +40,20 @@ const ControlsGrid = styled.div`
 `;
 
 const ControlButton = styled.button`
-  padding: 24px;
+  padding: 18px;
   border: 2px solid ${props => props.theme.colors.primary};
-  border-radius: 12px;
+  border-radius: 10px;
   background-color: white;
   color: ${props => props.theme.colors.primary};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 80px;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
   justify-content: center;
 
   &:hover {
@@ -108,37 +97,30 @@ const HREvaluationPage: React.FC = () => {
 
       <ControlsGrid>
         <ControlButton onClick={() => handleControlClick('dashboard')}>
-          <Icon src={assessmentRoundsIcon} alt="Dashboard" size={32} />
           {t('evaluation.hr.controls.dashboard', 'DASHBOARD')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('managingAssessmentRounds')}>
-          <Icon src={assessmentRoundsIcon} alt="Assessment Rounds" size={32} />
           {t('evaluation.hr.controls.managingAssessmentRounds', 'MANAGING ASSESSMENT ROUNDS')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('assessmentForms')}>
-          <Icon src={assessmentFormsIcon} alt="Assessment Forms" size={32} />
           {t('evaluation.hr.controls.assessmentForms', 'ASSESSMENT FORMS')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('monitoringProgress')}>
-          <Icon src={monitoringProgressIcon} alt="Monitoring Progress" size={32} />
           {t('evaluation.hr.controls.monitoringProgress', 'MONITOROWANIE POSTĘPU OCEN')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('reportingAnalysis')}>
-          <Icon src={reportingAnalysisIcon} alt="Reporting and Analysis" size={32} />
           {t('evaluation.hr.controls.reportingAnalysis', 'REPORTING AND ANALYSIS')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('competencyManagement')}>
-          <Icon src={competencyManagementIcon} alt="Competency Management" size={32} />
           {t('evaluation.hr.controls.competencyManagement', 'ZARZĄDZANIE KOMPETENCJAMI')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('integrationsSettings')}>
-          <Icon src={integrationsSettingsIcon} alt="Integrations and Settings" size={32} />
           {t('evaluation.hr.controls.integrationsSettings', 'INTEGRATIONS AND SYSTEM SETTINGS')}
         </ControlButton>
       </ControlsGrid>
