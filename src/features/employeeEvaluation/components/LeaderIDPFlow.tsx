@@ -84,16 +84,17 @@ const StepTitle = styled.h3`
 const InfoBadge = styled.div<{ type: 'training' | 'plan' }>`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 500;
   background-color: ${props => props.type === 'training' ? '#126678' : '#126678'};
   color: white;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  max-width: fit-content;
 
   &:hover {
     opacity: 0.9;
@@ -121,19 +122,21 @@ const PlanDetails = styled.div`
 
 const ActionButtons = styled.div`
   display: flex;
-  gap: 12px;
-  justify-content: center;
+  gap: 8px;
+  justify-content: flex-start;
   margin-top: 16px;
   flex-wrap: wrap;
+  padding-left: 0;
 `;
 
 const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'submit' | 'approve' | 'correct' }>`
-  padding: 8px 16px;
+  padding: 6px 14px;
   border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
   
   background-color: ${props => {
     switch (props.variant) {
@@ -281,14 +284,14 @@ const StyledTextArea = styled.textarea`
 
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 8px;
   margin-top: 12px;
   width: 100%;
   flex-shrink: 0;
 `;
 
-const ModernButton = styled.button<{ variant: 'cancel' | 'save' }>`
+const ModernButton = styled.button<{ variant: 'cancel' | 'save' | 'draft' }>`
   padding: 6px 16px;
   border-radius: 6px;
   font-size: 13px;
@@ -297,22 +300,38 @@ const ModernButton = styled.button<{ variant: 'cancel' | 'save' }>`
   transition: all 0.2s ease;
   border: none;
   
-  ${props => props.variant === 'cancel' ? `
-    background-color: white;
-    color: #126678;
-    border: 2px solid #126678;
-    
-    &:hover {
-      background-color: #f8f9fa;
+  ${props => {
+    switch (props.variant) {
+      case 'cancel':
+        return `
+          background-color: white;
+          color: #126678;
+          border: 2px solid #126678;
+          
+          &:hover {
+            background-color: #f8f9fa;
+          }
+        `;
+      case 'draft':
+        return `
+          background-color: #6b7280;
+          color: white;
+          
+          &:hover {
+            background-color: #4b5563;
+          }
+        `;
+      default: // 'save'
+        return `
+          background-color: #126678;
+          color: white;
+          
+          &:hover {
+            background-color: #0f5459;
+          }
+        `;
     }
-  ` : `
-    background-color: #126678;
-    color: white;
-    
-    &:hover {
-      background-color: #0f5459;
-    }
-  `}
+  }}
   
   &:active {
     transform: translateY(1px);
@@ -623,6 +642,9 @@ const LeaderIDPFlow: React.FC = () => {
                   <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
                     {t('idp.actions.cancel', 'Anuluj')}
                   </ModernButton>
+                  <ModernButton variant="draft" onClick={handleSaveDraft}>
+                    {t('idp.actions.draft', 'Draft')}
+                  </ModernButton>
                   <ModernButton variant="save" onClick={handleAddGoal}>
                     {t('idp.actions.save', 'Zapisz')}
                   </ModernButton>
@@ -669,6 +691,9 @@ const LeaderIDPFlow: React.FC = () => {
           <ActionButtons>
             <ActionButton variant="cancel" onClick={() => setCurrentStep('add-goal')}>
               {t('idp.actions.cancel', 'Cancel')}
+            </ActionButton>
+            <ActionButton variant="draft" onClick={handleSaveDraft}>
+              {t('idp.actions.draft', 'Draft')}
             </ActionButton>
             <ActionButton variant="save" onClick={() => goals.forEach(goal => handleSaveGoal(goal.id))}>
               {t('idp.actions.save', 'Save')}
