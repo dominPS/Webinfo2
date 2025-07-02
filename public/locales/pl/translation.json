@@ -27,7 +27,8 @@
     "employeeReview": "Przegląd pracowników",
     "employeeEvaluation": "Ocena pracowników",
     "logout": "Wyloguj się",
-    "login": "Zaloguj się"
+    "login": "Zaloguj się",
+    "sidebarHint": "Kliknij aby przełączyć"
   },
   "languages": {
     "en": "Angielski",
@@ -39,7 +40,9 @@
     "menu": "Menu",
     "cancel": "Anuluj",
     "submit": "Zatwierdź ocenę",
-    "backToDashboard": "Powrót do Dashboard"
+    "backToDashboard": "Powrót do Dashboard",
+    "previous": "Poprzedni",
+    "next": "Następny"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -67,8 +70,7 @@
     "notifications": "Powiadomienia"
   },
   "sidebar": {
-    "collapseSidebar": "Zwiń pasek boczny",
-    "expandSidebar": "Rozwiń pasek boczny"
+    "hint": "Kliknij aby przełączyć"
   },
   "pages": {
     "employeeEvaluation": {
@@ -279,9 +281,6 @@
     "message": "Strona, której szukasz, nie istnieje.",
     "goHome": "Idź do strony głównej"
   },
-  "dateFormat": {
-    "locale": "pl-PL"
-  },
   "idp": {
     "flow": {
       "title": "Plan Rozwoju Indywidualnego (IDP)"
@@ -398,5 +397,23 @@
         "Annual": "Ocena Roczna"
       }
     }
+  },
+  "whiteValues": {
+    "modalTitle": "Wartości firmy \"WHITE\"",
+    "slide1": {
+      "title": "Mądrość - Podejmowanie Mądrych Decyzji"
+    },
+    "slide2": {
+      "title": "Uczciwość - Działanie z Uczciwością"
+    },
+    "slide3": {
+      "title": "Innowacyjność - Przyjmowanie Kreatywnych Rozwiązań"
+    },
+    "slide4": {
+      "title": "Zaufanie - Budowanie Silnych Relacji"
+    }
+  },
+  "dateFormat": {
+    "locale": "pl-PL"
   }
 }

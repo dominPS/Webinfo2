@@ -5,12 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { Logo } from '@/shared/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
 import { useUIState } from '@/hooks/useUIState';
+import { useSidebar } from '@/contexts/SidebarContext';
 
 const SIDEBAR_WIDTH = 320;
+const COLLAPSED_SIDEBAR_WIDTH = 60;
 const TOP_SPACING = 40;
 
-const SidebarContainer = styled.aside`
-  width: ${SIDEBAR_WIDTH}px;
+const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
+  width: ${props => props.$isCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
   position: fixed;
   top: ${TOP_SPACING}px;
   bottom: ${TOP_SPACING}px;
@@ -20,23 +22,29 @@ const SidebarContainer = styled.aside`
   display: flex;
   flex-direction: column;
   box-shadow: ${props => props.theme.shadows.medium};
-  z-index: 10; /* Higher z-index to appear in front of the collapse button */
+  z-index: 10;
+  transition: width 0.3s ease;
+  overflow: hidden;
 `;
 
-const SidebarHeader = styled.div`
-  height: 120px;
+const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
+  height: ${props => props.$isCollapsed ? '80px' : '120px'};
   display: flex;
   align-items: center;
-  padding: 0 46px;
-  margin-bottom: 32px;
+  padding: ${props => props.$isCollapsed ? '0' : '0 46px'};
+  margin-bottom: ${props => props.$isCollapsed ? '0' : '32px'};
+  justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
+  transition: all 0.3s ease;
 `;
 
-const NavContainer = styled.div`
+const NavContainer = styled.div<{ $isCollapsed: boolean }>`
   flex: 1;
-  padding: 0 30px;
+  padding: ${props => props.$isCollapsed ? '0' : '0 30px'};
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  opacity: ${props => props.$isCollapsed ? '0' : '1'};
+  transition: all 0.3s ease;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -81,8 +89,8 @@ const NavItem = styled(NavLink)`
   }
 `;
 
-const LogoutButton = styled.button`
-  margin: 24px 30px;
+const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
+  margin: 24px ${props => props.$isCollapsed ? '6px' : '30px'};
   padding: 0 16px;
   height: 40px;
   background: rgba(255, 255, 255, 0.1);
@@ -96,7 +104,8 @@ const LogoutButton = styled.button`
   justify-content: center;
   gap: 8px;
   transition: all 0.2s ease;
-  width: calc(100% - 60px);
+  width: ${props => props.$isCollapsed ? '48px' : 'calc(100% - 60px)'};
+  opacity: ${props => props.$isCollapsed ? '0' : '1'};
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -107,49 +116,7 @@ const LogoutButton = styled.button`
   }
 `;
 
-const CollapseButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: -16px;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 32px;
-  background: ${props => props.theme.colors.primary};
-  border: none;
-  border-radius: 0 16px 16px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  cursor: pointer;
-  z-index: 5; /* Lower z-index to appear behind the sidebar */
-  transition: background 0.2s;
-  padding: 0;
-  &:hover {
-    background: ${props => props.theme.colors.primary};
-  }
-`;
 
-const CollapseIcon = styled.span`
-  display: block;
-  color: transparent; /* Make the text transparent instead of white */
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-right: 2px;
-  user-select: none;
-`;
-
-const CollapsedSidebarContainer = styled(SidebarContainer)`
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
-  padding: 0;
-  align-items: center;
-  .logo {
-    justify-content: center;
-    padding: 0;
-  }
-`;
 
 interface NavItem {
   path: string;
@@ -187,6 +154,7 @@ export const Sidebar: React.FC = () => {
   const { isLoggedIn, logout } = useAuth();
   const { setShowLoginForm } = useUIState();
   const navigate = useNavigate();
+  const { isCollapsed, setIsCollapsed } = useSidebar();
 
   // Force update hook
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
@@ -215,40 +183,45 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  const [collapsed, setCollapsed] = React.useState(false);
+  const handleSidebarClick = (e: React.MouseEvent) => {
+    // Jeśli kliknięto w puste miejsce (nie w button, link, lub inne interaktywne elementy)
+    const target = e.target as HTMLElement;
+    const isClickableElement = target.closest('button, a, input, select, textarea');
+    
+    if (!isClickableElement) {
+      if (isCollapsed) {
+        // Kliknięto w zwinięty sidebar - rozwiń go
+        setIsCollapsed(false);
+      } else {
+        // Kliknięto w puste miejsce rozwiniętego sidebara - zwiń go
+        setIsCollapsed(true);
+      }
+    }
+  };
+
   return (
-    <>
-      {collapsed ? (
-        <CollapsedSidebarContainer>
-          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
-            <Logo onlyIcon />
-          </SidebarHeader>
-          <CollapseButton onClick={() => setCollapsed(false)} title={t('navigation.expandSidebar')}>
-            {/* No content inside button to remove any white elements */}
-          </CollapseButton>
-        </CollapsedSidebarContainer>
-      ) : (
-        <SidebarContainer>
-          <SidebarHeader>
-            <Logo />
-          </SidebarHeader>
-          <CollapseButton onClick={() => setCollapsed(true)} title={t('navigation.collapseSidebar')}>
-            {/* No content inside button to remove any white elements */}
-          </CollapseButton>
-          <NavContainer>
-            {navigationItems.map((item) => (
-              <NavItem key={item.path} to={item.path}>
-                {t(`navigation.${item.translationKey}`, {
-                  defaultValue: item.translationKey
-                })}
-              </NavItem>
-            ))}
-          </NavContainer>
-          <LogoutButton onClick={handleAuthAction}>
-            {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
-          </LogoutButton>
-        </SidebarContainer>
-      )}
-    </>
+    <SidebarContainer 
+      $isCollapsed={isCollapsed} 
+      onClick={handleSidebarClick}
+      data-sidebar="true"
+    >
+      <SidebarHeader $isCollapsed={isCollapsed}>
+        {isCollapsed ? <Logo onlyIcon /> : <Logo />}
+      </SidebarHeader>
+      
+      <NavContainer $isCollapsed={isCollapsed}>
+        {navigationItems.map((item) => (
+          <NavItem key={item.path} to={item.path}>
+            {t(`navigation.${item.translationKey}`, {
+              defaultValue: item.translationKey
+            })}
+          </NavItem>
+        ))}
+      </NavContainer>
+      
+      <LogoutButton $isCollapsed={isCollapsed} onClick={handleAuthAction}>
+        {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
+      </LogoutButton>
+    </SidebarContainer>
   );
 };

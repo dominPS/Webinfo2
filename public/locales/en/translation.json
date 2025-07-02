@@ -27,7 +27,8 @@
     "employeeReview": "Employee Review",
     "employeeEvaluation": "Employee Evaluation",
     "logout": "Logout",
-    "login": "Login"
+    "login": "Login",
+    "sidebarHint": "Click to toggle"
   },
   "languages": {
     "en": "English",
@@ -39,7 +40,9 @@
     "menu": "Menu",
     "cancel": "Cancel",
     "submit": "Submit Evaluation",
-    "backToDashboard": "Back to Dashboard"
+    "backToDashboard": "Back to Dashboard",
+    "previous": "Previous",
+    "next": "Next"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -384,6 +387,21 @@
         "Performance": "Performance Review",
         "Annual": "Annual Review"
       }
+    }
+  },
+  "whiteValues": {
+    "modalTitle": "\"WHITE\" Company Values",
+    "slide1": {
+      "title": "Wisdom - Making Smart Decisions"
+    },
+    "slide2": {
+      "title": "Honesty - Acting with Integrity"
+    },
+    "slide3": {
+      "title": "Innovation - Embracing Creative Solutions"
+    },
+    "slide4": {
+      "title": "Trust - Building Strong Relationships"
     }
   },
   "dateFormat": {

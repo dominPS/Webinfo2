@@ -13,6 +13,7 @@ import {
 } from '../../shared/assets/icons/evaluation';
 import IDPFlow from './components/LeaderIDPFlow';
 import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
+import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -120,12 +121,15 @@ const ContentWrapper = styled.div`
 const LeaderEvaluationPage: React.FC = () => {
   const { t } = useTranslation();
   const [activeFlow, setActiveFlow] = useState<string | null>(null);
+  const [isWhiteValuesModalOpen, setIsWhiteValuesModalOpen] = useState(false);
 
   const handleControlClick = (controlType: string) => {
     if (controlType === 'idp') {
       setActiveFlow('idp');
     } else if (controlType === 'annualReview') {
       setActiveFlow('annualReview');
+    } else if (controlType === 'whiteValues') {
+      setIsWhiteValuesModalOpen(true);
     } else {
       // In a real app, this would navigate to specific sections or open modals
       console.log(`Leader Control clicked: ${controlType}`);
@@ -135,6 +139,10 @@ const LeaderEvaluationPage: React.FC = () => {
 
   const handleBackToDashboard = () => {
     setActiveFlow(null);
+  };
+
+  const handleCloseWhiteValuesModal = () => {
+    setIsWhiteValuesModalOpen(false);
   };
 
   // If IDP flow is active, show it instead of the main dashboard
@@ -212,6 +220,11 @@ const LeaderEvaluationPage: React.FC = () => {
         </ControlButton>
         </ControlsGrid>
       </ContentWrapper>
+
+      <WhiteValuesModal 
+        isOpen={isWhiteValuesModalOpen}
+        onClose={handleCloseWhiteValuesModal}
+      />
     </PageContainer>
   );
 };

@@ -35,10 +35,10 @@ const FlowTitle = styled.h2`
 
 const FlowStep = styled.div<{ isActive: boolean }>`
   padding: 20px;
-  border: 2px solid ${props => props.isActive ? '#2563eb' : '#e5e7eb'};
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
   margin-bottom: 16px;
-  background-color: ${props => props.isActive ? '#eff6ff' : 'white'};
+  background-color: ${props => props.isActive ? '#f8fafc' : 'white'};
   transition: all 0.3s ease;
 `;
 

@@ -7,21 +7,24 @@ import { LanguageSelector } from '@/shared/components/LanguageSelector';
 import { ReportsLogo } from '@/shared/components/ReportsLogo';
 import { TopMenu } from '@/shared/components/TopMenu';
 import { Footer } from '@/shared/components/Footer';
+import { useSidebar } from '@/contexts/SidebarContext';
 
 const SIDEBAR_WIDTH = 320;
+const COLLAPSED_SIDEBAR_WIDTH = 60;
 const TOP_SPACING = 40;
 
-const MainContainer = styled.div`
+const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
   display: flex;
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
   padding-top: ${TOP_SPACING}px;
   padding-bottom: ${TOP_SPACING}px;
+  padding-left: ${props => props.$sidebarCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
+  transition: padding-left 0.3s ease;
 `;
 
 const ContentContainer = styled.div`
   flex: 1;
-  margin-left: ${SIDEBAR_WIDTH}px;
   padding: 0 ${props => props.theme.spacing.xl};
   display: flex;
   flex-direction: column;
@@ -114,9 +117,10 @@ const ProfileButton = styled.button`
 
 export const MainLayout = () => {
   const { t } = useTranslation();
+  const { isCollapsed } = useSidebar();
 
   return (
-    <MainContainer>
+    <MainContainer $sidebarCollapsed={isCollapsed}>
       <Sidebar />
       <ContentContainer>
         <TopBar>
