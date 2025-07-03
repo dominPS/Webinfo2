@@ -156,6 +156,19 @@
           "viewIDP": "Zobacz IDP",
           "manageReview": "Zarządzaj oceną",
           "manageIDP": "Zarządzaj IDP"
+        },
+        "filter": {
+          "nameOrId": "Imię/Nazwisko lub ID",
+          "department": "Dział",
+          "searchPlaceholder": "Szukaj po imieniu, nazwisku lub ID...",
+          "allDepartments": "Wszystkie działy",
+          "showing": "Pokazano {{count}} z {{total}} pracowników"
+        },
+        "table": {
+          "name": "Imię i nazwisko",
+          "department": "Dział",
+          "status": "Status",
+          "actions": "Akcje"
         }
       }
     },

@@ -13,6 +13,12 @@ interface Employee {
   idpStatus: 'not_started' | 'draft' | 'submitted' | 'approved';
 }
 
+interface LeaderTeamEvaluationFlowProps {
+  onBack?: (resetFilters?: () => void) => void;
+  onStepChange?: (step: FlowStep) => void;
+  backTrigger?: boolean;
+}
+
 type FlowStep = 'team-overview' | 'annual-review' | 'idp-management' | 'employee-detail';
 
 const FlowContainer = styled.div`
@@ -87,6 +93,126 @@ const ProcessStepDescription = styled.p`
   font-size: 14px;
   color: #6b7280;
   margin-bottom: 12px;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+`;
+
+const FilterInput = styled.input`
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: #2196f3;
+  }
+`;
+
+const FilterSelect = styled.select`
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  min-width: 150px;
+  
+  &:focus {
+    outline: none;
+    border-color: #2196f3;
+  }
+`;
+
+const FilterLabel = styled.label`
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 8px;
+`;
+
+const FilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const FilterResultsText = styled.div`
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  text-align: center;
+`;
+
+const EmployeeTable = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+`;
+
+const EmployeeTableHeader = styled.div`
+  display: grid;
+  grid-template-columns: 80px 1fr 120px 120px auto;
+  gap: 16px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+`;
+
+const EmployeeTableRow = styled.div`
+  display: grid;
+  grid-template-columns: 80px 1fr 120px 120px auto;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const EmployeeId = styled.div`
+  font-size: 14px;
+  color: #6b7280;
+  font-family: monospace;
+`;
+
+const EmployeeNameCell = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+`;
+
+const EmployeeDepartmentCell = styled.div`
+  font-size: 14px;
+  color: #6b7280;
+`;
+
+const StatusCell = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ActionCell = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
 `;
 
 const EmployeeGrid = styled.div`
@@ -216,38 +342,45 @@ const ActionButton = styled.button<{ variant: 'primary' | 'secondary' | 'success
   }
 `;
 
-const StatsContainer = styled.div`
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-`;
-
-const StatCard = styled.div`
-  padding: 16px;
-  border-radius: 8px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  min-width: 150px;
-`;
-
-const StatNumber = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  color: #126678;
-  margin-bottom: 4px;
-`;
-
-const StatLabel = styled.div`
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 500;
-`;
-
-const LeaderTeamEvaluationFlow: React.FC = () => {
+const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onBack, onStepChange, backTrigger }) => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<FlowStep>('team-overview');
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [filterText, setFilterText] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('all');
+
+  // Notify parent component of step changes
+  const handleStepChange = (step: FlowStep) => {
+    setCurrentStep(step);
+    if (onStepChange) {
+      onStepChange(step);
+    }
+  };
+
+  // Handle back navigation based on current step
+  const handleBackNavigation = () => {
+    if (currentStep === 'annual-review' || currentStep === 'idp-management') {
+      // If we're in annual review or IDP, go back to team overview and reset filters
+      resetFilters();
+      handleStepChange('team-overview');
+    } else if (currentStep === 'employee-detail') {
+      // If we're in employee detail, go back to team overview
+      resetFilters();
+      handleStepChange('team-overview');
+    } else {
+      // If we're in team overview, go back to main dashboard
+      if (onBack) {
+        onBack(resetFilters);
+      }
+    }
+  };
+
+  // Handle back trigger from parent
+  React.useEffect(() => {
+    if (backTrigger) {
+      handleBackNavigation();
+    }
+  }, [backTrigger]);
 
   // Mock data - w rzeczywistej aplikacji to byłoby pobrane z API
   const teamMembers: Employee[] = [
@@ -293,60 +426,46 @@ const LeaderTeamEvaluationFlow: React.FC = () => {
     }
   ];
 
+  // Helper function to filter team members
+  const getFilteredTeamMembers = () => {
+    return teamMembers.filter(employee => {
+      const matchesText = filterText === '' || 
+        employee.name.toLowerCase().includes(filterText.toLowerCase()) ||
+        employee.id.toLowerCase().includes(filterText.toLowerCase());
+      
+      const matchesDepartment = filterDepartment === 'all' || 
+        employee.department === filterDepartment;
+      
+      return matchesText && matchesDepartment;
+    });
+  };
+
+  // Get unique departments for filter dropdown
+  const uniqueDepartments = [...new Set(teamMembers.map(emp => emp.department))];
+
+  // Reset filters when switching views
+  const resetFilters = () => {
+    setFilterText('');
+    setFilterDepartment('all');
+  };
+
   const getStatusText = (status: string, type: 'review' | 'idp') => {
     const prefix = type === 'review' ? 'review' : 'idp';
     return t(`evaluation.status.${prefix}.${status}`, status.replace('_', ' '));
   };
 
-  const getTeamStats = () => {
-    const totalMembers = teamMembers.length;
-    const completedReviews = teamMembers.filter(m => m.reviewStatus === 'completed').length;
-    const activeIDPs = teamMembers.filter(m => m.idpStatus === 'approved' || m.idpStatus === 'submitted').length;
-    const pendingActions = teamMembers.filter(m => 
-      m.reviewStatus === 'requires_correction' || 
-      m.reviewStatus === 'in_progress' ||
-      m.idpStatus === 'submitted'
-    ).length;
-
-    return { totalMembers, completedReviews, activeIDPs, pendingActions };
-  };
-
-  const stats = getTeamStats();
-
   const handleProcessStepClick = (step: FlowStep) => {
-    setCurrentStep(step);
+    resetFilters();
+    handleStepChange(step);
   };
 
   const handleEmployeeClick = (employee: Employee) => {
     setSelectedEmployee(employee);
-    setCurrentStep('employee-detail');
+    handleStepChange('employee-detail');
   };
 
   const renderTeamOverview = () => (
     <StepContainer>
-      <StepHeader>
-        <StepTitle>{t('evaluation.leader.team.overview.title', 'Przegląd zespołu')}</StepTitle>
-      </StepHeader>
-
-      <StatsContainer>
-        <StatCard>
-          <StatNumber>{stats.totalMembers}</StatNumber>
-          <StatLabel>{t('evaluation.leader.team.stats.total', 'Członkowie zespołu')}</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>{stats.completedReviews}</StatNumber>
-          <StatLabel>{t('evaluation.leader.team.stats.completed', 'Ukończone oceny')}</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>{stats.activeIDPs}</StatNumber>
-          <StatLabel>{t('evaluation.leader.team.stats.idps', 'Aktywne IDP')}</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>{stats.pendingActions}</StatNumber>
-          <StatLabel>{t('evaluation.leader.team.stats.pending', 'Oczekujące akcje')}</StatLabel>
-        </StatCard>
-      </StatsContainer>
-
       <ProcessStep isActive={false} isCompleted={false} onClick={() => handleProcessStepClick('annual-review')}>
         <ProcessStepTitle>{t('evaluation.leader.team.annualReview.title', 'Oceny Roczne')}</ProcessStepTitle>
         <ProcessStepDescription>
@@ -360,126 +479,198 @@ const LeaderTeamEvaluationFlow: React.FC = () => {
           {t('evaluation.leader.team.idp.description', 'Przeglądaj i zatwierdź indywidualne plany rozwoju')}
         </ProcessStepDescription>
       </ProcessStep>
-
-      <EmployeeGrid>
-        {teamMembers.map((employee) => (
-          <EmployeeCard key={employee.id} onClick={() => handleEmployeeClick(employee)}>
-            <EmployeeName>{employee.name}</EmployeeName>
-            <EmployeePosition>{employee.position} • {employee.department}</EmployeePosition>
-            
-            <div>
-              <StatusBadge status={employee.reviewStatus}>
-                {t('evaluation.leader.team.review', 'Ocena')}: {getStatusText(employee.reviewStatus, 'review')}
-              </StatusBadge>
-              <StatusBadge status={employee.idpStatus}>
-                IDP: {getStatusText(employee.idpStatus, 'idp')}
-              </StatusBadge>
-            </div>
-          </EmployeeCard>
-        ))}
-      </EmployeeGrid>
     </StepContainer>
   );
 
-  const renderAnnualReviewManagement = () => (
-    <StepContainer>
-      <StepHeader>
-        <StepTitle>{t('evaluation.leader.team.annualReview.title', 'Zarządzanie Ocenami Rocznymi')}</StepTitle>
-      </StepHeader>
+  const renderAnnualReviewManagement = () => {
+    const filteredMembers = getFilteredTeamMembers();
+    
+    return (
+      <StepContainer>
+        <StepHeader>
+          <StepTitle>{t('evaluation.leader.team.annualReview.title', 'Zarządzanie Ocenami Rocznymi')}</StepTitle>
+        </StepHeader>
 
-      <EmployeeGrid>
-        {teamMembers.map((employee) => (
-          <EmployeeCard key={employee.id}>
-            <EmployeeName>{employee.name}</EmployeeName>
-            <EmployeePosition>{employee.position}</EmployeePosition>
-            
-            <StatusBadge status={employee.reviewStatus}>
-              {getStatusText(employee.reviewStatus, 'review')}
-            </StatusBadge>
+        <FilterContainer>
+          <FilterGroup>
+            <FilterLabel htmlFor="name-filter">
+              {t('evaluation.leader.team.filter.nameOrId', 'Imię/Nazwisko lub ID')}
+            </FilterLabel>
+            <FilterInput
+              id="name-filter"
+              type="text"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              placeholder={t('evaluation.leader.team.filter.searchPlaceholder', 'Szukaj po imieniu, nazwisku lub ID...')}
+            />
+          </FilterGroup>
+          
+          <FilterGroup>
+            <FilterLabel htmlFor="department-filter">
+              {t('evaluation.leader.team.filter.department', 'Dział')}
+            </FilterLabel>
+            <FilterSelect
+              id="department-filter"
+              value={filterDepartment}
+              onChange={(e) => setFilterDepartment(e.target.value)}
+            >
+              <option value="all">{t('evaluation.leader.team.filter.allDepartments', 'Wszystkie działy')}</option>
+              {uniqueDepartments.map(dept => (
+                <option key={dept} value={dept}>{dept}</option>
+              ))}
+            </FilterSelect>
+          </FilterGroup>
+        </FilterContainer>
 
-            <ActionButtons>
-              {employee.reviewStatus === 'not_started' && (
-                <ActionButton variant="primary">
-                  {t('evaluation.leader.team.actions.startReview', 'Rozpocznij ocenę')}
-                </ActionButton>
-              )}
-              {employee.reviewStatus === 'in_progress' && (
-                <ActionButton variant="secondary">
-                  {t('evaluation.leader.team.actions.continueReview', 'Kontynuuj ocenę')}
-                </ActionButton>
-              )}
-              {employee.reviewStatus === 'requires_correction' && (
-                <ActionButton variant="primary">
-                  {t('evaluation.leader.team.actions.reviewCorrections', 'Sprawdź poprawki')}
-                </ActionButton>
-              )}
-              {employee.reviewStatus === 'completed' && (
-                <ActionButton variant="success">
-                  {t('evaluation.leader.team.actions.viewReview', 'Zobacz ocenę')}
-                </ActionButton>
-              )}
-            </ActionButtons>
-          </EmployeeCard>
-        ))}
-      </EmployeeGrid>
+        <FilterResultsText>
+          {t('evaluation.leader.team.filter.showing', 'Pokazano {{count}} z {{total}} pracowników', {
+            count: filteredMembers.length,
+            total: teamMembers.length
+          })}
+        </FilterResultsText>
 
-      <ActionButtons>
-        <ActionButton variant="secondary" onClick={() => setCurrentStep('team-overview')}>
-          {t('common.back', 'Powrót')}
-        </ActionButton>
-      </ActionButtons>
+        <EmployeeTable>
+          <EmployeeTableHeader>
+            <div>ID</div>
+            <div>{t('evaluation.leader.team.table.name', 'Imię i nazwisko')}</div>
+            <div>{t('evaluation.leader.team.table.department', 'Dział')}</div>
+            <div>{t('evaluation.leader.team.table.status', 'Status')}</div>
+            <div>{t('evaluation.leader.team.table.actions', 'Akcje')}</div>
+          </EmployeeTableHeader>
+          
+          {filteredMembers.map((employee) => (
+            <EmployeeTableRow key={employee.id}>
+              <EmployeeId>{employee.id}</EmployeeId>
+              <EmployeeNameCell>{employee.name}</EmployeeNameCell>
+              <EmployeeDepartmentCell>{employee.department}</EmployeeDepartmentCell>
+              <StatusCell>
+                <StatusBadge status={employee.reviewStatus}>
+                  {getStatusText(employee.reviewStatus, 'review')}
+                </StatusBadge>
+              </StatusCell>
+              <ActionCell>
+                {employee.reviewStatus === 'not_started' && (
+                  <ActionButton variant="primary">
+                    {t('evaluation.leader.team.actions.startReview', 'Rozpocznij ocenę')}
+                  </ActionButton>
+                )}
+                {employee.reviewStatus === 'in_progress' && (
+                  <ActionButton variant="secondary">
+                    {t('evaluation.leader.team.actions.continueReview', 'Kontynuuj ocenę')}
+                  </ActionButton>
+                )}
+                {employee.reviewStatus === 'requires_correction' && (
+                  <ActionButton variant="primary">
+                    {t('evaluation.leader.team.actions.reviewCorrections', 'Sprawdź poprawki')}
+                  </ActionButton>
+                )}
+                {employee.reviewStatus === 'completed' && (
+                  <ActionButton variant="success">
+                    {t('evaluation.leader.team.actions.viewReview', 'Zobacz ocenę')}
+                  </ActionButton>
+                )}
+              </ActionCell>
+            </EmployeeTableRow>
+          ))}
+        </EmployeeTable>
     </StepContainer>
-  );
+    );
+  };
 
-  const renderIDPManagement = () => (
-    <StepContainer>
-      <StepHeader>
-        <StepTitle>{t('evaluation.leader.team.idp.title', 'Zarządzanie Planami IDP')}</StepTitle>
-      </StepHeader>
+  const renderIDPManagement = () => {
+    const filteredMembers = getFilteredTeamMembers();
+    
+    return (
+      <StepContainer>
+        <StepHeader>
+          <StepTitle>{t('evaluation.leader.team.idp.title', 'Zarządzanie Planami IDP')}</StepTitle>
+        </StepHeader>
 
-      <EmployeeGrid>
-        {teamMembers.map((employee) => (
-          <EmployeeCard key={employee.id}>
-            <EmployeeName>{employee.name}</EmployeeName>
-            <EmployeePosition>{employee.position}</EmployeePosition>
-            
-            <StatusBadge status={employee.idpStatus}>
-              {getStatusText(employee.idpStatus, 'idp')}
-            </StatusBadge>
+        <FilterContainer>
+          <FilterGroup>
+            <FilterLabel htmlFor="name-filter-idp">
+              {t('evaluation.leader.team.filter.nameOrId', 'Imię/Nazwisko lub ID')}
+            </FilterLabel>
+            <FilterInput
+              id="name-filter-idp"
+              type="text"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              placeholder={t('evaluation.leader.team.filter.searchPlaceholder', 'Szukaj po imieniu, nazwisku lub ID...')}
+            />
+          </FilterGroup>
+          
+          <FilterGroup>
+            <FilterLabel htmlFor="department-filter-idp">
+              {t('evaluation.leader.team.filter.department', 'Dział')}
+            </FilterLabel>
+            <FilterSelect
+              id="department-filter-idp"
+              value={filterDepartment}
+              onChange={(e) => setFilterDepartment(e.target.value)}
+            >
+              <option value="all">{t('evaluation.leader.team.filter.allDepartments', 'Wszystkie działy')}</option>
+              {uniqueDepartments.map(dept => (
+                <option key={dept} value={dept}>{dept}</option>
+              ))}
+            </FilterSelect>
+          </FilterGroup>
+        </FilterContainer>
 
-            <ActionButtons>
-              {employee.idpStatus === 'not_started' && (
-                <ActionButton variant="primary">
-                  {t('evaluation.leader.team.actions.createIDP', 'Utwórz IDP')}
-                </ActionButton>
-              )}
-              {employee.idpStatus === 'draft' && (
-                <ActionButton variant="secondary">
-                  {t('evaluation.leader.team.actions.reviewDraft', 'Sprawdź szkic')}
-                </ActionButton>
-              )}
-              {employee.idpStatus === 'submitted' && (
-                <ActionButton variant="primary">
-                  {t('evaluation.leader.team.actions.approveIDP', 'Zatwierdź IDP')}
-                </ActionButton>
-              )}
-              {employee.idpStatus === 'approved' && (
-                <ActionButton variant="success">
-                  {t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
-                </ActionButton>
-              )}
-            </ActionButtons>
-          </EmployeeCard>
-        ))}
-      </EmployeeGrid>
+        <FilterResultsText>
+          {t('evaluation.leader.team.filter.showing', 'Pokazano {{count}} z {{total}} pracowników', {
+            count: filteredMembers.length,
+            total: teamMembers.length
+          })}
+        </FilterResultsText>
 
-      <ActionButtons>
-        <ActionButton variant="secondary" onClick={() => setCurrentStep('team-overview')}>
-          {t('common.back', 'Powrót')}
-        </ActionButton>
-      </ActionButtons>
+        <EmployeeTable>
+          <EmployeeTableHeader>
+            <div>ID</div>
+            <div>{t('evaluation.leader.team.table.name', 'Imię i nazwisko')}</div>
+            <div>{t('evaluation.leader.team.table.department', 'Dział')}</div>
+            <div>{t('evaluation.leader.team.table.status', 'Status')}</div>
+            <div>{t('evaluation.leader.team.table.actions', 'Akcje')}</div>
+          </EmployeeTableHeader>
+          
+          {filteredMembers.map((employee) => (
+            <EmployeeTableRow key={employee.id}>
+              <EmployeeId>{employee.id}</EmployeeId>
+              <EmployeeNameCell>{employee.name}</EmployeeNameCell>
+              <EmployeeDepartmentCell>{employee.department}</EmployeeDepartmentCell>
+              <StatusCell>
+                <StatusBadge status={employee.idpStatus}>
+                  {getStatusText(employee.idpStatus, 'idp')}
+                </StatusBadge>
+              </StatusCell>
+              <ActionCell>
+                {employee.idpStatus === 'not_started' && (
+                  <ActionButton variant="primary">
+                    {t('evaluation.leader.team.actions.createIDP', 'Utwórz IDP')}
+                  </ActionButton>
+                )}
+                {employee.idpStatus === 'draft' && (
+                  <ActionButton variant="secondary">
+                    {t('evaluation.leader.team.actions.reviewDraft', 'Sprawdź szkic')}
+                  </ActionButton>
+                )}
+                {employee.idpStatus === 'submitted' && (
+                  <ActionButton variant="primary">
+                    {t('evaluation.leader.team.actions.approveIDP', 'Zatwierdź IDP')}
+                  </ActionButton>
+                )}
+                {employee.idpStatus === 'approved' && (
+                  <ActionButton variant="success">
+                    {t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
+                  </ActionButton>
+                )}
+              </ActionCell>
+            </EmployeeTableRow>
+          ))}
+        </EmployeeTable>
     </StepContainer>
-  );
+    );
+  };
 
   const renderEmployeeDetail = () => {
     if (!selectedEmployee) return null;
@@ -520,11 +711,6 @@ const LeaderTeamEvaluationFlow: React.FC = () => {
           </ActionButtons>
         </ProcessStep>
 
-        <ActionButtons>
-          <ActionButton variant="secondary" onClick={() => setCurrentStep('team-overview')}>
-            {t('common.back', 'Powrót')}
-          </ActionButton>
-        </ActionButtons>
       </StepContainer>
     );
   };

@@ -151,6 +151,19 @@
           "viewIDP": "View IDP",
           "manageReview": "Manage Review",
           "manageIDP": "Manage IDP"
+        },
+        "filter": {
+          "nameOrId": "Name/Surname or ID",
+          "department": "Department",
+          "searchPlaceholder": "Search by name, surname or ID...",
+          "allDepartments": "All departments",
+          "showing": "Showing {{count}} of {{total}} employees"
+        },
+        "table": {
+          "name": "Name",
+          "department": "Department",
+          "status": "Status",
+          "actions": "Actions"
         }
       }
     },
