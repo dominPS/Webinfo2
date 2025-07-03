@@ -223,6 +223,84 @@
         "reportingAnalysis": "Raportowanie i analiza",
         "competencyManagement": "Zarządzanie kompetencjami",
         "integrationsSettings": "Integracje i ustawienia systemu"
+      },
+      "dashboard": {
+        "title": "Dashboard HR",
+        "description": "Przegląd kluczowych wskaźników i postępu ocen",
+        "completion": "Ukończono",
+        "activeEvaluations": "Aktywne oceny",
+        "pendingApprovals": "Oczekujące zatwierdzenia",
+        "overdue": "Zaległe"
+      },
+      "modules": {
+        "evaluationRounds": "Rundy ocen",
+        "progressRounds": "Postęp rundy",
+        "evaluationCalendar": "Kalendarz ocen",
+        "systemNotifications": "Powiadomienia systemowe",
+        "moduleShortcuts": "Skróty modułów",
+        "hrTaskList": "Lista zadań HR",
+        "completionPercentage": "Procent ukończenia",
+        "scheduleHarmonogram": "Harmonogram",
+        "alerts": "Alerty",
+        "navigationTiles": "Kafelki nawigacyjne",
+        "todoList": "Lista zadań"
+      },
+      "alerts": {
+        "title": "Alerty systemowe",
+        "overdueEvaluations": "Zaległe oceny wymagają uwagi",
+        "overdueEvaluationsDesc": "5 ocen przekroczyło termin wykonania",
+        "pendingApprovals": "Oczekujące zatwierdzenia",
+        "pendingApprovalsDesc": "12 IDP czeka na zatwierdzenie kierowników",
+        "systemMaintenance": "Planowana konserwacja systemu",
+        "systemMaintenanceDesc": "Konserwacja zaplanowana na weekend"
+      },
+      "navigation": {
+        "title": "Nawigacja modułów",
+        "evaluationManagement": "Zarządzanie ocenami",
+        "reportingTools": "Narzędzia raportowania",
+        "employeeDatabase": "Baza pracowników",
+        "systemSettings": "Ustawienia systemu"
+      },
+      "todo": {
+        "title": "Lista zadań",
+        "reviewIDPs": "Przejrzyj 8 nowych planów IDP",
+        "generateReports": "Wygeneruj raporty miesięczne",
+        "updateEvaluationForms": "Zaktualizuj formularze ocen",
+        "approvals": "Zatwierdzenia (8)",
+        "reminders": "Przypomnienia (15)",
+        "edits": "Edycje (3)"
+      },
+      "roundManagement": {
+        "title": "Zarządzanie rundami ocen",
+        "back": "Powrót",
+        "processTitle": "Proces tworzenia nowej rundy",
+        "actionsTitle": "Działania na rundach",
+        "steps": {
+          "createRound": "Uruchama kreator nowej rundy oceny",
+          "createRoundDesc": "Rozpocznij proces tworzenia nowej rundy ocen dla organizacji",
+          "editDetails": "Pozwala edytować nazwę, daty, opis, uczestników",
+          "editDetailsDesc": "Skonfiguruj szczegóły rundy: nazwa, termin, uczestników",
+          "selectEmployees": "Wybór pracowników, przypisanie ról ocen",
+          "selectEmployeesDesc": "Wybierz pracowników i przypisz role: samoocena, przełożony",
+          "setDates": "Ustawienia dat rozpoczęcia, zakończenia, przypomnień",
+          "setDatesDesc": "Ustaw harmonogram: start, koniec, przypomnienia",
+          "finalize": "Finalizuje konfigurację i uruchamia proces oceny",
+          "finalizeDesc": "Przejrzyj ustawienia i uruchom rundę ocen"
+        },
+        "actions": {
+          "addRound": "Dodaj nową rundę oceny",
+          "addRoundDesc": "Utwórz nową rundę ocen dla całej organizacji lub wybranych zespołów",
+          "editRound": "Edytuj rundę",
+          "editRoundDesc": "Modyfikuj istniejącą rundę: daty, uczestników, ustawienia",
+          "addParticipants": "Dodaj ocenianych / oceniających",
+          "addParticipantsDesc": "Dodaj nowych uczestników do aktywnej rundy ocen",
+          "setDeadlines": "Ustal terminy",
+          "setDeadlinesDesc": "Ustaw lub zmień terminy dla poszczególnych etapów oceny",
+          "approveRound": "Zatwierdź rundę",
+          "approveRoundDesc": "Potwierdź rundę i aktywuj proces oceniania",
+          "deleteRound": "Usuń rundę (jeśli nie rozpoczęta)",
+          "deleteRoundDesc": "Usuń rundę która jeszcze nie została uruchomiona"
+        }
       }
     },
     "selectEmployee": "Wybierz pracownika do oceny:",
