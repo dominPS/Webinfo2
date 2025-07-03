@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import IDPFlow from './components/IDPFlow';
 import AnnualReviewHistory from './components/AnnualReviewHistory';
+import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
 
 const PageContainer = styled.div`
@@ -121,6 +122,8 @@ const WorkerEvaluationPage: React.FC = () => {
       setActiveFlow('idp');
     } else if (controlType === 'annualReview') {
       setActiveFlow('annualReview');
+    } else if (controlType === 'selfAssessment') {
+      setActiveFlow('selfAssessment');
     } else if (controlType === 'whiteValues') {
       setIsWhiteValuesModalOpen(true);
     } else {
@@ -161,6 +164,17 @@ const WorkerEvaluationPage: React.FC = () => {
             ← {t('common.backToDashboard', 'Powrót do Dashboard')}
           </BackButton>
           <AnnualReviewHistory />
+        </ContentWrapper>
+      </PageContainer>
+    );
+  }
+
+  // If Self-Assessment flow is active, show it instead of the main dashboard
+  if (activeFlow === 'selfAssessment') {
+    return (
+      <PageContainer>
+        <ContentWrapper>
+          <SelfEvaluationPage showBackButton={true} onBack={handleBackToDashboard} />
         </ContentWrapper>
       </PageContainer>
     );

@@ -40,6 +40,8 @@
     "menu": "Menu",
     "cancel": "Cancel",
     "submit": "Submit Evaluation",
+    "save": "Save Draft",
+    "back": "Back",
     "backToDashboard": "Back",
     "previous": "Previous",
     "next": "Next"
@@ -179,7 +181,11 @@
         "draft": "Draft",
         "submitted": "Submitted",
         "approved": "Approved"
-      }
+      },
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "requires_revision": "Requires Revision"
     },
     "hr": {
       "title": "HR Evaluation",
@@ -228,7 +234,40 @@
     "comments": {
       "title": "Additional Comments",
       "placeholder": "Provide any additional feedback or observations..."
-    }
+    },
+    "selfEvaluation": {
+      "title": "Self-Evaluation Form",
+      "subtitle": "Evaluate your work and professional development over the recent period",
+      "pageTitle": "My Self-Evaluations",
+      "pageDescription": "Manage your self-evaluations and track your professional development",
+      "createNew": "Create New Self-Evaluation",
+      "noEvaluations": "You don't have any self-evaluations yet",
+      "cardTitle": "Self-Evaluation for {{period}}",
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete",
+      "backToMain": "Back to Main"
+    },
+    "messages": {
+      "saved": "Self-evaluation has been saved as draft",
+      "submitted": "Self-evaluation has been submitted to supervisor"
+    },
+    "overall": {
+      "title": "Overall Evaluation",
+      "rating": "Overall Rating",
+      "comments": "Final Comments",
+      "commentsPlaceholder": "Additional notes and comments...",
+      "managerFeedback": "Manager Feedback"
+    },
+    "placeholders": {
+      "communication": "Describe your communication skills...",
+      "teamwork": "Describe your teamwork abilities...",
+      "leadership": "Describe your leadership and initiative...",
+      "problemSolving": "Describe your problem-solving approach...",
+      "development": "Describe your professional development..."
+    },
+    "submissionDate": "Submission Date",
+    "lastModified": "Last Modified"
   },
   "review": {
     "tabs": {
@@ -337,6 +376,46 @@
       }
     }
   },
+  "personalInfo": {
+    "title": "Personal Information",
+    "employeeId": "Employee ID",
+    "name": "Full Name",
+    "position": "Position",
+    "department": "Department",
+    "period": "Evaluation Period"
+  },
+  "performanceAreas": {
+    "title": "Performance Areas",
+    "jobPerformance": "Job Performance",
+    "communication": "Communication",
+    "teamwork": "Teamwork",
+    "leadership": "Leadership/Initiative",
+    "problemSolving": "Problem Solving",
+    "development": "Professional Development",
+    "comments": "Comments",
+    "commentsPlaceholder": "Describe your achievements and challenges..."
+  },
+  "goals": {
+    "title": "Goals and Development",
+    "achievements": "Key Achievements",
+    "challenges": "Challenges Faced",
+    "futureGoals": "Future Goals",
+    "developmentAreas": "Development Areas",
+    "additionalComments": "Additional Comments",
+    "achieved": "Goals Achieved This Year",
+    "achievedPlaceholder": "List the goals you managed to achieve...",
+    "nextYear": "Goals for Next Year",
+    "nextYearPlaceholder": "Describe your professional goals for next year...",
+    "skills": "Skills to Develop",
+    "skillsPlaceholder": "What skills do you want to develop..."
+  },
+  "rating": {
+    "poor": "Poor",
+    "below": "Below Expectations",
+    "meets": "Meets Expectations",
+    "exceeds": "Exceeds Expectations",
+    "outstanding": "Outstanding"
+  },
   "idp": {
     "flow": {
       "title": "Individual Development Plan (IDP)"
@@ -429,6 +508,17 @@
       "approved": "Approved",
       "correction_needed": "Correction Needed"
     }
+  },
+  "selfEvaluation": {
+    "pageTitle": "My Self-Evaluations",
+    "pageDescription": "Manage your self-evaluations and track your professional development",
+    "createNew": "Create New Self-Evaluation",
+    "noEvaluations": "You don't have any self-evaluations yet",
+    "cardTitle": "Self-Evaluation for {{period}}",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete",
+    "backToMain": "Back to Main"
   },
   "annualReview": {
     "history": {

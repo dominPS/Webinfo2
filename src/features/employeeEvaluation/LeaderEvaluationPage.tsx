@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import IDPFlow from './components/LeaderIDPFlow';
 import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
 import LeaderTeamEvaluationFlow from './components/LeaderTeamEvaluationFlow';
+import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
 
 interface Employee {
@@ -410,7 +411,12 @@ const LeaderEvaluationPage: React.FC = () => {
       setActiveFlow('idp');
     } else if (controlType === 'annualReview') {
       setActiveFlow('annualReview');
+    } else if (controlType === 'selfAssessment') {
+      setActiveFlow('selfAssessment');
     } else if (controlType === 'meAndDirectReports') {
+      // Reset team flow state when entering
+      setTeamFlowStep('team-overview');
+      setBackTrigger(false);
       setActiveFlow('teamEvaluation');
     } else if (controlType === 'whiteValues') {
       setIsWhiteValuesModalOpen(true);
@@ -432,6 +438,7 @@ const LeaderEvaluationPage: React.FC = () => {
     }
     setActiveFlow(null);
     setTeamFlowStep('team-overview');
+    setBackTrigger(false); // Reset the back trigger
   };
 
   const handleTeamFlowStepChange = (step: string) => {
@@ -499,6 +506,17 @@ const LeaderEvaluationPage: React.FC = () => {
             ← {t('common.backToDashboard', 'Powrót')}
           </BackButton>
           <AnnualReviewHistory />
+        </ContentWrapper>
+      </PageContainer>
+    );
+  }
+
+  // If Self-Assessment flow is active, show it instead of the main dashboard
+  if (activeFlow === 'selfAssessment') {
+    return (
+      <PageContainer>
+        <ContentWrapper>
+          <SelfEvaluationPage showBackButton={true} onBack={handleBackToDashboard} />
         </ContentWrapper>
       </PageContainer>
     );

@@ -78,7 +78,7 @@ const ProcessStep = styled.div<{ isActive: boolean; isCompleted: boolean }>`
 
   &:hover {
     border-color: #126678;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(18, 102, 120, 0.15);
   }
 `;
 
@@ -102,7 +102,7 @@ const FilterContainer = styled.div`
   padding: 16px;
   background-color: #f8f9fa;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e7eb;
 `;
 
 const FilterInput = styled.input`
@@ -114,7 +114,8 @@ const FilterInput = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #2196f3;
+    border-color: #126678;
+    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
   }
 `;
 
@@ -128,14 +129,15 @@ const FilterSelect = styled.select`
   
   &:focus {
     outline: none;
-    border-color: #2196f3;
+    border-color: #126678;
+    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
   }
 `;
 
 const FilterLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #374151;
   margin-right: 8px;
 `;
 
@@ -161,22 +163,24 @@ const EmployeeTable = styled.div`
 
 const EmployeeTableHeader = styled.div`
   display: grid;
-  grid-template-columns: 80px 1fr 120px 120px auto;
+  grid-template-columns: 80px 2fr 1fr 140px 180px;
   gap: 16px;
   padding: 16px;
   background-color: #f8f9fa;
   font-weight: 600;
   color: #374151;
   border-bottom: 1px solid #e5e7eb;
+  align-items: center;
 `;
 
 const EmployeeTableRow = styled.div`
   display: grid;
-  grid-template-columns: 80px 1fr 120px 120px auto;
+  grid-template-columns: 80px 2fr 1fr 140px 180px;
   gap: 16px;
   padding: 16px;
   border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.2s ease;
+  align-items: center;
 
   &:hover {
     background-color: #f8f9fa;
@@ -207,12 +211,14 @@ const EmployeeDepartmentCell = styled.div`
 const StatusCell = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 `;
 
 const ActionCell = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: flex-start;
 `;
 
 const EmployeeGrid = styled.div`
@@ -231,7 +237,7 @@ const EmployeeCard = styled.div`
 
   &:hover {
     border-color: #126678;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(18, 102, 120, 0.15);
   }
 `;
 
@@ -256,6 +262,8 @@ const StatusBadge = styled.span<{ status: string }>`
   font-weight: 500;
   margin-right: 8px;
   margin-bottom: 4px;
+  min-width: 100px;
+  text-align: center;
   
   ${props => {
     switch (props.status) {
@@ -299,13 +307,20 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button<{ variant: 'primary' | 'secondary' | 'success' }>`
-  padding: 6px 14px;
+  padding: 8px 16px;
   border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
+  min-width: 140px;
+  max-width: 140px;
+  height: 36px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
   ${props => {
     switch (props.variant) {
@@ -320,7 +335,7 @@ const ActionButton = styled.button<{ variant: 'primary' | 'secondary' | 'success
           background-color: white;
           color: #126678;
           border: 2px solid #126678;
-          &:hover { background-color: #f8f9fa; }
+          &:hover { background-color: #f0f9ff; }
         `;
       case 'success':
         return `
@@ -381,6 +396,14 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
       handleBackNavigation();
     }
   }, [backTrigger]);
+
+  // Reset component state when component is re-mounted or reset
+  React.useEffect(() => {
+    // Reset to initial state when component is first mounted
+    setCurrentStep('team-overview');
+    setSelectedEmployee(null);
+    resetFilters();
+  }, []);
 
   // Mock data - w rzeczywistej aplikacji to byłoby pobrane z API
   const teamMembers: Employee[] = [

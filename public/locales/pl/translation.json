@@ -40,6 +40,8 @@
     "menu": "Menu",
     "cancel": "Anuluj",
     "submit": "Zatwierdź ocenę",
+    "save": "Zapisz szkic",
+    "back": "Powrót",
     "backToDashboard": "Powrót",
     "previous": "Poprzedni",
     "next": "Następny"
@@ -184,7 +186,11 @@
         "draft": "Szkic",
         "submitted": "Przesłane",
         "approved": "Zatwierdzone"
-      }
+      },
+      "draft": "Szkic",
+      "submitted": "Wysłane",
+      "approved": "Zatwierdzone",
+      "requires_revision": "Wymaga poprawek"
     },
     "hr": {
       "title": "Ocena HR",
@@ -233,6 +239,70 @@
     "comments": {
       "title": "Dodatkowe komentarze",
       "placeholder": "Podaj dodatkowe opinie lub uwagi..."
+    },
+    "selfEvaluation": {
+      "title": "Formularz Samooceny",
+      "subtitle": "Oceń swoją pracę i rozwój zawodowy w ostatnim okresie",
+      "pageTitle": "Moje Samooceny",
+      "pageDescription": "Zarządzaj swoimi samoocenami i śledź postępy w rozwoju zawodowym",
+      "createNew": "Utwórz nową samoocenę",
+      "cardTitle": "Samoocena za okres {{period}}",
+      "noEvaluations": "Nie masz jeszcze żadnych samoocen"
+    },
+    "personalInfo": {
+      "title": "Informacje podstawowe",
+      "employeeId": "ID Pracownika",
+      "name": "Imię i nazwisko",
+      "position": "Stanowisko",
+      "department": "Dział",
+      "period": "Okres oceny"
+    },
+    "performanceAreas": {
+      "title": "Obszary wydajności",
+      "jobPerformance": "Wykonywanie obowiązków",
+      "communication": "Komunikacja",
+      "teamwork": "Praca zespołowa",
+      "leadership": "Przywództwo/Inicjatywa",
+      "problemSolving": "Rozwiązywanie problemów",
+      "development": "Rozwój zawodowy",
+      "comments": "Komentarze",
+      "commentsPlaceholder": "Opisz swoje osiągnięcia i wyzwania..."
+    },
+    "rating": {
+      "poor": "Niewystarczający",
+      "below": "Poniżej oczekiwań",
+      "meets": "Spełnia oczekiwania",
+      "exceeds": "Przekracza oczekiwania",
+      "outstanding": "Wybitny"
+    },
+    "goals": {
+      "title": "Cele i rozwój",
+      "achieved": "Cele osiągnięte w tym roku",
+      "achievedPlaceholder": "Wymień cele które udało Ci się osiągnąć...",
+      "nextYear": "Cele na następny rok",
+      "nextYearPlaceholder": "Opisz swoje cele zawodowe na następny rok...",
+      "skills": "Umiejętności do rozwijania",
+      "skillsPlaceholder": "Jakie umiejętności chcesz rozwijać..."
+    },
+    "overall": {
+      "title": "Ocena ogólna",
+      "rating": "Ogólna ocena",
+      "comments": "Komentarze końcowe",
+      "commentsPlaceholder": "Dodatkowe uwagi i komentarze...",
+      "managerFeedback": "Feedback od przełożonego"
+    },
+    "messages": {
+      "saved": "Samoocena została zapisana jako szkic",
+      "submitted": "Samoocena została wysłana do przełożonego"
+    },
+    "submissionDate": "Data wysłania",
+    "lastModified": "Ostatnia modyfikacja",
+    "placeholders": {
+      "communication": "Opisz swoje umiejętności komunikacyjne...",
+      "teamwork": "Opisz swój wkład w pracę zespołu...",
+      "leadership": "Opisz swoje inicjatywy i przywództwo...",
+      "problemSolving": "Opisz przykłady rozwiązywania problemów...",
+      "development": "Opisz swój rozwój i naukę..."
     }
   },
   "review": {
