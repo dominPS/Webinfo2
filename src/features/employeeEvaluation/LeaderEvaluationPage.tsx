@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import IDPFlow from './components/LeaderIDPFlow';
 import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
+import LeaderTeamEvaluationFlow from './components/LeaderTeamEvaluationFlow';
 import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
 
 const PageContainer = styled.div`
@@ -121,6 +122,8 @@ const LeaderEvaluationPage: React.FC = () => {
       setActiveFlow('idp');
     } else if (controlType === 'annualReview') {
       setActiveFlow('annualReview');
+    } else if (controlType === 'meAndDirectReports') {
+      setActiveFlow('teamEvaluation');
     } else if (controlType === 'whiteValues') {
       setIsWhiteValuesModalOpen(true);
     } else {
@@ -138,13 +141,27 @@ const LeaderEvaluationPage: React.FC = () => {
     setIsWhiteValuesModalOpen(false);
   };
 
+  // If Team Evaluation flow is active, show it instead of the main dashboard
+  if (activeFlow === 'teamEvaluation') {
+    return (
+      <PageContainer>
+        <ContentWrapper>
+          <BackButton onClick={handleBackToDashboard}>
+            ← {t('common.backToDashboard', 'Powrót')}
+          </BackButton>
+          <LeaderTeamEvaluationFlow />
+        </ContentWrapper>
+      </PageContainer>
+    );
+  }
+
   // If IDP flow is active, show it instead of the main dashboard
   if (activeFlow === 'idp') {
     return (
       <PageContainer>
         <ContentWrapper>
           <BackButton onClick={handleBackToDashboard}>
-            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+            ← {t('common.backToDashboard', 'Powrót')}
           </BackButton>
           <IDPFlow />
         </ContentWrapper>
@@ -158,7 +175,7 @@ const LeaderEvaluationPage: React.FC = () => {
       <PageContainer>
         <ContentWrapper>
           <BackButton onClick={handleBackToDashboard}>
-            ← {t('common.backToDashboard', 'Powrót do Dashboard')}
+            ← {t('common.backToDashboard', 'Powrót')}
           </BackButton>
           <AnnualReviewHistory />
         </ContentWrapper>

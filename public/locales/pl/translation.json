@@ -119,6 +119,58 @@
         "annualReview": "Roczna ocena",
         "selfAssessment": "Samoocena",
         "whiteValues": "Wartości firmy"
+      },
+      "team": {
+        "title": "Ja i Moi Bezpośredni Podwładni",
+        "description": "Zarządzaj procesami oceny i rozwoju swojego zespołu",
+        "overview": {
+          "title": "Przegląd zespołu"
+        },
+        "stats": {
+          "total": "Członkowie zespołu",
+          "completed": "Ukończone oceny", 
+          "idps": "Aktywne IDP",
+          "pending": "Oczekujące akcje"
+        },
+        "annualReview": {
+          "title": "Oceny Roczne",
+          "description": "Zarządzaj rocznymi ocenami wydajności swojego zespołu"
+        },
+        "idp": {
+          "title": "Plany IDP",
+          "description": "Przeglądaj i zatwierdź indywidualne plany rozwoju"
+        },
+        "employeeDetail": {
+          "title": "Szczegóły pracownika"
+        },
+        "review": "Ocena",
+        "currentStatus": "Aktualny status",
+        "actions": {
+          "startReview": "Rozpocznij ocenę",
+          "continueReview": "Kontynuuj ocenę",
+          "reviewCorrections": "Sprawdź poprawki",
+          "viewReview": "Zobacz ocenę",
+          "createIDP": "Utwórz IDP",
+          "reviewDraft": "Sprawdź szkic",
+          "approveIDP": "Zatwierdź IDP",
+          "viewIDP": "Zobacz IDP",
+          "manageReview": "Zarządzaj oceną",
+          "manageIDP": "Zarządzaj IDP"
+        }
+      }
+    },
+    "status": {
+      "review": {
+        "not_started": "Nie rozpoczęto",
+        "in_progress": "W trakcie",
+        "completed": "Ukończone",
+        "requires_correction": "Wymaga poprawek"
+      },
+      "idp": {
+        "not_started": "Nie rozpoczęto",
+        "draft": "Szkic",
+        "submitted": "Przesłane",
+        "approved": "Zatwierdzone"
       }
     },
     "hr": {

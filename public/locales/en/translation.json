@@ -114,6 +114,58 @@
         "annualReview": "Annual Review",
         "selfAssessment": "Self-Assessment",
         "whiteValues": "Company Values"
+      },
+      "team": {
+        "title": "Me and My Direct Reports",
+        "description": "Manage evaluation and development processes for your team",
+        "overview": {
+          "title": "Team Overview"
+        },
+        "stats": {
+          "total": "Team Members",
+          "completed": "Completed Reviews", 
+          "idps": "Active IDPs",
+          "pending": "Pending Actions"
+        },
+        "annualReview": {
+          "title": "Annual Reviews",
+          "description": "Manage annual performance reviews for your team"
+        },
+        "idp": {
+          "title": "IDP Plans",
+          "description": "Review and approve individual development plans"
+        },
+        "employeeDetail": {
+          "title": "Employee Details"
+        },
+        "review": "Review",
+        "currentStatus": "Current Status",
+        "actions": {
+          "startReview": "Start Review",
+          "continueReview": "Continue Review",
+          "reviewCorrections": "Review Corrections",
+          "viewReview": "View Review",
+          "createIDP": "Create IDP",
+          "reviewDraft": "Review Draft",
+          "approveIDP": "Approve IDP",
+          "viewIDP": "View IDP",
+          "manageReview": "Manage Review",
+          "manageIDP": "Manage IDP"
+        }
+      }
+    },
+    "status": {
+      "review": {
+        "not_started": "Not Started",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "requires_correction": "Requires Correction"
+      },
+      "idp": {
+        "not_started": "Not Started",
+        "draft": "Draft",
+        "submitted": "Submitted",
+        "approved": "Approved"
       }
     },
     "hr": {
