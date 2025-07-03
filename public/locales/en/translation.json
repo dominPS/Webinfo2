@@ -121,13 +121,32 @@
         "title": "Me and My Direct Reports",
         "description": "Manage evaluation and development processes for your team",
         "overview": {
-          "title": "Team Overview"
+          "title": "Team Overview",
+          "description": "Summary of team performance and progress in the current period"
         },
         "stats": {
           "total": "Team Members",
           "completed": "Completed Reviews", 
           "idps": "Active IDPs",
           "pending": "Pending Actions"
+        },
+        "metrics": {
+          "totalMembers": "Total Team Members",
+          "completionRate": "Completion Rate",
+          "averageScore": "Average Score",
+          "improvementRate": "Year-over-Year Improvement"
+        },
+        "charts": {
+          "reviewStatus": "Annual Review Status",
+          "reviewStatusDesc": "Distribution of annual review statuses in the team",
+          "idpStatus": "IDP Plan Status",
+          "idpStatusDesc": "Progress in creating individual development plans",
+          "departmentPerformance": "Performance by Department",
+          "departmentPerformanceDesc": "Comparison of review progress between departments",
+          "progressTrend": "Progress Trend",
+          "progressTrendDesc": "Monthly progress in team evaluation completion",
+          "performanceTimeline": "Team Performance Timeline",
+          "performanceTimelineDesc": "Detailed analysis of team progress over time"
         },
         "annualReview": {
           "title": "Annual Reviews",

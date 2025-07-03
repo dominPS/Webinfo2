@@ -6,6 +6,7 @@ import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
 import LeaderTeamEvaluationFlow from './components/LeaderTeamEvaluationFlow';
 import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
+import TeamCharts from './components/TeamCharts';
 
 interface Employee {
   id: string;
@@ -55,7 +56,7 @@ const ControlsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 18px;
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 32px auto;
 `;
 
 const ControlButton = styled.button`
@@ -532,6 +533,32 @@ const LeaderEvaluationPage: React.FC = () => {
           </PageDescription>
         </PageHeader>
 
+        <ControlsGrid>
+          <ControlButton onClick={() => handleControlClick('whiteValues')}>
+            {t('evaluation.leader.controls.whiteValues', 'Company Values')}
+          </ControlButton>
+          
+          <ControlButton onClick={() => handleControlClick('meAndDirectReports')}>
+            {t('evaluation.leader.controls.meAndDirectReports', 'Me and My Direct Reports')}
+          </ControlButton>
+          
+          <ControlButton onClick={() => handleControlClick('helpContactHR')}>
+            {t('evaluation.leader.controls.helpContactHR', 'Help and Contact with HR')}
+          </ControlButton>
+          
+          <ControlButton onClick={() => handleControlClick('idp')}>
+            {t('evaluation.leader.controls.idp', 'IDP (Individual Development Plan)')}
+          </ControlButton>
+          
+          <ControlButton onClick={() => handleControlClick('annualReview')}>
+            {t('evaluation.leader.controls.annualReview', 'Annual Review')}
+          </ControlButton>
+          
+          <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+            {t('evaluation.leader.controls.selfAssessment', 'Self-Assessment')}
+          </ControlButton>
+        </ControlsGrid>
+
         <TeamOverviewSection>
           <SectionTitle>{t('evaluation.leader.team.overview.title', 'Przegląd zespołu')}</SectionTitle>
           
@@ -553,33 +580,10 @@ const LeaderEvaluationPage: React.FC = () => {
               <StatLabel>{t('evaluation.leader.team.stats.pending', 'Oczekujące akcje')}</StatLabel>
             </StatCard>
           </StatsContainer>
-        </TeamOverviewSection>
 
-        <ControlsGrid>
-        <ControlButton onClick={() => handleControlClick('whiteValues')}>
-          {t('evaluation.leader.controls.whiteValues', 'Company Values')}
-        </ControlButton>
-        
-        <ControlButton onClick={() => handleControlClick('meAndDirectReports')}>
-          {t('evaluation.leader.controls.meAndDirectReports', 'Me and My Direct Reports')}
-        </ControlButton>
-        
-        <ControlButton onClick={() => handleControlClick('helpContactHR')}>
-          {t('evaluation.leader.controls.helpContactHR', 'Help and Contact with HR')}
-        </ControlButton>
-        
-        <ControlButton onClick={() => handleControlClick('idp')}>
-          {t('evaluation.leader.controls.idp', 'IDP (Individual Development Plan)')}
-        </ControlButton>
-        
-        <ControlButton onClick={() => handleControlClick('annualReview')}>
-          {t('evaluation.leader.controls.annualReview', 'Annual Review')}
-        </ControlButton>
-        
-        <ControlButton onClick={() => handleControlClick('selfAssessment')}>
-          {t('evaluation.leader.controls.selfAssessment', 'Self-Assessment')}
-        </ControlButton>
-        </ControlsGrid>
+          {/* Add Team Charts */}
+          <TeamCharts teamMembers={teamMembers} />
+        </TeamOverviewSection>
       </ContentWrapper>
 
       <WhiteValuesModal 

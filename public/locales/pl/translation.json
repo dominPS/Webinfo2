@@ -126,13 +126,32 @@
         "title": "Ja i Moi Bezpośredni Podwładni",
         "description": "Zarządzaj procesami oceny i rozwoju swojego zespołu",
         "overview": {
-          "title": "Przegląd zespołu"
+          "title": "Przegląd zespołu",
+          "description": "Podsumowanie wydajności i postępów zespołu w bieżącym okresie"
         },
         "stats": {
           "total": "Członkowie zespołu",
           "completed": "Ukończone oceny", 
           "idps": "Aktywne IDP",
           "pending": "Oczekujące akcje"
+        },
+        "metrics": {
+          "totalMembers": "Liczba członków zespołu",
+          "completionRate": "Wskaźnik ukończenia",
+          "averageScore": "Średnia ocena",
+          "improvementRate": "Poprawa rok do roku"
+        },
+        "charts": {
+          "reviewStatus": "Status ocen rocznych",
+          "reviewStatusDesc": "Rozkład statusów ocen rocznych w zespole",
+          "idpStatus": "Status planów IDP",
+          "idpStatusDesc": "Postęp w tworzeniu indywidualnych planów rozwoju",
+          "departmentPerformance": "Wydajność według działów",
+          "departmentPerformanceDesc": "Porównanie postępów w ocenach między działami",
+          "progressTrend": "Trend postępów",
+          "progressTrendDesc": "Miesięczny postęp w realizacji ocen zespołu",
+          "performanceTimeline": "Linia czasu wydajności zespołu",
+          "performanceTimelineDesc": "Szczegółowa analiza postępów zespołu na przestrzeni czasu"
         },
         "annualReview": {
           "title": "Oceny Roczne",
