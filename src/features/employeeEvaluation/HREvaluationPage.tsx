@@ -529,11 +529,11 @@ const HREvaluationPage: React.FC = () => {
       <WorkflowGrid>
         {/* Lewa kolumna - Proces tworzenia rundy */}
         <WorkflowSection>
-          <WorkflowTitle>🚀 Proces tworzenia nowej rundy</WorkflowTitle>
+          <WorkflowTitle>Proces tworzenia nowej rundy</WorkflowTitle>
           <WorkflowSteps>
             <WorkflowStep onClick={() => handleWorkflowStepClick('createRound')}>
               <StepBadge>KROK 1</StepBadge>
-              <StepTitle>Uruchama kreator nowej rundy oceny</StepTitle>
+              <StepTitle>Uruchamia kreator nowej rundy oceny</StepTitle>
               <StepDescription>Rozpocznij proces tworzenia nowej rundy ocen dla organizacji</StepDescription>
             </WorkflowStep>
             
@@ -565,7 +565,7 @@ const HREvaluationPage: React.FC = () => {
 
         {/* Prawa kolumna - Działania na rundach */}
         <WorkflowSection>
-          <WorkflowTitle>⚙️ Działania na rundach</WorkflowTitle>
+          <WorkflowTitle>Działania na rundach</WorkflowTitle>
           <WorkflowSteps>
             <WorkflowStep onClick={() => handleWorkflowStepClick('addRound')}>
               <StepTitle>Dodaj nową rundę oceny</StepTitle>

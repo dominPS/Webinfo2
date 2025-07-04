@@ -202,7 +202,6 @@ const TeamCharts: React.FC<TeamChartsProps> = ({ teamMembers }) => {
         {/* Review Status Pie Chart */}
         <ChartCard>
           <ChartTitle>
-            <ChartIcon>📋</ChartIcon>
             {t('evaluation.leader.team.charts.reviewStatus', 'Status ocen rocznych')}
           </ChartTitle>
           <ChartDescription>
@@ -238,7 +237,6 @@ const TeamCharts: React.FC<TeamChartsProps> = ({ teamMembers }) => {
         {/* IDP Status Pie Chart */}
         <ChartCard>
           <ChartTitle>
-            <ChartIcon>🎯</ChartIcon>
             {t('evaluation.leader.team.charts.idpStatus', 'Status planów IDP')}
           </ChartTitle>
           <ChartDescription>
@@ -274,7 +272,6 @@ const TeamCharts: React.FC<TeamChartsProps> = ({ teamMembers }) => {
         {/* Department Performance Bar Chart */}
         <ChartCard>
           <ChartTitle>
-            <ChartIcon>🏢</ChartIcon>
             {t('evaluation.leader.team.charts.departmentPerformance', 'Wydajność według działów')}
           </ChartTitle>
           <ChartDescription>
@@ -304,7 +301,6 @@ const TeamCharts: React.FC<TeamChartsProps> = ({ teamMembers }) => {
         {/* Progress Trend Area Chart */}
         <ChartCard>
           <ChartTitle>
-            <ChartIcon>📈</ChartIcon>
             {t('evaluation.leader.team.charts.progressTrend', 'Trend postępów')}
           </ChartTitle>
           <ChartDescription>
@@ -343,7 +339,6 @@ const TeamCharts: React.FC<TeamChartsProps> = ({ teamMembers }) => {
       {/* Team Performance Timeline */}
       <FullWidthChart>
         <ChartTitle>
-          <ChartIcon>⏱️</ChartIcon>
           {t('evaluation.leader.team.charts.performanceTimeline', 'Linia czasu wydajności zespołu')}
         </ChartTitle>
         <ChartDescription>
