@@ -391,7 +391,14 @@ const ControlButton = styled.button`
 
 /**
  * HR Evaluation Page
- * This page provides HR dashboard controls for managing evaluation processes
+ * 
+ * Started with basic round management - need to expand to:
+ * - Employee selection for rounds
+ * - Form templates management  
+ * - Progress tracking
+ * - Reports generation
+ * 
+ * Current MVP: Create and manage evaluation rounds
  */
 const HREvaluationPage: React.FC = () => {
   const { t } = useTranslation();
@@ -414,16 +421,148 @@ const HREvaluationPage: React.FC = () => {
   const handleModuleClick = (moduleType: string) => {
     console.log(`Module clicked: ${moduleType}`);
     setActiveModule(moduleType);
-    alert(`${moduleType} module coming soon!`);
+    // TODO: Implement actual functionality for ${moduleType}
+    // For now, just showing which module was selected
+    setActiveFlow('moduleDetails');
   };
 
   const handleWorkflowStepClick = (stepType: string) => {
     console.log(`Workflow step clicked: ${stepType}`);
-    alert(`${stepType} functionality coming soon!`);
+    // Start with basic navigation - real implementation would handle actual workflow
+    if (stepType === 'createRound') {
+      setActiveFlow('createRoundForm');
+    } else {
+      // TODO: Implement other workflow steps
+      alert(`${stepType} - funkcjonalność w przygotowaniu`);
+    }
   };
 
   const renderActiveFlow = () => {
     switch (activeFlow) {
+      case 'createRoundForm':
+        return (
+          <PageContainer>
+            <ContentWrapper>
+              <BackButton onClick={handleBackToDashboard}>
+                ← Powrót
+              </BackButton>
+              <RoundManagementContainer>
+                <RoundManagementHeader>
+                  <RoundManagementTitle>Utwórz nową rundę oceny</RoundManagementTitle>
+                </RoundManagementHeader>
+                
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  alert('Runda utworzona! (mockup)');
+                  setActiveFlow('managingAssessmentRounds');
+                }}>
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                      Nazwa rundy:
+                    </label>
+                    <input 
+                      type="text" 
+                      placeholder="np. Oceny półroczne 2025"
+                      style={{ 
+                        width: '100%', 
+                        padding: '12px', 
+                        border: '1px solid #e5e7eb', 
+                        borderRadius: '8px',
+                        fontSize: '14px'
+                      }}
+                      required
+                    />
+                  </div>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                        Data rozpoczęcia:
+                      </label>
+                      <input 
+                        type="date" 
+                        style={{ 
+                          width: '100%', 
+                          padding: '12px', 
+                          border: '1px solid #e5e7eb', 
+                          borderRadius: '8px',
+                          fontSize: '14px'
+                        }}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                        Data zakończenia:
+                      </label>
+                      <input 
+                        type="date" 
+                        style={{ 
+                          width: '100%', 
+                          padding: '12px', 
+                          border: '1px solid #e5e7eb', 
+                          borderRadius: '8px',
+                          fontSize: '14px'
+                        }}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                      Opis rundy:
+                    </label>
+                    <textarea 
+                      rows={3}
+                      placeholder="Krótki opis celu i zakresu rundy ocen..."
+                      style={{ 
+                        width: '100%', 
+                        padding: '12px', 
+                        border: '1px solid #e5e7eb', 
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        resize: 'vertical'
+                      }}
+                    />
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button 
+                      type="submit"
+                      style={{
+                        padding: '12px 24px',
+                        backgroundColor: '#126678',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontWeight: '600',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Utwórz rundę
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => setActiveFlow('managingAssessmentRounds')}
+                      style={{
+                        padding: '12px 24px',
+                        backgroundColor: 'white',
+                        color: '#126678',
+                        border: '2px solid #126678',
+                        borderRadius: '8px',
+                        fontWeight: '600',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Anuluj
+                    </button>
+                  </div>
+                </form>
+              </RoundManagementContainer>
+            </ContentWrapper>
+          </PageContainer>
+        );
       case 'managingAssessmentRounds':
         return (
           <PageContainer>
@@ -639,16 +778,18 @@ const HREvaluationPage: React.FC = () => {
           {t('evaluation.hr.controls.managingAssessmentRounds', 'Zarządzanie rundami ocen')}
         </ControlButton>
         
-        <ControlButton onClick={() => handleControlClick('assessmentForms')}>
-          {t('evaluation.hr.controls.assessmentForms', 'Formularze ocen')}
-        </ControlButton>
-        
         <ControlButton onClick={() => handleControlClick('monitoringProgress')}>
-          {t('evaluation.hr.controls.monitoringProgress', 'Monitorowanie postępu ocen')}
+          {t('evaluation.hr.controls.monitoringProgress', 'Postęp ocen')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('reportingAnalysis')}>
-          {t('evaluation.hr.controls.reportingAnalysis', 'Raporty i analiza')}
+          {t('evaluation.hr.controls.reportingAnalysis', 'Raporty')}
+        </ControlButton>
+        
+        {/* Temporarily hide these until we implement them */}
+        {/* 
+        <ControlButton onClick={() => handleControlClick('assessmentForms')}>
+          {t('evaluation.hr.controls.assessmentForms', 'Formularze ocen')}
         </ControlButton>
         
         <ControlButton onClick={() => handleControlClick('competencyManagement')}>
@@ -658,6 +799,7 @@ const HREvaluationPage: React.FC = () => {
         <ControlButton onClick={() => handleControlClick('integrationsSettings')}>
           {t('evaluation.hr.controls.integrationsSettings', 'Integracje i ustawienia')}
         </ControlButton>
+        */}
       </ControlsGrid>
 
       <MainLayout>
@@ -687,75 +829,39 @@ const HREvaluationPage: React.FC = () => {
         </DashboardCard>
 
         <ContentSection>
-          {/* Rundy ocen, Formularze, Raporty */}
+          {/* Quick Actions */}
           <ModuleSection>
             <SectionTitle>
-              {t('evaluation.hr.modules.evaluationRounds', 'Rundy ocen')}
+              Szybkie akcje
             </SectionTitle>
             <ModuleGrid>
-              <ModuleButton onClick={() => handleModuleClick('progressRounds')}>
-                {t('evaluation.hr.modules.progressRounds', 'Postęp rundy')}
+              <ModuleButton onClick={() => setActiveFlow('createRoundForm')}>
+                Utwórz nową rundę ocen
               </ModuleButton>
-              <ModuleButton onClick={() => handleModuleClick('evaluationCalendar')}>
-                {t('evaluation.hr.modules.evaluationCalendar', 'Kalendarz ocen')}
+              <ModuleButton onClick={() => handleModuleClick('viewActiveRounds')}>
+                Zobacz aktywne rundy
               </ModuleButton>
-              <ModuleButton onClick={() => handleModuleClick('systemNotifications')}>
-                {t('evaluation.hr.modules.systemNotifications', 'Powiadomienia systemowe')}
+              <ModuleButton onClick={() => handleModuleClick('pendingApprovals')}>
+                Oczekujące zatwierdzenia (3)
               </ModuleButton>
             </ModuleGrid>
           </ModuleSection>
 
+          {/* Alerts - keeping this as it's useful */}
           <ModuleSection>
             <SectionTitle>
-              {t('evaluation.hr.modules.reports', 'Raporty')}
-            </SectionTitle>
-            <ModuleGrid>
-              <ModuleButton onClick={() => handleModuleClick('completionPercentage')}>
-                {t('evaluation.hr.modules.completionPercentage', 'Pokaż % zakończonych ocen, liczba wypełnionych formularzy')}
-              </ModuleButton>
-              <ModuleButton onClick={() => handleModuleClick('scheduleHarmonogram')}>
-                {t('evaluation.hr.modules.scheduleHarmonogram', 'Pokaż harmonogram rund ocen i przypomnienia')}
-              </ModuleButton>
-            </ModuleGrid>
-          </ModuleSection>
-
-          {/* Alerty */}
-          <ModuleSection>
-            <SectionTitle>
-              {t('evaluation.hr.modules.alerts', 'Alerty o zaległych ocenach, zbliżających się terminach, błędach')}
+              Uwagi wymagające uwagi
             </SectionTitle>
             <div>
               <AlertItem>
-                <AlertTitle>{t('evaluation.hr.alerts.overdue', 'Zaległe oceny')}</AlertTitle>
-                <AlertDescription>{t('evaluation.hr.alerts.overdueDesc', '5 pracowników ma zaległe oceny przekraczające 2 tygodnie')}</AlertDescription>
+                <AlertTitle>Zaległe oceny</AlertTitle>
+                <AlertDescription>5 pracowników ma zaległe oceny przekraczające 2 tygodnie</AlertDescription>
               </AlertItem>
               <AlertItem>
-                <AlertTitle>{t('evaluation.hr.alerts.upcoming', 'Zbliżające się terminy')}</AlertTitle>
-                <AlertDescription>{t('evaluation.hr.alerts.upcomingDesc', '12 ocen kończy się w ciągu najbliższych 3 dni')}</AlertDescription>
-              </AlertItem>
-              <AlertItem>
-                <AlertTitle>{t('evaluation.hr.alerts.errors', 'Błędy systemowe')}</AlertTitle>
-                <AlertDescription>{t('evaluation.hr.alerts.errorsDesc', '2 formularze wymagają sprawdzenia przez administratora')}</AlertDescription>
+                <AlertTitle>Zbliżające się terminy</AlertTitle>
+                <AlertDescription>12 ocen kończy się w ciągu najbliższych 3 dni</AlertDescription>
               </AlertItem>
             </div>
-          </ModuleSection>
-
-          {/* Lista rzeczy do wykonania */}
-          <ModuleSection>
-            <SectionTitle>
-              {t('evaluation.hr.modules.todoList', 'Lista rzeczy do wykonania: zatwierdzenia, przypomnienia, edycje')}
-            </SectionTitle>
-            <ModuleGrid>
-              <ModuleButton onClick={() => handleModuleClick('approvals')}>
-                {t('evaluation.hr.todo.approvals', 'Zatwierdzenia (8)')}
-              </ModuleButton>
-              <ModuleButton onClick={() => handleModuleClick('reminders')}>
-                {t('evaluation.hr.todo.reminders', 'Przypomnienia (15)')}
-              </ModuleButton>
-              <ModuleButton onClick={() => handleModuleClick('edits')}>
-                {t('evaluation.hr.todo.edits', 'Edycje (3)')}
-              </ModuleButton>
-            </ModuleGrid>
           </ModuleSection>
         </ContentSection>
       </MainLayout>
