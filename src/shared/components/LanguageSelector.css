@@ -1,0 +1,54 @@
+/* LanguageSelector component styles */
+.language-selector {
+  position: relative;
+}
+
+.language-selector__button {
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.language-selector__button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.language-selector__menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 8px 0;
+  display: none;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.language-selector__menu--open {
+  display: block;
+}
+
+.language-selector__item {
+  width: 100%;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: #333333;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.language-selector__item:hover {
+  background: #f8f9fa;
+}

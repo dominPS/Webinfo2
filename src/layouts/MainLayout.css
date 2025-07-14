@@ -1,0 +1,166 @@
+/* MainLayout.css */
+/* Main layout for the application - converted from styled-components to classic CSS */
+
+/* Layout constants */
+:root {
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 50px;
+  --top-spacing: 30px;
+}
+
+/* Main container that holds everything */
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding-top: var(--top-spacing);
+  padding-bottom: var(--top-spacing);
+  padding-left: var(--sidebar-width);
+  transition: padding-left 0.3s ease;
+}
+
+.main-layout--sidebar-collapsed {
+  padding-left: var(--sidebar-collapsed-width);
+}
+
+/* Content area (everything except sidebar) */
+.main-layout__content {
+  flex: 1;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - calc(var(--top-spacing) * 2));
+}
+
+/* Main content area where pages are rendered */
+.main-layout__main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 30px;
+  min-height: 0; /* Allow flex child to shrink below content size */
+}
+
+/* Custom scrollbar for main content */
+.main-layout__main-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.main-layout__main-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 6px;
+}
+
+.main-layout__main-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+
+.main-layout__main-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Top bar styles */
+.main-layout__top-bar {
+  background: #126678;
+  border-radius: 12px;
+  height: 120px;
+  padding: 0 40px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Top bar left section (logo, menu) */
+.main-layout__top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Top bar right section (notifications, profile) */
+.main-layout__top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Notification button */
+.main-layout__notification-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  font-size: 16px;
+}
+
+.main-layout__notification-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Profile button */
+.main-layout__profile-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.main-layout__profile-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-layout {
+    padding-left: 0;
+    flex-direction: column;
+  }
+  
+  .main-layout__content {
+    padding: 0 16px;
+  }
+  
+  .main-layout__top-bar {
+    height: 80px;
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+  
+  .main-layout__top-bar-right {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-layout__top-bar {
+    height: 60px;
+    padding: 0 12px;
+  }
+  
+  .main-layout__top-bar-left,
+  .main-layout__top-bar-right {
+    gap: 8px;
+  }
+  
+  .main-layout__notification-button,
+  .main-layout__profile-button {
+    padding: 4px 8px;
+  }
+}

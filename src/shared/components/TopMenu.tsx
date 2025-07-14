@@ -1,71 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { MenuIcon } from './MenuIcon';
-
-const MenuContainer = styled.div`
-  position: relative;
-  margin-right: 24px;
-`;
-
-const MenuButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  color: white;
-  cursor: pointer;
-  padding: 8px;
-  background: transparent;
-  border: none;
-  transition: opacity 0.2s;
-  min-width: 110px;
-  justify-content: flex-start;
-  opacity: 0.9;
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const DropdownMenu = styled.div<{ isOpen: boolean }>`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 8px;
-  background: white;
-  border-radius: ${props => props.theme.borderRadius.medium};
-  box-shadow: ${props => props.theme.shadows.medium};
-  padding: 8px 0;
-  display: ${props => props.isOpen ? 'block' : 'none'};
-  min-width: 200px;
-  z-index: 1000;
-`;
-
-const MenuItem = styled.button`
-  width: 100%;
-  padding: 12px 16px;
-  background: transparent;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  color: ${props => props.theme.colors.text.primary};
-  font-size: 14px;
-  transition: all 0.2s ease;
-  font-weight: 500;
-
-  &:hover {
-    background: ${props => props.theme.colors.background};
-    color: ${props => props.theme.colors.primary};
-  }
-`;
+import './TopMenu.css';
 
 const menuItems = [
   { key: 'licenses', path: '/licenses' },
@@ -99,20 +36,22 @@ export const TopMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   return (
-    <MenuContainer ref={menuRef}>      <MenuButton onClick={toggleMenu}>
+    <div className="top-menu" ref={menuRef}>
+      <button className="top-menu__button" onClick={toggleMenu}>
         <MenuIcon />
         {t('common.menu')}
-      </MenuButton>
-      <DropdownMenu isOpen={isOpen}>
+      </button>
+      <div className={`top-menu__dropdown ${isOpen ? 'top-menu__dropdown--open' : ''}`}>
         {menuItems.map(item => (
-          <MenuItem
+          <button
             key={item.key}
+            className="top-menu__item"
             onClick={() => handleItemClick(item.path)}
           >
             {t(`topMenu.${item.key}`)}
-          </MenuItem>
+          </button>
         ))}
-      </DropdownMenu>
-    </MenuContainer>
+      </div>
+    </div>
   );
 };

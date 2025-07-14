@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '@/shared/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
 import { useUIState } from '@/hooks/useUIState';
 import { useSidebar } from '@/contexts/SidebarContext';
+import './Sidebar.css';
 import WorkerdetailsIcon from '@/shared/assets/icons/Workerdetails.png';
 import MobileAppsIcon from '@/shared/assets/icons/mobileapps.png';
 import AssignmentsIcon from '@/shared/assets/icons/assigments.png';
@@ -29,147 +29,6 @@ import {
   ProjectsActivitiesIcon,
   EmployeeReviewIcon
 } from '@/shared/components/PlaceholderIcons';
-
-const SIDEBAR_WIDTH = 280;
-const COLLAPSED_SIDEBAR_WIDTH = 50;
-const TOP_SPACING = 30;
-
-const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
-  width: ${props => props.$isCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
-  position: fixed;
-  top: ${TOP_SPACING}px;
-  bottom: ${TOP_SPACING}px;
-  left: 0;
-  background: ${props => props.theme.colors.primary};
-  border-radius: 0 20px 20px 0;
-  display: flex;
-  flex-direction: column;
-  box-shadow: ${props => props.theme.shadows.medium};
-  z-index: 10;
-  transition: width 0.3s ease;
-  overflow: hidden;
-`;
-
-const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
-  height: ${props => props.$isCollapsed ? '60px' : '90px'};
-  display: flex;
-  align-items: center;
-  padding: ${props => props.$isCollapsed ? '0' : '0 36px'};
-  margin-bottom: ${props => props.$isCollapsed ? '0' : '24px'};
-  justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
-  transition: all 0.3s ease;
-`;
-
-const NavContainer = styled.div<{ $isCollapsed: boolean }>`
-  flex: 1;
-  padding: ${props => props.$isCollapsed ? '0 8px' : '0 24px'};
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-  transition: all 0.3s ease;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-`;
-
-const NavItem = styled(NavLink)<{ $isCollapsed: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.$isCollapsed ? '0' : '12px'};
-  padding: ${props => props.$isCollapsed ? '8px' : '12px 16px'};
-  color: white;
-  text-decoration: none;
-  border-radius: 13px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  opacity: 0.8;
-  transition: all 0.2s ease;
-  justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
-  position: relative;
-
-  &:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  &.active {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.15);
-    font-weight: 600;
-  }
-
-  /* Tooltip for collapsed state */
-  ${props => props.$isCollapsed && `
-    &:hover::after {
-      content: attr(title);
-      position: absolute;
-      left: 60px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      white-space: nowrap;
-      z-index: 1000;
-      pointer-events: none;
-    }
-  `}
-`;
-
-const NavItemIcon = styled.img`
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) saturate(100%) invert(100%);
-  flex-shrink: 0;
-`;
-
-const NavItemText = styled.span<{ $isCollapsed: boolean }>`
-  display: ${props => props.$isCollapsed ? 'none' : 'block'};
-  white-space: nowrap;
-`;
-
-const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
-  margin: 24px ${props => props.$isCollapsed ? '6px' : '30px'};
-  padding: 0 16px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  border-radius: 13px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  width: ${props => props.$isCollapsed ? '48px' : 'calc(100% - 60px)'};
-  opacity: ${props => props.$isCollapsed ? '0' : '1'};
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-`;
 
 
 
@@ -256,46 +115,53 @@ export const Sidebar: React.FC = () => {
   };
 
   return (
-    <SidebarContainer 
-      $isCollapsed={isCollapsed} 
+    <aside 
+      className={`sidebar ${isCollapsed ? 'sidebar--collapsed' : ''}`}
       onClick={handleSidebarClick}
       data-sidebar="true"
     >
-      <SidebarHeader $isCollapsed={isCollapsed}>
+      <div className={`sidebar__header ${isCollapsed ? 'sidebar__header--collapsed' : ''}`}>
         {isCollapsed ? <Logo onlyIcon /> : <Logo />}
-      </SidebarHeader>
+      </div>
       
-      <NavContainer $isCollapsed={isCollapsed}>
+      <div className={`sidebar__nav ${isCollapsed ? 'sidebar__nav--collapsed' : ''}`}>
         {navigationItems.map((item) => {
           const translatedText = t(`navigation.${item.translationKey}`, {
             defaultValue: item.translationKey
           });
           
           return (
-            <NavItem 
+            <NavLink 
               key={item.path} 
               to={item.path} 
-              $isCollapsed={isCollapsed}
+              className={`sidebar__nav-item ${isCollapsed ? 'sidebar__nav-item--collapsed' : ''}`}
               title={isCollapsed ? translatedText : undefined}
             >
               {item.icon && (
                 typeof item.icon === 'string' ? (
-                  <NavItemIcon src={item.icon} alt={`${item.translationKey} icon`} />
+                  <img 
+                    src={item.icon} 
+                    alt={`${item.translationKey} icon`}
+                    className="sidebar__nav-icon" 
+                  />
                 ) : (
                   <item.icon width={20} height={20} fill="white" />
                 )
               )}
-              <NavItemText $isCollapsed={isCollapsed}>
+              <span className={`sidebar__nav-text ${isCollapsed ? 'sidebar__nav-text--collapsed' : ''}`}>
                 {translatedText}
-              </NavItemText>
-            </NavItem>
+              </span>
+            </NavLink>
           );
         })}
-      </NavContainer>
+      </div>
       
-      <LogoutButton $isCollapsed={isCollapsed} onClick={handleAuthAction}>
+      <button 
+        className={`sidebar__logout ${isCollapsed ? 'sidebar__logout--collapsed' : ''}`}
+        onClick={handleAuthAction}
+      >
         {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
-      </LogoutButton>
-    </SidebarContainer>
+      </button>
+    </aside>
   );
 };

@@ -1,0 +1,67 @@
+/* TopMenu component styles */
+.top-menu {
+  position: relative;
+  margin-right: 24px;
+}
+
+.top-menu__button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  transition: opacity 0.2s;
+  min-width: 110px;
+  justify-content: flex-start;
+  opacity: 0.9;
+}
+
+.top-menu__button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.top-menu__button:hover {
+  opacity: 0.8;
+}
+
+.top-menu__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 8px 0;
+  display: none;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.top-menu__dropdown--open {
+  display: block;
+}
+
+.top-menu__item {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: #333333;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.top-menu__item:hover {
+  background: #f8f9fa;
+  color: #6c5ce7;
+}

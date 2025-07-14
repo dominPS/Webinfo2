@@ -1,0 +1,46 @@
+/* Footer.css */
+/* Footer component styles - converted from styled-components */
+
+.footer {
+  background-color: #f8fafc;
+  border-top: 1px solid #e0e0e0;
+  padding: 6px 16px;
+  margin-top: auto;
+  color: #6b7280;
+  font-size: 10px;
+  line-height: 1.2;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.footer__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer__server-info {
+  margin-bottom: 2px;
+  font-family: 'Roboto', monospace;
+}
+
+.footer__copyright {
+  font-weight: 400;
+}
+
+/* Hide footer on small screens to save space */
+@media (max-width: 768px) {
+  .footer {
+    font-size: 8px;
+    padding: 4px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    display: none;
+  }
+}

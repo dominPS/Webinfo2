@@ -1,0 +1,17 @@
+/* ReportsLogo component styles */
+.reports-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.reports-logo:hover {
+  opacity: 0.8;
+}
+
+.reports-logo__svg {
+  width: 71px;
+  height: 20px;
+}
