@@ -8,6 +8,11 @@ const PageContainer = styled.div`
   background-color: ${props => props.theme.colors.background};
   border-radius: 8px;
   box-shadow: ${props => props.theme.shadows.small};
+  font-family: ${props => props.theme.fonts.primary};
+  
+  * {
+    font-family: ${props => props.theme.fonts.primary};
+  }
 `;
 
 const PageHeader = styled.div`
@@ -17,7 +22,7 @@ const PageHeader = styled.div`
 const PageTitle = styled.h1`
   font-size: 24px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #126678;
   margin-bottom: 8px;
 `;
 

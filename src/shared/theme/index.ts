@@ -10,6 +10,10 @@ export interface Theme {
     };
     border: string;
   };
+  fonts: {
+    primary: string;
+    secondary: string;
+  };
   shadows: {
     small: string;
     medium: string;
@@ -31,7 +35,7 @@ export interface Theme {
 
 export const lightTheme: Theme = {
   colors: {
-    primary: '#646FFF',
+    primary: '#126678',
     secondary: '#F50057',
     background: '#F5F5F5',
     surface: '#FFFFFF',
@@ -40,6 +44,10 @@ export const lightTheme: Theme = {
       secondary: '#757575',
     },
     border: '#E0E0E0',
+  },
+  fonts: {
+    primary: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+    secondary: "'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
   },
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.1)',
@@ -52,17 +60,17 @@ export const lightTheme: Theme = {
     large: '16px',
   },
   spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
+    xs: '3px',
+    sm: '6px',
+    md: '12px',
+    lg: '18px',
+    xl: '24px',
   },
 };
 
 export const darkTheme: Theme = {
   colors: {
-    primary: '#4E55A5',
+    primary: '#126678',
     secondary: '#FF4081',
     background: '#121212',
     surface: '#1E1E1E',
@@ -71,6 +79,10 @@ export const darkTheme: Theme = {
       secondary: '#B0B0B0',
     },
     border: '#333333',
+  },
+  fonts: {
+    primary: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+    secondary: "'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
   },
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.2)',
@@ -83,10 +95,10 @@ export const darkTheme: Theme = {
     large: '16px',
   },
   spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
+    xs: '3px',
+    sm: '6px',
+    md: '12px',
+    lg: '18px',
+    xl: '24px',
   },
 };

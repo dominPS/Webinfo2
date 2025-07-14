@@ -18,13 +18,18 @@ const CriteriaContainer = styled.div`
   border-radius: 8px;
   background-color: white;
   box-shadow: ${props => props.theme.shadows.small};
+  font-family: ${props => props.theme.fonts.primary};
+  
+  * {
+    font-family: ${props => props.theme.fonts.primary};
+  }
 `;
 
 const CriteriaTitle = styled.h3`
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: ${props => props.theme.colors.text.primary};
+  color: #126678;
 `;
 
 const CriteriaDescription = styled.p`
@@ -42,14 +47,15 @@ const OptionsContainer = styled.div`
 const OptionButton = styled.button<{ isSelected: boolean }>`
   padding: 8px 16px;
   border-radius: 4px;
-  border: 1px solid ${props => props.isSelected ? props.theme.colors.primary : props.theme.colors.border};
-  background-color: ${props => props.isSelected ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.isSelected ? 'white' : props.theme.colors.text.primary};
+  border: 2px solid #126678;
+  background-color: ${props => props.isSelected ? '#126678' : 'white'};
+  color: ${props => props.isSelected ? 'white' : '#126678'};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: 500;
 
   &:hover {
-    background-color: ${props => props.isSelected ? props.theme.colors.primary : 'rgba(0, 0, 0, 0.05)'};
+    background-color: ${props => props.isSelected ? '#0f5459' : '#f8f9fa'};
   }
 `;
 

@@ -5,12 +5,37 @@ import { useTranslation } from 'react-i18next';
 import { Logo } from '@/shared/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
 import { useUIState } from '@/hooks/useUIState';
+import { useSidebar } from '@/contexts/SidebarContext';
+import WorkerdetailsIcon from '@/shared/assets/icons/Workerdetails.png';
+import MobileAppsIcon from '@/shared/assets/icons/mobileapps.png';
+import AssignmentsIcon from '@/shared/assets/icons/assigments.png';
+import AttendanceListIcon from '@/shared/assets/icons/attendanceList.png';
+import ScheduleAttendanceIcon from '@/shared/assets/icons/scheduleAttendance.png';
+import ReserveVehicleIcon from '@/shared/assets/icons/reserveVehicle.png';
+import CanteenIcon from '@/shared/assets/icons/canteen.png';
+import EmployeeRequestsIcon from '@/shared/assets/icons/employeeRequests.png';
+import VacationsIcon from '@/shared/assets/icons/vacations.png';
+import VacationPlanIcon from '@/shared/assets/icons/vacationPlan.png';
+import WeekendWorkIcon from '@/shared/assets/icons/weekendWork.png';
+import {
+  MapRegistrationsIcon,
+  EmployeeEvaluationIcon,
+  MonthlySummaryIcon,
+  ExamsTrainingIcon,
+  SettlementIcon,
+  AbsencePlanIcon,
+  MonthlyAbsencePlanIcon,
+  ScheduleIcon,
+  ProjectsActivitiesIcon,
+  EmployeeReviewIcon
+} from '@/shared/components/PlaceholderIcons';
 
-const SIDEBAR_WIDTH = 320;
-const TOP_SPACING = 40;
+const SIDEBAR_WIDTH = 280;
+const COLLAPSED_SIDEBAR_WIDTH = 50;
+const TOP_SPACING = 30;
 
-const SidebarContainer = styled.aside`
-  width: ${SIDEBAR_WIDTH}px;
+const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
+  width: ${props => props.$isCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
   position: fixed;
   top: ${TOP_SPACING}px;
   bottom: ${TOP_SPACING}px;
@@ -20,23 +45,28 @@ const SidebarContainer = styled.aside`
   display: flex;
   flex-direction: column;
   box-shadow: ${props => props.theme.shadows.medium};
-  z-index: 10; /* Higher z-index to appear in front of the collapse button */
+  z-index: 10;
+  transition: width 0.3s ease;
+  overflow: hidden;
 `;
 
-const SidebarHeader = styled.div`
-  height: 120px;
+const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
+  height: ${props => props.$isCollapsed ? '60px' : '90px'};
   display: flex;
   align-items: center;
-  padding: 0 46px;
-  margin-bottom: 32px;
+  padding: ${props => props.$isCollapsed ? '0' : '0 36px'};
+  margin-bottom: ${props => props.$isCollapsed ? '0' : '24px'};
+  justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
+  transition: all 0.3s ease;
 `;
 
-const NavContainer = styled.div`
+const NavContainer = styled.div<{ $isCollapsed: boolean }>`
   flex: 1;
-  padding: 0 30px;
+  padding: ${props => props.$isCollapsed ? '0 8px' : '0 24px'};
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  transition: all 0.3s ease;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -56,11 +86,11 @@ const NavContainer = styled.div`
   }
 `;
 
-const NavItem = styled(NavLink)`
+const NavItem = styled(NavLink)<{ $isCollapsed: boolean }>`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: ${props => props.$isCollapsed ? '0' : '12px'};
+  padding: ${props => props.$isCollapsed ? '8px' : '12px 16px'};
   color: white;
   text-decoration: none;
   border-radius: 13px;
@@ -68,6 +98,8 @@ const NavItem = styled(NavLink)`
   font-size: 14px;
   opacity: 0.8;
   transition: all 0.2s ease;
+  justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
+  position: relative;
 
   &:hover {
     opacity: 1;
@@ -79,10 +111,41 @@ const NavItem = styled(NavLink)`
     background: rgba(255, 255, 255, 0.15);
     font-weight: 600;
   }
+
+  /* Tooltip for collapsed state */
+  ${props => props.$isCollapsed && `
+    &:hover::after {
+      content: attr(title);
+      position: absolute;
+      left: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+    }
+  `}
 `;
 
-const LogoutButton = styled.button`
-  margin: 24px 30px;
+const NavItemIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) saturate(100%) invert(100%);
+  flex-shrink: 0;
+`;
+
+const NavItemText = styled.span<{ $isCollapsed: boolean }>`
+  display: ${props => props.$isCollapsed ? 'none' : 'block'};
+  white-space: nowrap;
+`;
+
+const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
+  margin: 24px ${props => props.$isCollapsed ? '6px' : '30px'};
   padding: 0 16px;
   height: 40px;
   background: rgba(255, 255, 255, 0.1);
@@ -96,7 +159,8 @@ const LogoutButton = styled.button`
   justify-content: center;
   gap: 8px;
   transition: all 0.2s ease;
-  width: calc(100% - 60px);
+  width: ${props => props.$isCollapsed ? '48px' : 'calc(100% - 60px)'};
+  opacity: ${props => props.$isCollapsed ? '0' : '1'};
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -107,77 +171,36 @@ const LogoutButton = styled.button`
   }
 `;
 
-const CollapseButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: -16px;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 32px;
-  background: ${props => props.theme.colors.primary};
-  border: none;
-  border-radius: 0 16px 16px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  cursor: pointer;
-  z-index: 5; /* Lower z-index to appear behind the sidebar */
-  transition: background 0.2s;
-  padding: 0;
-  &:hover {
-    background: ${props => props.theme.colors.primary};
-  }
-`;
 
-const CollapseIcon = styled.span`
-  display: block;
-  color: transparent; /* Make the text transparent instead of white */
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-right: 2px;
-  user-select: none;
-`;
-
-const CollapsedSidebarContainer = styled(SidebarContainer)`
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
-  padding: 0;
-  align-items: center;
-  .logo {
-    justify-content: center;
-    padding: 0;
-  }
-`;
 
 interface NavItem {
   path: string;
   translationKey: string;
+  icon?: string | React.ComponentType<any>;
 }
 
 const navigationItems: NavItem[] = [
-  { path: '/mobile-apps', translationKey: 'mobileApps' },
-  { path: '/assignments', translationKey: 'assignments' },
-  { path: '/map-registrations', translationKey: 'mapRegistrations' },
-  { path: '/attendance-list', translationKey: 'attendanceList' },
-  { path: '/schedule-attendance', translationKey: 'scheduleAttendance' },
-  { path: '/employee-data', translationKey: 'employeeData' },
-  { path: '/employee-evaluation', translationKey: 'employeeEvaluation' },
-  { path: '/reserve-vehicle', translationKey: 'reserveVehicle' },
-  { path: '/canteen', translationKey: 'canteen' },
-  { path: '/vacation-plan', translationKey: 'vacationPlan' },
-  { path: '/weekend-work', translationKey: 'weekendWork' },
-  { path: '/employee-requests', translationKey: 'employeeRequests' },
-  { path: '/vacations', translationKey: 'vacations' },
-  { path: '/monthly-summary', translationKey: 'monthlySummary' },
-  { path: '/exams-and-training', translationKey: 'examsAndTraining' },
-  { path: '/settlement', translationKey: 'settlement' },
-  { path: '/absence-plan', translationKey: 'absencePlan' },
-  { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan' },
-  { path: '/schedule', translationKey: 'schedule' },
-  { path: '/projects-activities', translationKey: 'projectsActivities' },
-  { path: '/employee-review', translationKey: 'employeeReview' }
+  { path: '/mobile-apps', translationKey: 'mobileApps', icon: MobileAppsIcon },
+  { path: '/assignments', translationKey: 'assignments', icon: AssignmentsIcon },
+  { path: '/map-registrations', translationKey: 'mapRegistrations', icon: MapRegistrationsIcon },
+  { path: '/attendance-list', translationKey: 'attendanceList', icon: AttendanceListIcon },
+  { path: '/schedule-attendance', translationKey: 'scheduleAttendance', icon: ScheduleAttendanceIcon },
+  { path: '/employee-data', translationKey: 'employeeData', icon: WorkerdetailsIcon },
+  { path: '/employee-evaluation', translationKey: 'employeeEvaluation', icon: EmployeeEvaluationIcon },
+  { path: '/reserve-vehicle', translationKey: 'reserveVehicle', icon: ReserveVehicleIcon },
+  { path: '/canteen', translationKey: 'canteen', icon: CanteenIcon },
+  { path: '/vacation-plan', translationKey: 'vacationPlan', icon: VacationPlanIcon },
+  { path: '/weekend-work', translationKey: 'weekendWork', icon: WeekendWorkIcon },
+  { path: '/employee-requests', translationKey: 'employeeRequests', icon: EmployeeRequestsIcon },
+  { path: '/vacations', translationKey: 'vacations', icon: VacationsIcon },
+  { path: '/monthly-summary', translationKey: 'monthlySummary', icon: MonthlySummaryIcon },
+  { path: '/exams-and-training', translationKey: 'examsAndTraining', icon: ExamsTrainingIcon },
+  { path: '/settlement', translationKey: 'settlement', icon: SettlementIcon },
+  { path: '/absence-plan', translationKey: 'absencePlan', icon: AbsencePlanIcon },
+  { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan', icon: MonthlyAbsencePlanIcon },
+  { path: '/schedule', translationKey: 'schedule', icon: ScheduleIcon },
+  { path: '/projects-activities', translationKey: 'projectsActivities', icon: ProjectsActivitiesIcon },
+  { path: '/employee-review', translationKey: 'employeeReview', icon: EmployeeReviewIcon }
 ];
 
 export const Sidebar: React.FC = () => {
@@ -187,6 +210,7 @@ export const Sidebar: React.FC = () => {
   const { isLoggedIn, logout } = useAuth();
   const { setShowLoginForm } = useUIState();
   const navigate = useNavigate();
+  const { isCollapsed, setIsCollapsed } = useSidebar();
 
   // Force update hook
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
@@ -215,40 +239,63 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  const [collapsed, setCollapsed] = React.useState(false);
+  const handleSidebarClick = (e: React.MouseEvent) => {
+    // Jeśli kliknięto w puste miejsce (nie w button, link, lub inne interaktywne elementy)
+    const target = e.target as HTMLElement;
+    const isClickableElement = target.closest('button, a, input, select, textarea');
+    
+    if (!isClickableElement) {
+      if (isCollapsed) {
+        // Kliknięto w zwinięty sidebar - rozwiń go
+        setIsCollapsed(false);
+      } else {
+        // Kliknięto w puste miejsce rozwiniętego sidebara - zwiń go
+        setIsCollapsed(true);
+      }
+    }
+  };
+
   return (
-    <>
-      {collapsed ? (
-        <CollapsedSidebarContainer>
-          <SidebarHeader className="logo" style={{ justifyContent: 'center', padding: 0, marginBottom: 0, height: '80px' }}>
-            <Logo onlyIcon />
-          </SidebarHeader>
-          <CollapseButton onClick={() => setCollapsed(false)} title={t('navigation.expandSidebar')}>
-            {/* No content inside button to remove any white elements */}
-          </CollapseButton>
-        </CollapsedSidebarContainer>
-      ) : (
-        <SidebarContainer>
-          <SidebarHeader>
-            <Logo />
-          </SidebarHeader>
-          <CollapseButton onClick={() => setCollapsed(true)} title={t('navigation.collapseSidebar')}>
-            {/* No content inside button to remove any white elements */}
-          </CollapseButton>
-          <NavContainer>
-            {navigationItems.map((item) => (
-              <NavItem key={item.path} to={item.path}>
-                {t(`navigation.${item.translationKey}`, {
-                  defaultValue: item.translationKey
-                })}
-              </NavItem>
-            ))}
-          </NavContainer>
-          <LogoutButton onClick={handleAuthAction}>
-            {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
-          </LogoutButton>
-        </SidebarContainer>
-      )}
-    </>
+    <SidebarContainer 
+      $isCollapsed={isCollapsed} 
+      onClick={handleSidebarClick}
+      data-sidebar="true"
+    >
+      <SidebarHeader $isCollapsed={isCollapsed}>
+        {isCollapsed ? <Logo onlyIcon /> : <Logo />}
+      </SidebarHeader>
+      
+      <NavContainer $isCollapsed={isCollapsed}>
+        {navigationItems.map((item) => {
+          const translatedText = t(`navigation.${item.translationKey}`, {
+            defaultValue: item.translationKey
+          });
+          
+          return (
+            <NavItem 
+              key={item.path} 
+              to={item.path} 
+              $isCollapsed={isCollapsed}
+              title={isCollapsed ? translatedText : undefined}
+            >
+              {item.icon && (
+                typeof item.icon === 'string' ? (
+                  <NavItemIcon src={item.icon} alt={`${item.translationKey} icon`} />
+                ) : (
+                  <item.icon width={20} height={20} fill="white" />
+                )
+              )}
+              <NavItemText $isCollapsed={isCollapsed}>
+                {translatedText}
+              </NavItemText>
+            </NavItem>
+          );
+        })}
+      </NavContainer>
+      
+      <LogoutButton $isCollapsed={isCollapsed} onClick={handleAuthAction}>
+        {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
+      </LogoutButton>
+    </SidebarContainer>
   );
 };

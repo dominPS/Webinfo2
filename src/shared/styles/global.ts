@@ -8,7 +8,7 @@ export const globalStyles = css`
   }
 
   html {
-    font-size: 16px;
+    font-size: 14px;
     height: 100%;
   }
 

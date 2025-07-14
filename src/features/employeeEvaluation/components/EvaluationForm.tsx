@@ -13,6 +13,11 @@ const FormContainer = styled.div`
   background-color: ${props => props.theme.colors.background};
   border-radius: 8px;
   padding: 24px;
+  font-family: ${props => props.theme.fonts.primary};
+  
+  * {
+    font-family: ${props => props.theme.fonts.primary};
+  }
 `;
 
 const EmployeeInfo = styled.div`
@@ -25,7 +30,7 @@ const EmployeeName = styled.h2`
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: ${props => props.theme.colors.text.primary};
+  color: #126678;
 `;
 
 const FormActions = styled.div`
@@ -44,22 +49,49 @@ const Button = styled.button`
 `;
 
 const PrimaryButton = styled(Button)`
-  background-color: ${props => props.theme.colors.primary};
+  background-color: #126678;
   color: white;
   border: none;
 
   &:hover {
-    opacity: 0.9;
+    background-color: #0f5459;
   }
 `;
 
 const SecondaryButton = styled(Button)`
-  background-color: transparent;
-  color: ${props => props.theme.colors.text.primary};
-  border: 1px solid ${props => props.theme.colors.border};
+  background-color: white;
+  color: #126678;
+  border: 2px solid #126678;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #f8f9fa;
+  }
+`;
+
+const CommentsSection = styled.div`
+  margin-bottom: 24px;
+`;
+
+const CommentsTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #126678;
+`;
+
+const CommentsTextarea = styled.textarea`
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+  border: 2px solid #e5e7eb;
+  font-family: inherit;
+  resize: vertical;
+  
+  &:focus {
+    outline: none;
+    border-color: #126678;
+    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
   }
 `;
 
@@ -164,16 +196,15 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
           onChange={(value) => handleCriteriaChange('leadership', value)}
         />
 
-        <div>
-          <h3>{t('evaluation.comments.title', 'Additional Comments')}</h3>
-          <textarea
+        <CommentsSection>
+          <CommentsTitle>{t('evaluation.comments.title', 'Additional Comments')}</CommentsTitle>
+          <CommentsTextarea
             rows={5}
-            style={{ width: '100%', padding: '12px', marginTop: '8px', borderRadius: '4px' }}
             value={evaluation.comments}
             onChange={handleCommentsChange}
             placeholder={t('evaluation.comments.placeholder', 'Provide any additional feedback or observations...')}
           />
-        </div>
+        </CommentsSection>
 
         <FormActions>
           <SecondaryButton type="button">

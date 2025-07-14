@@ -27,7 +27,8 @@
     "employeeReview": "Przegląd pracowników",
     "employeeEvaluation": "Ocena pracowników",
     "logout": "Wyloguj się",
-    "login": "Zaloguj się"
+    "login": "Zaloguj się",
+    "sidebarHint": "Kliknij aby przełączyć"
   },
   "languages": {
     "en": "Angielski",
@@ -38,7 +39,12 @@
     "logout": "Wyloguj się",
     "menu": "Menu",
     "cancel": "Anuluj",
-    "submit": "Zatwierdź ocenę"
+    "submit": "Zatwierdź ocenę",
+    "save": "Zapisz szkic",
+    "back": "Powrót",
+    "backToDashboard": "Powrót",
+    "previous": "Poprzedni",
+    "next": "Następny"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -66,8 +72,7 @@
     "notifications": "Powiadomienia"
   },
   "sidebar": {
-    "collapseSidebar": "Zwiń pasek boczny",
-    "expandSidebar": "Rozwiń pasek boczny"
+    "hint": "Kliknij aby przełączyć"
   },
   "pages": {
     "employeeEvaluation": {
@@ -95,15 +100,208 @@
     },
     "worker": {
       "title": "Ocena pracownicza",
-      "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik"
+      "description": "Oceń wydajność pracowników i przekaż opinię jako pracownik",
+      "dashboardDescription": "Zarządzaj swoimi samooocenami, planami rozwoju i przeglądami wyników",
+      "controls": {
+        "whiteValues": "Wartości firmy",
+        "selfAssessment": "Samoocena",
+        "idp": "IDP (Indywidualny Plan Rozwoju)",
+        "annualReview": "Roczna ocena"
+      }
     },
     "leader": {
       "title": "Ocena kierownicza",
-      "description": "Oceń wydajność członków zespołu i przekaż opinię jako kierownik"
+      "description": "Oceń wydajność członków zespołu i przekaż opinię jako kierownik",
+      "dashboardDescription": "Zarządzaj ocenami zespołu, planami rozwoju i przeglądami wyników",
+      "controls": {
+        "meAndDirectReports": "Ja i moi bezpośredni podwładni",
+        "dashboard": "Pulpit główny",
+        "helpContactHR": "Pomoc i kontakt z HR",
+        "idp": "IDP (Indywidualny Plan Rozwoju)",
+        "annualReview": "Roczna ocena",
+        "selfAssessment": "Samoocena",
+        "whiteValues": "Wartości firmy"
+      },
+      "team": {
+        "title": "Ja i Moi Bezpośredni Podwładni",
+        "description": "Zarządzaj procesami oceny i rozwoju swojego zespołu",
+        "overview": {
+          "title": "Przegląd zespołu",
+          "description": "Podsumowanie wydajności i postępów zespołu w bieżącym okresie"
+        },
+        "stats": {
+          "total": "Członkowie zespołu",
+          "completed": "Ukończone oceny", 
+          "idps": "Aktywne IDP",
+          "pending": "Oczekujące akcje"
+        },
+        "metrics": {
+          "totalMembers": "Liczba członków zespołu",
+          "completionRate": "Wskaźnik ukończenia",
+          "averageScore": "Średnia ocena",
+          "improvementRate": "Poprawa rok do roku"
+        },
+        "charts": {
+          "reviewStatus": "Status ocen rocznych",
+          "reviewStatusDesc": "Rozkład statusów ocen rocznych w zespole",
+          "idpStatus": "Status planów IDP",
+          "idpStatusDesc": "Postęp w tworzeniu indywidualnych planów rozwoju",
+          "departmentPerformance": "Wydajność według działów",
+          "departmentPerformanceDesc": "Porównanie postępów w ocenach między działami",
+          "progressTrend": "Trend postępów",
+          "progressTrendDesc": "Miesięczny postęp w realizacji ocen zespołu",
+          "performanceTimeline": "Linia czasu wydajności zespołu",
+          "performanceTimelineDesc": "Szczegółowa analiza postępów zespołu na przestrzeni czasu"
+        },
+        "annualReview": {
+          "title": "Oceny Roczne",
+          "description": "Zarządzaj rocznymi ocenami wydajności swojego zespołu"
+        },
+        "idp": {
+          "title": "Plany IDP",
+          "description": "Przeglądaj i zatwierdź indywidualne plany rozwoju"
+        },
+        "employeeDetail": {
+          "title": "Szczegóły pracownika"
+        },
+        "review": "Ocena",
+        "currentStatus": "Aktualny status",
+        "actions": {
+          "startReview": "Rozpocznij ocenę",
+          "continueReview": "Kontynuuj ocenę",
+          "reviewCorrections": "Sprawdź poprawki",
+          "viewReview": "Zobacz ocenę",
+          "createIDP": "Utwórz IDP",
+          "reviewDraft": "Sprawdź szkic",
+          "approveIDP": "Zatwierdź IDP",
+          "viewIDP": "Zobacz IDP",
+          "manageReview": "Zarządzaj oceną",
+          "manageIDP": "Zarządzaj IDP"
+        },
+        "filter": {
+          "nameOrId": "Imię/Nazwisko lub ID",
+          "department": "Dział",
+          "searchPlaceholder": "Szukaj po imieniu, nazwisku lub ID...",
+          "allDepartments": "Wszystkie działy",
+          "showing": "Pokazano {{count}} z {{total}} pracowników"
+        },
+        "table": {
+          "name": "Imię i nazwisko",
+          "department": "Dział",
+          "status": "Status",
+          "actions": "Akcje"
+        }
+      }
+    },
+    "status": {
+      "review": {
+        "not_started": "Nie rozpoczęto",
+        "in_progress": "W trakcie",
+        "completed": "Ukończone",
+        "requires_correction": "Wymaga poprawek"
+      },
+      "idp": {
+        "not_started": "Nie rozpoczęto",
+        "draft": "Szkic",
+        "submitted": "Przesłane",
+        "approved": "Zatwierdzone"
+      },
+      "draft": "Szkic",
+      "submitted": "Wysłane",
+      "approved": "Zatwierdzone",
+      "requires_revision": "Wymaga poprawek"
     },
     "hr": {
       "title": "Ocena HR",
-      "description": "Oceń wydajność pracowników i przekaż opinię jako HR"
+      "description": "Oceń wydajność pracowników i przekaż opinię jako HR",
+      "dashboardDescription": "Zarządzaj procesami oceny, formami ocen i raportowaniem dla organizacji",
+      "controls": {
+        "dashboard": "Pulpit główny",
+        "managingAssessmentRounds": "Zarządzanie rundami ocen",
+        "assessmentForms": "Formularze ocen",
+        "monitoringProgress": "Monitorowanie postępu ocen",
+        "reportingAnalysis": "Raportowanie i analiza",
+        "competencyManagement": "Zarządzanie kompetencjami",
+        "integrationsSettings": "Integracje i ustawienia systemu"
+      },
+      "dashboard": {
+        "title": "Dashboard HR",
+        "description": "Przegląd kluczowych wskaźników i postępu ocen",
+        "completion": "Ukończono",
+        "activeEvaluations": "Aktywne oceny",
+        "pendingApprovals": "Oczekujące zatwierdzenia",
+        "overdue": "Zaległe"
+      },
+      "modules": {
+        "evaluationRounds": "Rundy ocen",
+        "progressRounds": "Postęp rundy",
+        "evaluationCalendar": "Kalendarz ocen",
+        "systemNotifications": "Powiadomienia systemowe",
+        "moduleShortcuts": "Skróty modułów",
+        "hrTaskList": "Lista zadań HR",
+        "completionPercentage": "Procent ukończenia",
+        "scheduleHarmonogram": "Harmonogram",
+        "alerts": "Alerty",
+        "navigationTiles": "Kafelki nawigacyjne",
+        "todoList": "Lista zadań"
+      },
+      "alerts": {
+        "title": "Alerty systemowe",
+        "overdueEvaluations": "Zaległe oceny wymagają uwagi",
+        "overdueEvaluationsDesc": "5 ocen przekroczyło termin wykonania",
+        "pendingApprovals": "Oczekujące zatwierdzenia",
+        "pendingApprovalsDesc": "12 IDP czeka na zatwierdzenie kierowników",
+        "systemMaintenance": "Planowana konserwacja systemu",
+        "systemMaintenanceDesc": "Konserwacja zaplanowana na weekend"
+      },
+      "navigation": {
+        "title": "Nawigacja modułów",
+        "evaluationManagement": "Zarządzanie ocenami",
+        "reportingTools": "Narzędzia raportowania",
+        "employeeDatabase": "Baza pracowników",
+        "systemSettings": "Ustawienia systemu"
+      },
+      "todo": {
+        "title": "Lista zadań",
+        "reviewIDPs": "Przejrzyj 8 nowych planów IDP",
+        "generateReports": "Wygeneruj raporty miesięczne",
+        "updateEvaluationForms": "Zaktualizuj formularze ocen",
+        "approvals": "Zatwierdzenia (8)",
+        "reminders": "Przypomnienia (15)",
+        "edits": "Edycje (3)"
+      },
+      "roundManagement": {
+        "title": "Zarządzanie rundami ocen",
+        "back": "Powrót",
+        "processTitle": "Proces tworzenia nowej rundy",
+        "actionsTitle": "Działania na rundach",
+        "steps": {
+          "createRound": "Uruchama kreator nowej rundy oceny",
+          "createRoundDesc": "Rozpocznij proces tworzenia nowej rundy ocen dla organizacji",
+          "editDetails": "Pozwala edytować nazwę, daty, opis, uczestników",
+          "editDetailsDesc": "Skonfiguruj szczegóły rundy: nazwa, termin, uczestników",
+          "selectEmployees": "Wybór pracowników, przypisanie ról ocen",
+          "selectEmployeesDesc": "Wybierz pracowników i przypisz role: samoocena, przełożony",
+          "setDates": "Ustawienia dat rozpoczęcia, zakończenia, przypomnień",
+          "setDatesDesc": "Ustaw harmonogram: start, koniec, przypomnienia",
+          "finalize": "Finalizuje konfigurację i uruchamia proces oceny",
+          "finalizeDesc": "Przejrzyj ustawienia i uruchom rundę ocen"
+        },
+        "actions": {
+          "addRound": "Dodaj nową rundę oceny",
+          "addRoundDesc": "Utwórz nową rundę ocen dla całej organizacji lub wybranych zespołów",
+          "editRound": "Edytuj rundę",
+          "editRoundDesc": "Modyfikuj istniejącą rundę: daty, uczestników, ustawienia",
+          "addParticipants": "Dodaj ocenianych / oceniających",
+          "addParticipantsDesc": "Dodaj nowych uczestników do aktywnej rundy ocen",
+          "setDeadlines": "Ustal terminy",
+          "setDeadlinesDesc": "Ustaw lub zmień terminy dla poszczególnych etapów oceny",
+          "approveRound": "Zatwierdź rundę",
+          "approveRoundDesc": "Potwierdź rundę i aktywuj proces oceniania",
+          "deleteRound": "Usuń rundę (jeśli nie rozpoczęta)",
+          "deleteRoundDesc": "Usuń rundę która jeszcze nie została uruchomiona"
+        }
+      }
     },
     "selectEmployee": "Wybierz pracownika do oceny:",
     "selectPlaceholder": "-- Wybierz pracownika --",
@@ -138,6 +336,70 @@
     "comments": {
       "title": "Dodatkowe komentarze",
       "placeholder": "Podaj dodatkowe opinie lub uwagi..."
+    },
+    "selfEvaluation": {
+      "title": "Formularz Samooceny",
+      "subtitle": "Oceń swoją pracę i rozwój zawodowy w ostatnim okresie",
+      "pageTitle": "Moje Samooceny",
+      "pageDescription": "Zarządzaj swoimi samoocenami i śledź postępy w rozwoju zawodowym",
+      "createNew": "Utwórz nową samoocenę",
+      "cardTitle": "Samoocena za okres {{period}}",
+      "noEvaluations": "Nie masz jeszcze żadnych samoocen"
+    },
+    "personalInfo": {
+      "title": "Informacje podstawowe",
+      "employeeId": "ID Pracownika",
+      "name": "Imię i nazwisko",
+      "position": "Stanowisko",
+      "department": "Dział",
+      "period": "Okres oceny"
+    },
+    "performanceAreas": {
+      "title": "Obszary wydajności",
+      "jobPerformance": "Wykonywanie obowiązków",
+      "communication": "Komunikacja",
+      "teamwork": "Praca zespołowa",
+      "leadership": "Przywództwo/Inicjatywa",
+      "problemSolving": "Rozwiązywanie problemów",
+      "development": "Rozwój zawodowy",
+      "comments": "Komentarze",
+      "commentsPlaceholder": "Opisz swoje osiągnięcia i wyzwania..."
+    },
+    "rating": {
+      "poor": "Niewystarczający",
+      "below": "Poniżej oczekiwań",
+      "meets": "Spełnia oczekiwania",
+      "exceeds": "Przekracza oczekiwania",
+      "outstanding": "Wybitny"
+    },
+    "goals": {
+      "title": "Cele i rozwój",
+      "achieved": "Cele osiągnięte w tym roku",
+      "achievedPlaceholder": "Wymień cele które udało Ci się osiągnąć...",
+      "nextYear": "Cele na następny rok",
+      "nextYearPlaceholder": "Opisz swoje cele zawodowe na następny rok...",
+      "skills": "Umiejętności do rozwijania",
+      "skillsPlaceholder": "Jakie umiejętności chcesz rozwijać..."
+    },
+    "overall": {
+      "title": "Ocena ogólna",
+      "rating": "Ogólna ocena",
+      "comments": "Komentarze końcowe",
+      "commentsPlaceholder": "Dodatkowe uwagi i komentarze...",
+      "managerFeedback": "Feedback od przełożonego"
+    },
+    "messages": {
+      "saved": "Samoocena została zapisana jako szkic",
+      "submitted": "Samoocena została wysłana do przełożonego"
+    },
+    "submissionDate": "Data wysłania",
+    "lastModified": "Ostatnia modyfikacja",
+    "placeholders": {
+      "communication": "Opisz swoje umiejętności komunikacyjne...",
+      "teamwork": "Opisz swój wkład w pracę zespołu...",
+      "leadership": "Opisz swoje inicjatywy i przywództwo...",
+      "problemSolving": "Opisz przykłady rozwiązywania problemów...",
+      "development": "Opisz swój rozwój i naukę..."
     }
   },
   "review": {
@@ -250,6 +512,138 @@
   "notFound": {
     "message": "Strona, której szukasz, nie istnieje.",
     "goHome": "Idź do strony głównej"
+  },
+  "idp": {
+    "flow": {
+      "title": "Plan Rozwoju Indywidualnego (IDP)"
+    },
+    "myIdp": {
+      "title": "MOJE IDP",
+      "description": "Zarządzaj swoim planem rozwoju indywidualnego na rok 2025"
+    },
+    "drafts": {
+      "title": "SZKICE CELÓW",
+      "description": "Przeglądaj i zarządzaj swoimi szkicami celów",
+      "empty": "Brak szkiców celów. Zacznij od dodania nowego celu."
+    },
+    "savedGoals": {
+      "title": "ZAPISANE CELE",
+      "description": "Przeglądaj swoje przesłane i zatwierdzone cele na rok 2025",
+      "empty": "Brak zapisanych celów na rok 2025."
+    },
+    "pastPlans": {
+      "title": "Historia Planów IDP",
+      "description": "Przeglądaj swoje poprzednie plany rozwoju",
+      "year2024": "Plan Rozwoju 2024",
+      "year2023": "Plan Rozwoju 2023",
+      "empty": "Brak dostępnych poprzednich planów."
+    },
+    "addGoal": {
+      "title": "DODAJ CEL IDP"
+    },
+    "plan2025": {
+      "title": "PLAN NA ROK 2025"
+    },
+    "review": {
+      "title": "PRZEGLĄD I ZATWIERDZENIE",
+      "message": "Plan został przesłany do przeglądu. Oczekiwanie na decyzję przełożonego."
+    },
+    "final": {
+      "title": "PLAN ZATWIERDZONY",
+      "message": "Możliwość zapisu przed wydrukiem w trakcie edycji planu. Możliwość powrotu do edycji."
+    },
+    "info": {
+      "badge": "IDP info o Celach - Kategorie Celów"
+    },
+    "modal": {
+      "title": "Kategorie Celów IDP",
+      "alt": "Diagram kategorii celów IDP",
+      "description": "Cele Biznesowe koncentrują się na osiągnięciu konkretnych celów i wyników biznesowych. Cele Rozwojowe skupiają się na rozwoju osobistym i profesjonalnym oraz wzroście umiejętności."
+    },
+    "plan": {
+      "info": "Data utworzenia: Narzędzia oceny Szczegóły celu Oczekiwany wynik",
+      "category": "Kategoria",
+      "description": "Opis Celu",
+      "year": "Rok",
+      "status": "Status"
+    },
+    "form": {
+      "goalTitle": "Tytuł celu",
+      "goalTitlePlaceholder": "Wprowadź tytuł celu rozwoju",
+      "goalDescription": "Opis celu",
+      "goalDescriptionPlaceholder": "Opisz szczegółowo swój cel rozwoju",
+      "category": "Kategoria celu",
+      "goalType": "Typ celu",
+      "goalDetails": "Szczegóły celu",
+      "goalDetailsPlaceholder": "Wpisz szczegóły swojego celu...",
+      "goalResultsPlaceholder": "Opisz oczekiwane wyniki..."
+    },
+    "categories": {
+      "business": "Cel Biznesowy",
+      "development": "Cel Rozwojowy"
+    },
+    "actions": {
+      "addGoal": "DODAJ CEL IDP",
+      "viewDrafts": "ZOBACZ SZKICE",
+      "viewSaved": "ZOBACZ ZAPISANE CELE",
+      "viewPastPlans": "POPRZEDNIE PLANY",
+      "editGoal": "EDYTUJ CEL",
+      "deleteGoal": "USUŃ CEL",
+      "backToMain": "POWRÓT DO GŁÓWNEJ",
+      "cancel": "ANULUJ",
+      "draft": "SZKIC",
+      "save": "ZAPISZ",
+      "submit": "WYŚLIJ",
+      "needsCorrection": "DO KOREKTY",
+      "approve": "ZATWIERDŹ",
+      "print": "WYDRUKUJ",
+      "editAgain": "POWRÓT DO EDYCJI"
+    },
+    "status": {
+      "draft": "Szkic",
+      "submitted": "Przesłany",
+      "approved": "Zatwierdzony",
+      "correction_needed": "Wymaga korekty"
+    }
+  },
+  "annualReview": {
+    "history": {
+      "title": "Historia Ocen",
+      "noReviews": "Brak dostępnych ocen dla roku",
+      "employee": "Pracownik",
+      "generateReport": "Generuj raport", 
+      "sections": {
+        "goalDetails": "Szczegóły celu",
+        "goalType": "Typ celu",
+        "goalResults": "Wyniki celu"
+      },
+      "status": {
+        "A": "Ocena A",
+        "B": "Ocena B",
+        "C": "Ocena C", 
+        "D": "Ocena D"
+      },
+      "types": {
+        "IDP": "IDP",
+        "Performance": "Ocena Wyników",
+        "Annual": "Ocena Roczna"
+      }
+    }
+  },
+  "whiteValues": {
+    "modalTitle": "Wartości firmy",
+    "slide1": {
+      "title": "Mądrość - Podejmowanie Mądrych Decyzji"
+    },
+    "slide2": {
+      "title": "Uczciwość - Działanie z Uczciwością"
+    },
+    "slide3": {
+      "title": "Innowacyjność - Przyjmowanie Kreatywnych Rozwiązań"
+    },
+    "slide4": {
+      "title": "Zaufanie - Budowanie Silnych Relacji"
+    }
   },
   "dateFormat": {
     "locale": "pl-PL"

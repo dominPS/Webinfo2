@@ -27,7 +27,8 @@
     "employeeReview": "Employee Review",
     "employeeEvaluation": "Employee Evaluation",
     "logout": "Logout",
-    "login": "Login"
+    "login": "Login",
+    "sidebarHint": "Click to toggle"
   },
   "languages": {
     "en": "English",
@@ -38,7 +39,12 @@
     "logout": "Logout",
     "menu": "Menu",
     "cancel": "Cancel",
-    "submit": "Submit Evaluation"
+    "submit": "Submit Evaluation",
+    "save": "Save Draft",
+    "back": "Back",
+    "backToDashboard": "Back",
+    "previous": "Previous",
+    "next": "Next"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -89,15 +95,130 @@
     },
     "worker": {
       "title": "Worker Evaluation",
-      "description": "Evaluate employee performance and provide feedback as a worker"
+      "description": "Evaluate employee performance and provide feedback as a worker",
+      "dashboardDescription": "Manage your self-evaluations, development plans, and performance reviews",
+      "controls": {
+        "whiteValues": "Company Values",
+        "selfAssessment": "Self-Assessment",
+        "idp": "IDP (Individual Development Plan)",
+        "annualReview": "Annual Review"
+      }
     },
     "leader": {
       "title": "Leader Evaluation",
-      "description": "Evaluate team member performance and provide feedback as a leader"
+      "description": "Evaluate team member performance and provide feedback as a leader",
+      "dashboardDescription": "Manage your team evaluations, development plans, and performance reviews",
+      "controls": {
+        "meAndDirectReports": "Me and My Direct Reports",
+        "dashboard": "Dashboard",
+        "helpContactHR": "Help and Contact with HR",
+        "idp": "IDP (Individual Development Plan)",
+        "annualReview": "Annual Review",
+        "selfAssessment": "Self-Assessment",
+        "whiteValues": "Company Values"
+      },
+      "team": {
+        "title": "Me and My Direct Reports",
+        "description": "Manage evaluation and development processes for your team",
+        "overview": {
+          "title": "Team Overview",
+          "description": "Summary of team performance and progress in the current period"
+        },
+        "stats": {
+          "total": "Team Members",
+          "completed": "Completed Reviews", 
+          "idps": "Active IDPs",
+          "pending": "Pending Actions"
+        },
+        "metrics": {
+          "totalMembers": "Total Team Members",
+          "completionRate": "Completion Rate",
+          "averageScore": "Average Score",
+          "improvementRate": "Year-over-Year Improvement"
+        },
+        "charts": {
+          "reviewStatus": "Annual Review Status",
+          "reviewStatusDesc": "Distribution of annual review statuses in the team",
+          "idpStatus": "IDP Plan Status",
+          "idpStatusDesc": "Progress in creating individual development plans",
+          "departmentPerformance": "Performance by Department",
+          "departmentPerformanceDesc": "Comparison of review progress between departments",
+          "progressTrend": "Progress Trend",
+          "progressTrendDesc": "Monthly progress in team evaluation completion",
+          "performanceTimeline": "Team Performance Timeline",
+          "performanceTimelineDesc": "Detailed analysis of team progress over time"
+        },
+        "annualReview": {
+          "title": "Annual Reviews",
+          "description": "Manage annual performance reviews for your team"
+        },
+        "idp": {
+          "title": "IDP Plans",
+          "description": "Review and approve individual development plans"
+        },
+        "employeeDetail": {
+          "title": "Employee Details"
+        },
+        "review": "Review",
+        "currentStatus": "Current Status",
+        "actions": {
+          "startReview": "Start Review",
+          "continueReview": "Continue Review",
+          "reviewCorrections": "Review Corrections",
+          "viewReview": "View Review",
+          "createIDP": "Create IDP",
+          "reviewDraft": "Review Draft",
+          "approveIDP": "Approve IDP",
+          "viewIDP": "View IDP",
+          "manageReview": "Manage Review",
+          "manageIDP": "Manage IDP"
+        },
+        "filter": {
+          "nameOrId": "Name/Surname or ID",
+          "department": "Department",
+          "searchPlaceholder": "Search by name, surname or ID...",
+          "allDepartments": "All departments",
+          "showing": "Showing {{count}} of {{total}} employees"
+        },
+        "table": {
+          "name": "Name",
+          "department": "Department",
+          "status": "Status",
+          "actions": "Actions"
+        }
+      }
+    },
+    "status": {
+      "review": {
+        "not_started": "Not Started",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "requires_correction": "Requires Correction"
+      },
+      "idp": {
+        "not_started": "Not Started",
+        "draft": "Draft",
+        "submitted": "Submitted",
+        "approved": "Approved"
+      },
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "requires_revision": "Requires Revision"
     },
     "hr": {
       "title": "HR Evaluation",
-      "description": "Evaluate employee performance and provide feedback as HR"
+      "description": "Evaluate employee performance and provide feedback as HR",
+      "dashboardDescription": "Manage evaluation processes, assessments, and reporting for the organization",
+      "controls": {
+        "dashboard": "Dashboard",
+        "managingAssessmentRounds": "Managing assessment rounds",
+        "assessmentForms": "Assessment forms",
+        "monitoringProgress": "Monitorowanie postępu ocen",
+        "reportingAnalysis": "Reporting and analysis",
+        "competencyManagement": "Zarządzanie kompetencjami",
+        "integrationsSettings": "Integrations and system settings"
+      }
     },
     "selectEmployee": "Select an employee to evaluate:",
     "selectPlaceholder": "-- Select an employee --",
@@ -132,7 +253,40 @@
     "comments": {
       "title": "Additional Comments",
       "placeholder": "Provide any additional feedback or observations..."
-    }
+    },
+    "selfEvaluation": {
+      "title": "Self-Evaluation Form",
+      "subtitle": "Evaluate your work and professional development over the recent period",
+      "pageTitle": "My Self-Evaluations",
+      "pageDescription": "Manage your self-evaluations and track your professional development",
+      "createNew": "Create New Self-Evaluation",
+      "noEvaluations": "You don't have any self-evaluations yet",
+      "cardTitle": "Self-Evaluation for {{period}}",
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete",
+      "backToMain": "Back to Main"
+    },
+    "messages": {
+      "saved": "Self-evaluation has been saved as draft",
+      "submitted": "Self-evaluation has been submitted to supervisor"
+    },
+    "overall": {
+      "title": "Overall Evaluation",
+      "rating": "Overall Rating",
+      "comments": "Final Comments",
+      "commentsPlaceholder": "Additional notes and comments...",
+      "managerFeedback": "Manager Feedback"
+    },
+    "placeholders": {
+      "communication": "Describe your communication skills...",
+      "teamwork": "Describe your teamwork abilities...",
+      "leadership": "Describe your leadership and initiative...",
+      "problemSolving": "Describe your problem-solving approach...",
+      "development": "Describe your professional development..."
+    },
+    "submissionDate": "Submission Date",
+    "lastModified": "Last Modified"
   },
   "review": {
     "tabs": {
@@ -239,6 +393,189 @@
         "clientRetention": "Develop client retention strategy",
         "processImprovement": "Identify and implement one major process improvement"
       }
+    }
+  },
+  "personalInfo": {
+    "title": "Personal Information",
+    "employeeId": "Employee ID",
+    "name": "Full Name",
+    "position": "Position",
+    "department": "Department",
+    "period": "Evaluation Period"
+  },
+  "performanceAreas": {
+    "title": "Performance Areas",
+    "jobPerformance": "Job Performance",
+    "communication": "Communication",
+    "teamwork": "Teamwork",
+    "leadership": "Leadership/Initiative",
+    "problemSolving": "Problem Solving",
+    "development": "Professional Development",
+    "comments": "Comments",
+    "commentsPlaceholder": "Describe your achievements and challenges..."
+  },
+  "goals": {
+    "title": "Goals and Development",
+    "achievements": "Key Achievements",
+    "challenges": "Challenges Faced",
+    "futureGoals": "Future Goals",
+    "developmentAreas": "Development Areas",
+    "additionalComments": "Additional Comments",
+    "achieved": "Goals Achieved This Year",
+    "achievedPlaceholder": "List the goals you managed to achieve...",
+    "nextYear": "Goals for Next Year",
+    "nextYearPlaceholder": "Describe your professional goals for next year...",
+    "skills": "Skills to Develop",
+    "skillsPlaceholder": "What skills do you want to develop..."
+  },
+  "rating": {
+    "poor": "Poor",
+    "below": "Below Expectations",
+    "meets": "Meets Expectations",
+    "exceeds": "Exceeds Expectations",
+    "outstanding": "Outstanding"
+  },
+  "idp": {
+    "flow": {
+      "title": "Individual Development Plan (IDP)"
+    },
+    "myIdp": {
+      "title": "My IDP",
+      "description": "Manage your individual development plan for 2025"
+    },
+    "drafts": {
+      "title": "Draft Goals",
+      "description": "View and manage your draft goals",
+      "empty": "No draft goals yet. Start by adding a new goal."
+    },
+    "savedGoals": {
+      "title": "Saved Goals",
+      "description": "View your submitted and approved goals for 2025",
+      "empty": "No saved goals for 2025 yet."
+    },
+    "pastPlans": {
+      "title": "Past IDP Plans",
+      "description": "View your previous development plans",
+      "year2024": "2024 Development Plan",
+      "year2023": "2023 Development Plan",
+      "empty": "No past plans available."
+    },
+    "addGoal": {
+      "title": "Add IDP Goal"
+    },
+    "plan2025": {
+      "title": "Plan for Year 2025"
+    },
+    "review": {
+      "title": "Review and Approval",
+      "message": "Plan has been submitted for review. Waiting for supervisor decision."
+    },
+    "final": {
+      "title": "Plan Approved",
+      "message": "Ability to save before printing during plan editing. Ability to return to editing."
+    },
+    "info": {
+      "badge": "IDP info about Goals - Goal Categories"
+    },
+    "modal": {
+      "title": "IDP Goal Categories",
+      "alt": "IDP goal categories diagram",
+      "description": "Business Goals focus on achieving specific business objectives and outcomes. Development Goals focus on personal and professional skill development and growth."
+    },
+    "plan": {
+      "info": "Creation date: Assessment tools Goal details Expected outcome",
+      "category": "Category",
+      "description": "Description",
+      "year": "Year",
+      "status": "Status"
+    },
+    "form": {
+      "goalTitle": "Goal Title",
+      "goalTitlePlaceholder": "Enter development goal title",
+      "goalDescription": "Goal Description",
+      "goalDescriptionPlaceholder": "Describe your development goal in detail",
+      "category": "Goal Category",
+      "goalType": "Goal Type",
+      "goalDetails": "Goal Details",
+      "goalDetailsPlaceholder": "Enter your goal details...",
+      "goalResultsPlaceholder": "Describe expected results..."
+    },
+    "categories": {
+      "business": "Business Goal",
+      "development": "Development Goal"
+    },
+    "actions": {
+      "addGoal": "Add IDP Goal",
+      "viewDrafts": "View Drafts",
+      "viewSaved": "View Saved Goals",
+      "viewPastPlans": "Past Plans",
+      "editGoal": "Edit Goal",
+      "deleteGoal": "Delete Goal",
+      "backToMain": "Back to Main",
+      "cancel": "Cancel",
+      "draft": "Draft",
+      "save": "Save",
+      "submit": "Submit",
+      "needsCorrection": "Needs Correction",
+      "approve": "Approve",
+      "print": "Print",
+      "editAgain": "Return to Editing"
+    },
+    "status": {
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "correction_needed": "Correction Needed"
+    }
+  },
+  "selfEvaluation": {
+    "pageTitle": "My Self-Evaluations",
+    "pageDescription": "Manage your self-evaluations and track your professional development",
+    "createNew": "Create New Self-Evaluation",
+    "noEvaluations": "You don't have any self-evaluations yet",
+    "cardTitle": "Self-Evaluation for {{period}}",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete",
+    "backToMain": "Back to Main"
+  },
+  "annualReview": {
+    "history": {
+      "title": "Evaluation History",
+      "noReviews": "No evaluations available for year",
+      "employee": "Employee",
+      "generateReport": "Generate Report",
+      "sections": {
+        "goalDetails": "Goal Details",
+        "goalType": "Goal Type",
+        "goalResults": "Goal Results"
+      },
+      "status": {
+        "A": "Grade A",
+        "B": "Grade B", 
+        "C": "Grade C",
+        "D": "Grade D"
+      },
+      "types": {
+        "IDP": "Individual Development Plan",
+        "Performance": "Performance Review",
+        "Annual": "Annual Review"
+      }
+    }
+  },
+  "whiteValues": {
+    "modalTitle": "Company Values",
+    "slide1": {
+      "title": "Wisdom - Making Smart Decisions"
+    },
+    "slide2": {
+      "title": "Honesty - Acting with Integrity"
+    },
+    "slide3": {
+      "title": "Innovation - Embracing Creative Solutions"
+    },
+    "slide4": {
+      "title": "Trust - Building Strong Relationships"
     }
   },
   "dateFormat": {
