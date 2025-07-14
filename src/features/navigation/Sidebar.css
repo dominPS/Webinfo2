@@ -40,7 +40,7 @@
   transition: all 0.3s ease;
 }
 
-.sidebar--collapsed .sidebar__header {
+.sidebar__header--collapsed {
   height: 60px;
   padding: 0;
   margin-bottom: 0;
@@ -57,7 +57,7 @@
   transition: all 0.3s ease;
 }
 
-.sidebar--collapsed .sidebar__nav {
+.sidebar__nav--collapsed {
   padding: 0 8px;
 }
 
@@ -93,9 +93,10 @@
   opacity: 0.8;
   transition: all 0.2s ease;
   position: relative;
+  justify-content: flex-start;
 }
 
-.sidebar--collapsed .sidebar__nav-item {
+.sidebar__nav-item--collapsed {
   gap: 0;
   padding: 8px;
   justify-content: center;
@@ -107,7 +108,7 @@
   transform: translateX(4px);
 }
 
-.sidebar--collapsed .sidebar__nav-item:hover {
+.sidebar__nav-item--collapsed:hover {
   transform: none;
 }
 
@@ -119,47 +120,28 @@
 }
 
 /* Navigation item icon */
-.sidebar__nav-item-icon {
+.sidebar__nav-icon {
   width: 20px;
   height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  filter: brightness(0) saturate(100%) invert(100%);
   flex-shrink: 0;
 }
 
-.sidebar__nav-item-icon img {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  filter: brightness(0) invert(1); /* Make icons white */
-}
-
 /* Navigation item text */
-.sidebar__nav-item-text {
+.sidebar__nav-text {
   white-space: nowrap;
   overflow: hidden;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.sidebar--collapsed .sidebar__nav-item-text {
-  opacity: 0;
-  width: 0;
+.sidebar__nav-text--collapsed {
+  display: none; /* Completely hide text when collapsed */
 }
 
-/* Sidebar footer */
-.sidebar__footer {
-  padding: 20px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: auto;
-}
-
-.sidebar--collapsed .sidebar__footer {
-  padding: 20px 8px;
-}
-
-/* Collapse button */
-.sidebar__collapse-button {
+/* Logout button */
+.sidebar__logout {
+  margin: 24px 30px;
+  padding: 0 16px;
   height: 40px;
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -173,55 +155,24 @@
   gap: 8px;
   transition: all 0.2s ease;
   width: calc(100% - 60px);
-  opacity: 1;
 }
 
-.sidebar--collapsed .sidebar__collapse-button {
+.sidebar__logout--collapsed {
+  margin: 24px 6px;
   width: 48px;
-  opacity: 0;
 }
 
-.sidebar__collapse-button:hover {
+.sidebar__logout:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.sidebar__collapse-button:active {
+.sidebar__logout:active {
   transform: translateY(1px);
 }
 
-/* Logout button */
-.sidebar__logout-button {
-  background: rgba(220, 38, 38, 0.2);
-  border: 1px solid rgba(220, 38, 38, 0.3);
-  color: white;
-  padding: 12px;
-  border-radius: 13px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-top: 12px;
-  width: 100%;
-  text-align: center;
-}
-
-.sidebar--collapsed .sidebar__logout-button {
-  padding: 8px;
-  font-size: 12px;
-}
-
-.sidebar__logout-button:hover {
-  background: rgba(220, 38, 38, 0.3);
-  border-color: rgba(220, 38, 38, 0.5);
-}
-
 /* Tooltip for collapsed state */
-.sidebar--collapsed .sidebar__nav-item {
-  position: relative;
-}
-
-.sidebar--collapsed .sidebar__nav-item::after {
-  content: attr(data-tooltip);
+.sidebar__nav-item--collapsed::after {
+  content: attr(title);
   position: absolute;
   left: 60px;
   top: 50%;
@@ -239,7 +190,7 @@
   pointer-events: none;
 }
 
-.sidebar--collapsed .sidebar__nav-item:hover::after {
+.sidebar__nav-item--collapsed:hover::after {
   opacity: 1;
   visibility: visible;
 }
