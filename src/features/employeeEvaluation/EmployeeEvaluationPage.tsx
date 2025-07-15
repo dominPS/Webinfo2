@@ -1,56 +1,7 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import EvaluationForm from './components/EvaluationForm';
-
-const PageContainer = styled.div`
-  padding: 24px;
-  background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.small};
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const PageHeader = styled.div`
-  margin-bottom: 24px;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 600;
-  color: #126678;
-  margin-bottom: 8px;
-`;
-
-const PageDescription = styled.p`
-  color: ${props => props.theme.colors.text.secondary};
-`;
-
-const ContentSection = styled.section`
-  margin-bottom: 32px;
-`;
-
-const EmployeeSelector = styled.div`
-  margin-bottom: 24px;
-`;
-
-const SelectLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-`;
-
-const Select = styled.select`
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.border};
-`;
+import './EmployeeEvaluationPage.css';
 
 /**
  * Employee Evaluation Page
@@ -76,18 +27,19 @@ const EmployeeEvaluationPage: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <PageHeader>
-        <PageTitle>{t('navigation.employeeEvaluation')}</PageTitle>
-        <PageDescription>
+    <div className="employee-evaluation-page">
+      <div className="employee-evaluation-page__header">
+        <h1 className="employee-evaluation-page__title">{t('navigation.employeeEvaluation')}</h1>
+        <p className="employee-evaluation-page__description">
           {t('pages.employeeEvaluation.description', 'Evaluate employee performance and provide feedback')}
-        </PageDescription>
-      </PageHeader>
+        </p>
+      </div>
 
-      <ContentSection>
-        <EmployeeSelector>
-          <SelectLabel>{t('evaluation.selectEmployee', 'Select an employee to evaluate:')}</SelectLabel>
-          <Select 
+      <section className="employee-evaluation-page__content">
+        <div className="employee-evaluation-page__employee-selector">
+          <label className="employee-evaluation-page__select-label">{t('evaluation.selectEmployee', 'Select an employee to evaluate:')}</label>
+          <select 
+            className="employee-evaluation-page__select"
             value={selectedEmployee}
             onChange={(e) => setSelectedEmployee(e.target.value)}
           >
@@ -97,8 +49,8 @@ const EmployeeEvaluationPage: React.FC = () => {
                 {employee.name}
               </option>
             ))}
-          </Select>
-        </EmployeeSelector>
+          </select>
+        </div>
 
         {selectedEmployee && (
           <EvaluationForm 
@@ -109,10 +61,10 @@ const EmployeeEvaluationPage: React.FC = () => {
         )}
         
         {!selectedEmployee && (
-          <p>{t('evaluation.instructions', 'Please select an employee from the dropdown to begin the evaluation process.')}</p>
+          <p className="employee-evaluation-page__instructions">{t('evaluation.instructions', 'Please select an employee from the dropdown to begin the evaluation process.')}</p>
         )}
-      </ContentSection>
-    </PageContainer>
+      </section>
+    </div>
   );
 };
 
