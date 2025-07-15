@@ -1,0 +1,99 @@
+/* WorkerEvaluationPage component styles */
+.worker-evaluation-page {
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+}
+
+.worker-evaluation-page__header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.worker-evaluation-page__title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.worker-evaluation-page__description {
+  color: #666666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.worker-evaluation-page__controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.worker-evaluation-page__control-button {
+  padding: 18px;
+  border: 2px solid #126678;
+  border-radius: 10px;
+  background-color: white;
+  color: #126678;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.worker-evaluation-page__control-button:hover {
+  background-color: #126678;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.worker-evaluation-page__control-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.2);
+}
+
+.worker-evaluation-page__control-button:active {
+  transform: translateY(0);
+}
+
+.worker-evaluation-page__back-button {
+  margin-bottom: 12px;
+  padding: 5px 10px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.worker-evaluation-page__back-button:hover {
+  background-color: #0f5459;
+  transform: translateY(-1px);
+}
+
+.worker-evaluation-page__back-button:active {
+  transform: translateY(0);
+}
+
+.worker-evaluation-page__content {
+  flex: 1;
+  padding-bottom: 80px;
+}

@@ -1,112 +1,10 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import IDPFlow from './components/IDPFlow';
 import AnnualReviewHistory from './components/AnnualReviewHistory';
 import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../shared/components/WhiteValuesModal';
-
-const PageContainer = styled.div`
-  padding: 24px;
-  background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.small};
-  min-height: calc(100vh - 200px);
-  display: flex;
-  flex-direction: column;
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const PageHeader = styled.div`
-  margin-bottom: 32px;
-  text-align: center;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 28px;
-  font-weight: 600;
-  color: #126678;
-  margin-bottom: 8px;
-`;
-
-const PageDescription = styled.p`
-  color: ${props => props.theme.colors.text.secondary};
-  font-size: 16px;
-`;
-
-const ControlsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const ControlButton = styled.button`
-  padding: 18px;
-  border: 2px solid ${props => props.theme.colors.primary};
-  border-radius: 10px;
-  background-color: white;
-  color: ${props => props.theme.colors.primary};
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${props => props.theme.colors.primary};
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}33;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const BackButton = styled.button`
-  margin-bottom: 12px;
-  padding: 5px 10px;
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  align-self: flex-start;
-  
-  &:hover {
-    background-color: #0f5459;
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-  padding-bottom: 80px;
-`;
+import './WorkerEvaluationPage.css';
 
 /**
  * Worker Evaluation Page
@@ -144,76 +42,76 @@ const WorkerEvaluationPage: React.FC = () => {
   // If IDP flow is active, show it instead of the main dashboard
   if (activeFlow === 'idp') {
     return (
-      <PageContainer>
-        <ContentWrapper>
-          <BackButton onClick={handleBackToDashboard}>
+      <div className="worker-evaluation-page">
+        <div className="worker-evaluation-page__content">
+          <button className="worker-evaluation-page__back-button" onClick={handleBackToDashboard}>
             ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-          </BackButton>
+          </button>
           <IDPFlow />
-        </ContentWrapper>
-      </PageContainer>
+        </div>
+      </div>
     );
   }
 
   // If Annual Review flow is active, show it instead of the main dashboard
   if (activeFlow === 'annualReview') {
     return (
-      <PageContainer>
-        <ContentWrapper>
-          <BackButton onClick={handleBackToDashboard}>
+      <div className="worker-evaluation-page">
+        <div className="worker-evaluation-page__content">
+          <button className="worker-evaluation-page__back-button" onClick={handleBackToDashboard}>
             ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-          </BackButton>
+          </button>
           <AnnualReviewHistory />
-        </ContentWrapper>
-      </PageContainer>
+        </div>
+      </div>
     );
   }
 
   // If Self-Assessment flow is active, show it instead of the main dashboard
   if (activeFlow === 'selfAssessment') {
     return (
-      <PageContainer>
-        <ContentWrapper>
+      <div className="worker-evaluation-page">
+        <div className="worker-evaluation-page__content">
           <SelfEvaluationPage showBackButton={true} onBack={handleBackToDashboard} />
-        </ContentWrapper>
-      </PageContainer>
+        </div>
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <ContentWrapper>
-        <PageHeader>
-          <PageTitle>{t('evaluation.worker.title', 'Worker Evaluation')}</PageTitle>
-          <PageDescription>
+    <div className="worker-evaluation-page">
+      <div className="worker-evaluation-page__content">
+        <div className="worker-evaluation-page__header">
+          <h1 className="worker-evaluation-page__title">{t('evaluation.worker.title', 'Worker Evaluation')}</h1>
+          <p className="worker-evaluation-page__description">
             {t('evaluation.worker.dashboardDescription', 'Manage your self-evaluations, development plans, and performance reviews')}
-          </PageDescription>
-        </PageHeader>
+          </p>
+        </div>
 
-        <ControlsGrid>
-          <ControlButton onClick={() => handleControlClick('whiteValues')}>
+        <div className="worker-evaluation-page__controls-grid">
+          <button className="worker-evaluation-page__control-button" onClick={() => handleControlClick('whiteValues')}>
             {t('evaluation.worker.controls.whiteValues', 'Company Values')}
-          </ControlButton>
+          </button>
           
-          <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+          <button className="worker-evaluation-page__control-button" onClick={() => handleControlClick('selfAssessment')}>
             {t('evaluation.worker.controls.selfAssessment', 'Self-Assessment')}
-          </ControlButton>
+          </button>
           
-          <ControlButton onClick={() => handleControlClick('idp')}>
+          <button className="worker-evaluation-page__control-button" onClick={() => handleControlClick('idp')}>
             {t('evaluation.worker.controls.idp', 'IDP (Individual Development Plan)')}
-          </ControlButton>
+          </button>
           
-          <ControlButton onClick={() => handleControlClick('annualReview')}>
+          <button className="worker-evaluation-page__control-button" onClick={() => handleControlClick('annualReview')}>
             {t('evaluation.worker.controls.annualReview', 'Annual Review')}
-          </ControlButton>
-        </ControlsGrid>
-      </ContentWrapper>
+          </button>
+        </div>
+      </div>
 
       <WhiteValuesModal 
         isOpen={isWhiteValuesModalOpen}
         onClose={handleCloseWhiteValuesModal}
       />
-    </PageContainer>
+    </div>
   );
 };
 
