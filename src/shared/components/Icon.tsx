@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import './Icon.css';
 
 interface IconProps {
   src: string;
@@ -8,25 +8,20 @@ interface IconProps {
   className?: string;
 }
 
-const IconImage = styled.img<{ size: number }>`
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  display: inline-block;
-  vertical-align: middle;
-  flex-shrink: 0;
-`;
-
 /**
  * Icon Component
  * Consistent icon display with standard sizing
  */
 const Icon: React.FC<IconProps> = ({ src, alt, size = 24, className }) => {
+  const sizeClass = `icon--size-${size}`;
+  const combinedClassName = `icon ${sizeClass} ${className || ''}`.trim();
+
   return (
-    <IconImage 
+    <img 
       src={src} 
       alt={alt} 
-      size={size} 
-      className={className}
+      className={combinedClassName}
+      style={{ width: `${size}px`, height: `${size}px` }}
     />
   );
 };

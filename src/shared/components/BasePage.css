@@ -1,0 +1,18 @@
+/* BasePage component styles */
+.base-page {
+  padding: 18px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.base-page__title {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.base-page__content {
+  color: #333333;
+}
