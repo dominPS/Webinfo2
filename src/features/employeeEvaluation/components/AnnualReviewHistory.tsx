@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import './AnnualReviewHistory.css';
 
 interface ReviewRecord {
   id: string;
@@ -14,359 +14,205 @@ interface ReviewRecord {
   reportDate: string;
 }
 
-const HistoryContainer = styled.div`
-  padding: 24px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
+interface AnnualReviewHistoryProps {
+  onBack?: () => void;
+}
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-`;
-
-const Title = styled.h1`
-  font-size: 28px;
-  font-weight: 600;
-  color: #1f2937;
-`;
-
-const YearTabs = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-`;
-
-const ScrollableReviewsContainer = styled.div`
-  padding-bottom: 40px;
-`;
-
-const YearTab = styled.button<{ isActive: boolean }>`
-  padding: 8px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: ${props => props.isActive ? '#126678' : 'white'};
-  color: ${props => props.isActive ? 'white' : '#126678'};
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: ${props => props.isActive ? '#126678' : '#f8f9fa'};
-    border-color: #126678;
-  }
-`;
-
-const ReviewCard = styled.div`
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
-  background-color: white;
-`;
-
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  color: #126678;
-`;
-
-const StatusGroup = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-`;
-
-const StatusBadge = styled.span<{ status: string }>`
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: ${props => {
-    switch (props.status) {
-      case 'A': return '#126678'; // Primary color for excellent
-      case 'B': return '#1e7a8a'; // Slightly lighter for good
-      case 'C': return '#4a6670'; // Medium shade for satisfactory
-      case 'D': return '#6b5b73'; // Muted purple-gray for needs improvement
-      default: return '#8b7d85'; // Light gray-purple for unknown
-    }
-  }};
-  color: white;
-`;
-
-const ReportButton = styled.button`
-  padding: 6px 12px;
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #0f5459;
-  }
-`;
-
-const ContentGrid = styled.div`
-  display: grid;
-  gap: 16px;
-`;
-
-const ContentSection = styled.div`
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px;
-`;
-
-const SectionLabel = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const SectionContent = styled.div`
-  color: #374151;
-  line-height: 1.5;
-`;
-
-const ResultList = styled.ul`
-  margin: 0;
-  padding-left: 20px;
-  
-  li {
-    margin-bottom: 4px;
-  }
-`;
-
-// Mock data matching the Figma design
-const mockReviewHistory: ReviewRecord[] = [
-  {
-    id: '2025-1',
-    year: 2025,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'A',
-    detailedGoals: 'Procesy w biznesie',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Realizacja zadań wspierających z angażowaniem pracowników współpracowników i współpracę między działami',
-      'Wspieranie informatej również co wykonanie/rozwijanie i regularne współpraca zespołów wf, planowanie procesów',
-      'Prezentowanie kopert wf, umownienienie procesów'
-    ],
-    reportDate: '2025-01-15'
-  },
-  {
-    id: '2025-2',
-    year: 2025,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'B',
-    detailedGoals: 'Procesy w biznesie',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Uczestnictwo również w skutecznym procesie biznesowego inżyniera',
-      'Realizacja zadań wspierających z angażowaniem pracowników współpracowników i współpracę między działami',
-      'Wspieranie informatej również co wykonanie/rozwijanie i regularne współpraca zespołów wf, planowanie procesów',
-      'Prezentowanie kopert wf, umownienienie procesów'
-    ],
-    reportDate: '2025-02-15'
-  },
-  {
-    id: '2025-3',
-    year: 2025,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'A',
-    detailedGoals: 'Procesy w biznesie',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Opracowywanie układa w wykonywaniu procesów biznesowych inżyniera',
-      'Realizacja zadań wspierających z angażowaniem pracowników współpracowników i współpracę między działami',
-      'Wspieranie informatej również co wykonanie/rozwijanie i regularne współpraca zespołów wf, planowanie procesów',
-      'Prezentowanie kopert wf, umownienienie procesów'
-    ],
-    reportDate: '2025-03-15'
-  },
-  {
-    id: '2024-1',
-    year: 2024,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'B',
-    detailedGoals: 'Rozwój umiejętności technicznych',
-    goalType: 'Cel rozwojowy',
-    goalResults: [
-      'Ukończenie kursu zaawansowanego JavaScript i React',
-      'Wdrożenie nowych technologii w projektach zespołowych',
-      'Mentoring młodszych programistów'
-    ],
-    reportDate: '2024-12-15'
-  },
-  {
-    id: '2024-2',
-    year: 2024,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'A',
-    detailedGoals: 'Zarządzanie projektami',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Pomyślne zarządzanie 3 projektami o wartości ponad 100k złotych',
-      'Poprawa efektywności zespołu o 25%',
-      'Wdrożenie metodyki Agile w dziale'
-    ],
-    reportDate: '2024-11-20'
-  },
-  {
-    id: '2023-1',
-    year: 2023,
-    employee: 'Jan Kowalski',
-    type: 'IDP',
-    status: 'C',
-    detailedGoals: 'Komunikacja i przywództwo',
-    goalType: 'Cel rozwojowy',
-    goalResults: [
-      'Ukończenie kursu komunikacji interpersonalnej',
-      'Prowadzenie comiesięcznych spotkań zespołu',
-      'Poprawa wskaźników zadowolenia zespołu'
-    ],
-    reportDate: '2023-12-10'
-  },
-  {
-    id: '2022-1',
-    year: 2022,
-    employee: 'Jan Kowalski',
-    type: 'Performance',
-    status: 'A',
-    detailedGoals: 'Optymalizacja procesów sprzedażowych',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Zwiększenie konwersji o 30% przez optymalizację lejka sprzedaży',
-      'Wdrożenie systemu CRM w całej organizacji',
-      'Szkolenie zespołu sprzedaży z nowych technik negocjacji'
-    ],
-    reportDate: '2022-12-20'
-  },
-  {
-    id: '2021-1',
-    year: 2021,
-    employee: 'Jan Kowalski',
-    type: 'Annual',
-    status: 'B',
-    detailedGoals: 'Cyfryzacja i automatyzacja',
-    goalType: 'Cel biznesowy',
-    goalResults: [
-      'Automatyzacja 60% rutynowych procesów biurowych',
-      'Wdrożenie elektronicznego obiegu dokumentów',
-      'Redukcja czasu przetwarzania zamówień o 40%'
-    ],
-    reportDate: '2021-12-15'
-  }
-];
-
-const AnnualReviewHistory: React.FC = () => {
+const AnnualReviewHistory: React.FC<AnnualReviewHistoryProps> = ({ onBack }) => {
   const { t } = useTranslation();
-  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [selectedYear, setSelectedYear] = useState<number>(2024);
 
-  const availableYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018];
-  const filteredReviews = mockReviewHistory.filter(review => review.year === selectedYear);
+  // Mock data - in real app this would come from API
+  const mockReviews: ReviewRecord[] = [
+    {
+      id: '1',
+      year: 2024,
+      employee: 'Anna Kowalska',
+      type: 'Annual',
+      status: 'A',
+      detailedGoals: 'Zwiększenie efektywności zespołu o 25% poprzez optymalizację procesów',
+      goalType: 'Cel biznesowy',
+      goalResults: [
+        'Wdrożono nowy system zarządzania projektami',
+        'Skrócono czas realizacji projektów o 30%',
+        'Zwiększono satysfakcję klientów do 95%'
+      ],
+      reportDate: '2024-12-15'
+    },
+    {
+      id: '2',
+      year: 2024,
+      employee: 'Jan Wiśniewski',
+      type: 'Performance',
+      status: 'B',
+      detailedGoals: 'Rozwój umiejętności przywódczych i mentoringu',
+      goalType: 'Cel rozwojowy',
+      goalResults: [
+        'Ukończono szkolenie z zarządzania zespołem',
+        'Prowadzenie mentoringu 2 junior developerów',
+        'Przeprowadzono 12 sesji coachingowych'
+      ],
+      reportDate: '2024-11-20'
+    },
+    {
+      id: '3',
+      year: 2023,
+      employee: 'Katarzyna Dąbrowska',
+      type: 'IDP',
+      status: 'A',
+      detailedGoals: 'Certyfikacja w zakresie zarządzania projektami',
+      goalType: 'Cel edukacyjny',
+      goalResults: [
+        'Uzyskano certyfikat PMP',
+        'Wdrożono metodykę Agile w zespole',
+        'Poprowadzono 5 projektów z sukcesem'
+      ],
+      reportDate: '2023-12-10'
+    },
+    {
+      id: '4',
+      year: 2023,
+      employee: 'Michał Lewandowski',
+      type: 'Annual',
+      status: 'C',
+      detailedGoals: 'Poprawa jakości kodu i procesów testowania',
+      goalType: 'Cel techniczny',
+      goalResults: [
+        'Wprowadzono code review',
+        'Zwiększono pokrycie testami do 80%',
+        'Zredukowano liczbę bugów o 40%'
+      ],
+      reportDate: '2023-11-15'
+    }
+  ];
 
-  const handleReportClick = (reviewId: string) => {
-    console.log(`Generate report for review: ${reviewId}`);
-    alert('Czas sprawozania - funkcja w przygotowaniu');
+  const years = [...new Set(mockReviews.map(review => review.year))].sort((a, b) => b - a);
+  const filteredReviews = mockReviews.filter(review => review.year === selectedYear);
+
+  const getStatusText = (status: string) => {
+    const statusMap = {
+      'A': 'Wybitny',
+      'B': 'Powyżej oczekiwań',
+      'C': 'Zgodnie z oczekiwaniami',
+      'D': 'Wymaga poprawy'
+    };
+    return statusMap[status as keyof typeof statusMap] || status;
+  };
+
+  const getTypeText = (type: string) => {
+    const typeMap = {
+      'IDP': 'Plan rozwoju',
+      'Performance': 'Ocena wydajności',
+      'Annual': 'Ocena roczna'
+    };
+    return typeMap[type as keyof typeof typeMap] || type;
+  };
+
+  const getStatusBadgeClass = (status: string) => {
+    return `annual-review-history__status-badge annual-review-history__status-badge--${status.toLowerCase()}`;
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('pl-PL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   return (
-    <HistoryContainer>
-      <Header>
-        <Title>{t('annualReview.history.title', 'Historia Ocen')}</Title>
-      </Header>
+    <div className="annual-review-history">
+      <div className="annual-review-history__header">
+        <h1 className="annual-review-history__title">Historia ocen rocznych</h1>
+      </div>
 
-      <YearTabs>
-        {availableYears.map(year => (
-          <YearTab
+      <div className="annual-review-history__year-tabs">
+        {years.map(year => (
+          <button
             key={year}
-            isActive={selectedYear === year}
+            className={`annual-review-history__year-tab ${
+              selectedYear === year ? 'annual-review-history__year-tab--active' : ''
+            }`}
             onClick={() => setSelectedYear(year)}
           >
             {year}
-          </YearTab>
+          </button>
         ))}
-      </YearTabs>
+      </div>
 
-      <ScrollableReviewsContainer>
-        {filteredReviews.length === 0 ? (
-          <ContentSection>
-            <SectionContent>
-              {t('annualReview.history.noReviews', 'Brak dostępnych ocen dla roku')} {selectedYear}.
-            </SectionContent>
-          </ContentSection>
-        ) : (
+      <div className="annual-review-history__scrollable-container">
+        {filteredReviews.length > 0 ? (
           filteredReviews.map(review => (
-            <ReviewCard key={review.id}>
-              <CardHeader>
-                <CardTitle>
-                  {t(`annualReview.history.types.${review.type}`, review.type)} {review.year} - {t('annualReview.history.employee', 'Pracownik')}: {review.employee}
-                </CardTitle>
-                <StatusGroup>
-                  <StatusBadge status={review.status}>
-                    {t(`annualReview.history.status.${review.status}`, `Ocena ${review.status}`)}
-                  </StatusBadge>
-                  <ReportButton onClick={() => handleReportClick(review.id)}>
-                    {t('annualReview.history.generateReport', 'Czas sprawozania')}
-                  </ReportButton>
-                </StatusGroup>
-              </CardHeader>
+            <div key={review.id} className="annual-review-history__review-card">
+              <div className="annual-review-history__card-header">
+                <h3 className="annual-review-history__card-title">
+                  {getTypeText(review.type)} - {review.year}
+                </h3>
+                <div className="annual-review-history__status-group">
+                  <span className="annual-review-history__type-badge">
+                    {getTypeText(review.type)}
+                  </span>
+                  <span className={getStatusBadgeClass(review.status)}>
+                    {getStatusText(review.status)}
+                  </span>
+                </div>
+              </div>
 
-              <ContentGrid>
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalDetails', 'Szczegóły celu')}</SectionLabel>
-                  <SectionContent>{review.detailedGoals}</SectionContent>
-                </ContentSection>
+              <div className="annual-review-history__employee-info">
+                <div className="annual-review-history__employee-name">
+                  {review.employee}
+                </div>
+              </div>
 
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalType', 'Typ celu')}</SectionLabel>
-                  <SectionContent>{review.goalType}</SectionContent>
-                </ContentSection>
+              <div className="annual-review-history__goals-section">
+                <h4 className="annual-review-history__goals-title">
+                  Cel szczegółowy ({review.goalType})
+                </h4>
+                <p className="annual-review-history__goals-text">
+                  {review.detailedGoals}
+                </p>
+              </div>
 
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalResults', 'Wyniki celu')}</SectionLabel>
-                  <SectionContent>
-                    <ResultList>
-                      {review.goalResults.map((result, index) => (
-                        <li key={index}>{result}</li>
-                      ))}
-                    </ResultList>
-                  </SectionContent>
-                </ContentSection>
-              </ContentGrid>
-            </ReviewCard>
+              <div className="annual-review-history__goals-section">
+                <h4 className="annual-review-history__goals-title">Rezultaty</h4>
+                <ul className="annual-review-history__results-list">
+                  {review.goalResults.map((result, index) => (
+                    <li key={index} className="annual-review-history__results-item">
+                      {result}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="annual-review-history__action-buttons">
+                <button className="annual-review-history__action-button">
+                  Wyświetl szczegóły
+                </button>
+                <button className="annual-review-history__action-button">
+                  Pobierz raport
+                </button>
+                <button className="annual-review-history__action-button annual-review-history__action-button--primary">
+                  Edytuj
+                </button>
+              </div>
+
+              <div className="annual-review-history__report-date">
+                Data raportu: {formatDate(review.reportDate)}
+              </div>
+            </div>
           ))
+        ) : (
+          <div className="annual-review-history__empty-state">
+            <h3 className="annual-review-history__empty-state-title">
+              Brak ocen za rok {selectedYear}
+            </h3>
+            <p className="annual-review-history__empty-state-description">
+              Nie znaleziono żadnych ocen rocznych dla wybranego roku.
+            </p>
+          </div>
         )}
-      </ScrollableReviewsContainer>
-    </HistoryContainer>
+      </div>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import './SelfEvaluationForm.css';
 
 interface SelfEvaluationData {
   // Personal Information
@@ -81,247 +81,6 @@ interface SelfEvaluationFormProps {
   isReadOnly?: boolean;
 }
 
-const FormContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: ${props => props.theme.fonts.primary};
-`;
-
-const FormHeader = styled.div`
-  text-align: center;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e5e7eb;
-`;
-
-const FormTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 600;
-  color: #126678;
-  margin-bottom: 8px;
-`;
-
-const FormSubtitle = styled.p`
-  color: #6b7280;
-  font-size: 14px;
-`;
-
-const Section = styled.div`
-  margin-bottom: 32px;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e5e7eb;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 6px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.2s ease;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
-  }
-  
-  &:disabled {
-    background-color: #f9fafb;
-    color: #6b7280;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  min-height: 100px;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  resize: vertical;
-  transition: border-color 0.2s ease;
-  font-family: inherit;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
-  }
-  
-  &:disabled {
-    background-color: #f9fafb;
-    color: #6b7280;
-  }
-`;
-
-const RatingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-`;
-
-const RatingLabel = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  min-width: 120px;
-`;
-
-const RatingScale = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
-const RatingButton = styled.button<{ isSelected: boolean; disabled?: boolean }>`
-  width: 40px;
-  height: 40px;
-  border: 2px solid ${props => props.isSelected ? '#126678' : '#d1d5db'};
-  border-radius: 50%;
-  background-color: ${props => props.isSelected ? '#126678' : 'white'};
-  color: ${props => props.isSelected ? 'white' : '#374151'};
-  font-weight: 600;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  transition: all 0.2s ease;
-  
-  &:hover:not(:disabled) {
-    border-color: #126678;
-    background-color: ${props => props.isSelected ? '#0f5459' : '#f0f9ff'};
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-  }
-`;
-
-const RatingDescription = styled.div`
-  font-size: 12px;
-  color: #6b7280;
-  margin-left: 16px;
-`;
-
-const TwoColumnGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  margin-top: 32px;
-  padding-top: 16px;
-  border-top: 1px solid #e5e7eb;
-`;
-
-const Button = styled.button<{ variant: 'primary' | 'secondary' | 'danger' }>`
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  
-  ${props => {
-    switch (props.variant) {
-      case 'primary':
-        return `
-          background-color: #126678;
-          color: white;
-          &:hover { background-color: #0f5459; }
-        `;
-      case 'secondary':
-        return `
-          background-color: white;
-          color: #126678;
-          border: 2px solid #126678;
-          &:hover { background-color: #f0f9ff; }
-        `;
-      case 'danger':
-        return `
-          background-color: #dc2626;
-          color: white;
-          &:hover { background-color: #b91c1c; }
-        `;
-      default:
-        return `
-          background-color: #126678;
-          color: white;
-          &:hover { background-color: #0f5459; }
-        `;
-    }
-  }}
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
-const StatusBadge = styled.span<{ status: string }>`
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  
-  ${props => {
-    switch (props.status) {
-      case 'submitted':
-        return `
-          background-color: #fef3c7;
-          color: #92400e;
-        `;
-      case 'approved':
-        return `
-          background-color: #d1fae5;
-          color: #065f46;
-        `;
-      case 'requires_revision':
-        return `
-          background-color: #fecaca;
-          color: #991b1b;
-        `;
-      default:
-        return `
-          background-color: #f3f4f6;
-          color: #6b7280;
-        `;
-    }
-  }}
-`;
-
 const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
   onSave,
   onSubmit,
@@ -330,13 +89,13 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
   isReadOnly = false
 }) => {
   const { t } = useTranslation();
-  
+
   const [formData, setFormData] = useState<Partial<SelfEvaluationData>>({
-    employeeId: '',
-    employeeName: '',
-    position: '',
-    department: '',
-    evaluationPeriod: new Date().getFullYear().toString(),
+    employeeName: 'Jan Kowalski',
+    position: 'Senior Developer',
+    department: 'IT',
+    evaluationPeriod: '2024',
+    status: 'draft',
     jobPerformance: { rating: 0, comments: '', achievements: '', challenges: '' },
     communication: { rating: 0, comments: '', improvements: '' },
     teamwork: { rating: 0, comments: '', collaboration: '' },
@@ -348,350 +107,309 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
     overallRating: 0,
     overallComments: '',
     managerFeedback: '',
-    status: 'draft',
-    lastModified: new Date().toISOString(),
     ...initialData
   });
 
-  const updateFormData = (path: string, value: any) => {
-    if (isReadOnly) return;
-    
-    const keys = path.split('.');
-    setFormData(prev => {
-      const newData = { ...prev };
-      let current: any = newData;
-      
-      for (let i = 0; i < keys.length - 1; i++) {
-        if (!current[keys[i]]) {
-          current[keys[i]] = {};
-        }
-        current = current[keys[i]];
-      }
-      
-      current[keys[keys.length - 1]] = value;
-      return { ...newData, lastModified: new Date().toISOString() };
-    });
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
-  const getRatingDescription = (rating: number) => {
-    const descriptions = {
-      1: t('evaluation.rating.poor', 'Niewystarczający'),
-      2: t('evaluation.rating.below', 'Poniżej oczekiwań'),
-      3: t('evaluation.rating.meets', 'Spełnia oczekiwania'),
-      4: t('evaluation.rating.exceeds', 'Przekracza oczekiwania'),
-      5: t('evaluation.rating.outstanding', 'Wybitny')
+  const handleNestedInputChange = (section: string, field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: {
+        ...(prev[section as keyof typeof prev] as any),
+        [field]: value
+      }
+    }));
+  };
+
+  const handleRatingChange = (section: string, rating: number) => {
+    handleNestedInputChange(section, 'rating', rating);
+  };
+
+  const getStatusBadgeClass = (status: string) => {
+    return `self-evaluation-form__status-badge self-evaluation-form__status-badge--${status.replace('_', '-')}`;
+  };
+
+  const getStatusText = (status: string) => {
+    const statusMap = {
+      'draft': 'Wersja robocza',
+      'submitted': 'Przesłano',
+      'approved': 'Zatwierdzone',
+      'requires_revision': 'Wymaga poprawek'
     };
-    return descriptions[rating as keyof typeof descriptions] || '';
+    return statusMap[status as keyof typeof statusMap] || status;
+  };
+
+  const calculateProgress = () => {
+    const sections = ['jobPerformance', 'communication', 'teamwork', 'leadership', 'problemSolving', 'professionalDevelopment'];
+    const completedSections = sections.filter(section => {
+      const sectionData = formData[section as keyof typeof formData] as any;
+      return sectionData && sectionData.rating > 0 && sectionData.comments;
+    }).length;
+    return Math.round((completedSections / sections.length) * 100);
+  };
+
+  const renderRatingScale = (section: string, currentRating: number) => {
+    return (
+      <div className="self-evaluation-form__rating-scale">
+        {[1, 2, 3, 4, 5].map(rating => (
+          <button
+            key={rating}
+            type="button"
+            className={`self-evaluation-form__rating-button ${
+              currentRating === rating ? 'self-evaluation-form__rating-button--selected' : ''
+            }`}
+            onClick={() => handleRatingChange(section, rating)}
+            disabled={isReadOnly}
+          >
+            {rating}
+          </button>
+        ))}
+        <div className="self-evaluation-form__rating-description">
+          {currentRating === 1 && 'Wymaga znacznej poprawy'}
+          {currentRating === 2 && 'Poniżej oczekiwań'}
+          {currentRating === 3 && 'Zgodnie z oczekiwaniami'}
+          {currentRating === 4 && 'Powyżej oczekiwań'}
+          {currentRating === 5 && 'Wybitny'}
+        </div>
+      </div>
+    );
   };
 
   const handleSave = () => {
-    onSave(formData);
+    onSave({
+      ...formData,
+      lastModified: new Date().toISOString()
+    });
   };
 
   const handleSubmit = () => {
-    if (isFormValid()) {
-      onSubmit(formData as SelfEvaluationData);
+    if (formData.status === 'draft') {
+      const submissionData = {
+        ...formData,
+        status: 'submitted' as const,
+        submissionDate: new Date().toISOString(),
+        lastModified: new Date().toISOString()
+      };
+      onSubmit(submissionData as SelfEvaluationData);
     }
   };
 
-  const isFormValid = () => {
-    return formData.employeeName && 
-           formData.position && 
-           formData.department &&
-           formData.jobPerformance?.rating &&
-           formData.overallRating;
-  };
-
-  const RatingComponent = ({ 
-    path, 
-    label, 
-    value 
-  }: { 
-    path: string; 
-    label: string; 
-    value: number 
-  }) => (
-    <RatingContainer>
-      <RatingLabel>{label}:</RatingLabel>
-      <RatingScale>
-        {[1, 2, 3, 4, 5].map(rating => (
-          <RatingButton
-            key={rating}
-            isSelected={value === rating}
-            disabled={isReadOnly}
-            onClick={() => updateFormData(path, rating)}
-            type="button"
-          >
-            {rating}
-          </RatingButton>
-        ))}
-      </RatingScale>
-      <RatingDescription>
-        {value > 0 && getRatingDescription(value)}
-      </RatingDescription>
-    </RatingContainer>
-  );
+  const progress = calculateProgress();
 
   return (
-    <FormContainer>
-      <FormHeader>
-        <FormTitle>{t('evaluation.selfEvaluation.title', 'Formularz Samooceny')}</FormTitle>
-        <FormSubtitle>
-          {t('evaluation.selfEvaluation.subtitle', 'Oceń swoją pracę i rozwój zawodowy w ostatnim okresie')}
-        </FormSubtitle>
-        {formData.status && formData.status !== 'draft' && (
-          <div style={{ marginTop: '12px' }}>
-            <StatusBadge status={formData.status}>
-              {t(`evaluation.status.${formData.status}`, formData.status)}
-            </StatusBadge>
-          </div>
-        )}
-      </FormHeader>
-
-      {/* Personal Information */}
-      <Section>
-        <SectionTitle>{t('evaluation.personalInfo.title', 'Informacje podstawowe')}</SectionTitle>
-        <TwoColumnGrid>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.employeeId', 'ID Pracownika')}</Label>
-            <Input
-              type="text"
-              value={formData.employeeId || ''}
-              onChange={(e) => updateFormData('employeeId', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.name', 'Imię i nazwisko')}</Label>
-            <Input
-              type="text"
-              value={formData.employeeName || ''}
-              onChange={(e) => updateFormData('employeeName', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.position', 'Stanowisko')}</Label>
-            <Input
-              type="text"
-              value={formData.position || ''}
-              onChange={(e) => updateFormData('position', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.department', 'Dział')}</Label>
-            <Input
-              type="text"
-              value={formData.department || ''}
-              onChange={(e) => updateFormData('department', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-        </TwoColumnGrid>
-        <FormGroup>
-          <Label>{t('evaluation.personalInfo.period', 'Okres oceny')}</Label>
-          <Input
-            type="text"
-            value={formData.evaluationPeriod || ''}
-            onChange={(e) => updateFormData('evaluationPeriod', e.target.value)}
-            disabled={isReadOnly}
-            placeholder="np. 2024, Q1 2024, styczeń-grudzień 2024"
+    <div className="self-evaluation-form">
+      <div className="self-evaluation-form__header">
+        <h1 className="self-evaluation-form__title">
+          Samoocena pracownika
+          <span className={getStatusBadgeClass(formData.status || 'draft')}>
+            {getStatusText(formData.status || 'draft')}
+          </span>
+        </h1>
+        <p className="self-evaluation-form__subtitle">
+          {formData.employeeName} - {formData.position} - Okres: {formData.evaluationPeriod}
+        </p>
+        
+        <div className="self-evaluation-form__progress-text">
+          Postęp: {progress}% ukończenia
+        </div>
+        <div className="self-evaluation-form__progress-bar">
+          <div 
+            className="self-evaluation-form__progress-fill" 
+            style={{ width: `${progress}%` }}
           />
-        </FormGroup>
-      </Section>
+        </div>
+      </div>
 
       {/* Performance Areas */}
-      <Section>
-        <SectionTitle>{t('evaluation.performanceAreas.title', 'Obszary wydajności')}</SectionTitle>
+      <div className="self-evaluation-form__section">
+        <h2 className="self-evaluation-form__section-title">Obszary oceny wydajności</h2>
         
         {/* Job Performance */}
-        <FormGroup>
-          <RatingComponent
-            path="jobPerformance.rating"
-            label={t('evaluation.performanceAreas.jobPerformance', 'Wykonywanie obowiązków')}
-            value={formData.jobPerformance?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.jobPerformance?.comments || ''}
-            onChange={(e) => updateFormData('jobPerformance.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.performanceAreas.commentsPlaceholder', 'Opisz swoje osiągnięcia i wyzwania...')}
-          />
-        </FormGroup>
+        <div className="self-evaluation-form__form-group">
+          <div className="self-evaluation-form__rating-container">
+            <span className="self-evaluation-form__rating-label">
+              Wydajność w pracy <span className="self-evaluation-form__required">*</span>
+            </span>
+            {renderRatingScale('jobPerformance', formData.jobPerformance?.rating || 0)}
+          </div>
+          
+          <div className="self-evaluation-form__two-column-grid">
+            <div className="self-evaluation-form__form-group">
+              <label className="self-evaluation-form__label">Osiągnięcia</label>
+              <textarea
+                className="self-evaluation-form__textarea"
+                value={formData.jobPerformance?.achievements || ''}
+                onChange={(e) => handleNestedInputChange('jobPerformance', 'achievements', e.target.value)}
+                placeholder="Opisz swoje główne osiągnięcia w tym okresie..."
+                disabled={isReadOnly}
+              />
+            </div>
+            
+            <div className="self-evaluation-form__form-group">
+              <label className="self-evaluation-form__label">Wyzwania</label>
+              <textarea
+                className="self-evaluation-form__textarea"
+                value={formData.jobPerformance?.challenges || ''}
+                onChange={(e) => handleNestedInputChange('jobPerformance', 'challenges', e.target.value)}
+                placeholder="Opisz napotkane wyzwania i sposób ich rozwiązania..."
+                disabled={isReadOnly}
+              />
+            </div>
+          </div>
+          
+          <div className="self-evaluation-form__form-group">
+            <label className="self-evaluation-form__label">Dodatkowe komentarze</label>
+            <textarea
+              className="self-evaluation-form__textarea"
+              value={formData.jobPerformance?.comments || ''}
+              onChange={(e) => handleNestedInputChange('jobPerformance', 'comments', e.target.value)}
+              placeholder="Dodatkowe uwagi dotyczące wydajności w pracy..."
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
 
         {/* Communication */}
-        <FormGroup>
-          <RatingComponent
-            path="communication.rating"
-            label={t('evaluation.performanceAreas.communication', 'Komunikacja')}
-            value={formData.communication?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.communication?.comments || ''}
-            onChange={(e) => updateFormData('communication.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.placeholders.communication', 'Opisz swoje umiejętności komunikacyjne...')}
-          />
-        </FormGroup>
+        <div className="self-evaluation-form__form-group">
+          <div className="self-evaluation-form__rating-container">
+            <span className="self-evaluation-form__rating-label">
+              Komunikacja <span className="self-evaluation-form__required">*</span>
+            </span>
+            {renderRatingScale('communication', formData.communication?.rating || 0)}
+          </div>
+          
+          <div className="self-evaluation-form__form-group">
+            <label className="self-evaluation-form__label">Komentarze</label>
+            <textarea
+              className="self-evaluation-form__textarea"
+              value={formData.communication?.comments || ''}
+              onChange={(e) => handleNestedInputChange('communication', 'comments', e.target.value)}
+              placeholder="Oceń swoje umiejętności komunikacyjne..."
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
 
         {/* Teamwork */}
-        <FormGroup>
-          <RatingComponent
-            path="teamwork.rating"
-            label={t('evaluation.performanceAreas.teamwork', 'Praca zespołowa')}
-            value={formData.teamwork?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.teamwork?.comments || ''}
-            onChange={(e) => updateFormData('teamwork.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.placeholders.teamwork', 'Opisz swój wkład w pracę zespołu...')}
-          />
-        </FormGroup>
+        <div className="self-evaluation-form__form-group">
+          <div className="self-evaluation-form__rating-container">
+            <span className="self-evaluation-form__rating-label">
+              Praca zespołowa <span className="self-evaluation-form__required">*</span>
+            </span>
+            {renderRatingScale('teamwork', formData.teamwork?.rating || 0)}
+          </div>
+          
+          <div className="self-evaluation-form__form-group">
+            <label className="self-evaluation-form__label">Współpraca z zespołem</label>
+            <textarea
+              className="self-evaluation-form__textarea"
+              value={formData.teamwork?.collaboration || ''}
+              onChange={(e) => handleNestedInputChange('teamwork', 'collaboration', e.target.value)}
+              placeholder="Opisz swoją współpracę z zespołem..."
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
+      </div>
 
-        {/* Leadership */}
-        <FormGroup>
-          <RatingComponent
-            path="leadership.rating"
-            label={t('evaluation.performanceAreas.leadership', 'Przywództwo/Inicjatywa')}
-            value={formData.leadership?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.leadership?.comments || ''}
-            onChange={(e) => updateFormData('leadership.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.placeholders.leadership', 'Opisz swoje inicjatywy i przywództwo...')}
-          />
-        </FormGroup>
-
-        {/* Problem Solving */}
-        <FormGroup>
-          <RatingComponent
-            path="problemSolving.rating"
-            label={t('evaluation.performanceAreas.problemSolving', 'Rozwiązywanie problemów')}
-            value={formData.problemSolving?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.problemSolving?.comments || ''}
-            onChange={(e) => updateFormData('problemSolving.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.placeholders.problemSolving', 'Opisz przykłady rozwiązywania problemów...')}
-          />
-        </FormGroup>
-
-        {/* Professional Development */}
-        <FormGroup>
-          <RatingComponent
-            path="professionalDevelopment.rating"
-            label={t('evaluation.performanceAreas.development', 'Rozwój zawodowy')}
-            value={formData.professionalDevelopment?.rating || 0}
-          />
-          <Label>{t('evaluation.performanceAreas.comments', 'Komentarze')}</Label>
-          <TextArea
-            value={formData.professionalDevelopment?.comments || ''}
-            onChange={(e) => updateFormData('professionalDevelopment.comments', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.placeholders.development', 'Opisz swój rozwój i naukę...')}
-          />
-        </FormGroup>
-      </Section>
-
-      {/* Goals */}
-      <Section>
-        <SectionTitle>{t('evaluation.goals.title', 'Cele i rozwój')}</SectionTitle>
+      {/* Goals Section */}
+      <div className="self-evaluation-form__section">
+        <h2 className="self-evaluation-form__section-title">Cele i rozwój</h2>
         
-        <FormGroup>
-          <Label>{t('evaluation.goals.achieved', 'Cele osiągnięte w tym roku')}</Label>
-          <TextArea
-            value={formData.currentYearGoals?.achieved || ''}
-            onChange={(e) => updateFormData('currentYearGoals.achieved', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.goals.achievedPlaceholder', 'Wymień cele które udało Ci się osiągnąć...')}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>{t('evaluation.goals.nextYear', 'Cele na następny rok')}</Label>
-          <TextArea
-            value={formData.nextYearGoals?.professional || ''}
-            onChange={(e) => updateFormData('nextYearGoals.professional', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.goals.nextYearPlaceholder', 'Opisz swoje cele zawodowe na następny rok...')}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>{t('evaluation.goals.skills', 'Umiejętności do rozwijania')}</Label>
-          <TextArea
-            value={formData.nextYearGoals?.skills || ''}
-            onChange={(e) => updateFormData('nextYearGoals.skills', e.target.value)}
-            disabled={isReadOnly}
-            placeholder={t('evaluation.goals.skillsPlaceholder', 'Jakie umiejętności chcesz rozwijać...')}
-          />
-        </FormGroup>
-      </Section>
+        <div className="self-evaluation-form__info-box">
+          <h3 className="self-evaluation-form__info-box-title">Cele bieżącego roku</h3>
+          <p className="self-evaluation-form__info-box-content">
+            Oceń stopień realizacji celów wyznaczonych na początek roku.
+          </p>
+        </div>
+        
+        <div className="self-evaluation-form__two-column-grid">
+          <div className="self-evaluation-form__form-group">
+            <label className="self-evaluation-form__label">Cele osiągnięte</label>
+            <textarea
+              className="self-evaluation-form__textarea"
+              value={formData.currentYearGoals?.achieved || ''}
+              onChange={(e) => handleNestedInputChange('currentYearGoals', 'achieved', e.target.value)}
+              placeholder="Cele które udało się w pełni zrealizować..."
+              disabled={isReadOnly}
+            />
+          </div>
+          
+          <div className="self-evaluation-form__form-group">
+            <label className="self-evaluation-form__label">Cele częściowo osiągnięte</label>
+            <textarea
+              className="self-evaluation-form__textarea"
+              value={formData.currentYearGoals?.partiallyAchieved || ''}
+              onChange={(e) => handleNestedInputChange('currentYearGoals', 'partiallyAchieved', e.target.value)}
+              placeholder="Cele w trakcie realizacji..."
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Overall Assessment */}
-      <Section>
-        <SectionTitle>{t('evaluation.overall.title', 'Ocena ogólna')}</SectionTitle>
+      <div className="self-evaluation-form__section">
+        <h2 className="self-evaluation-form__section-title">Ocena ogólna</h2>
         
-        <FormGroup>
-          <RatingComponent
-            path="overallRating"
-            label={t('evaluation.overall.rating', 'Ogólna ocena')}
-            value={formData.overallRating || 0}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>{t('evaluation.overall.comments', 'Komentarze końcowe')}</Label>
-          <TextArea
+        <div className="self-evaluation-form__rating-container">
+          <span className="self-evaluation-form__rating-label">
+            Ogólna samoocena <span className="self-evaluation-form__required">*</span>
+          </span>
+          {renderRatingScale('overall', formData.overallRating || 0)}
+        </div>
+        
+        <div className="self-evaluation-form__form-group">
+          <label className="self-evaluation-form__label">Komentarze końcowe</label>
+          <textarea
+            className="self-evaluation-form__textarea"
             value={formData.overallComments || ''}
-            onChange={(e) => updateFormData('overallComments', e.target.value)}
+            onChange={(e) => handleInputChange('overallComments', e.target.value)}
+            placeholder="Podsumuj swoją samoocenę..."
             disabled={isReadOnly}
-            placeholder={t('evaluation.overall.commentsPlaceholder', 'Dodatkowe uwagi i komentarze...')}
+            style={{ minHeight: '120px' }}
           />
-        </FormGroup>
-
-        {formData.managerFeedback && (
-          <FormGroup>
-            <Label>{t('evaluation.overall.managerFeedback', 'Feedback od przełożonego')}</Label>
-            <TextArea
-              value={formData.managerFeedback || ''}
-              disabled={true}
-              style={{ backgroundColor: '#f9fafb' }}
-            />
-          </FormGroup>
-        )}
-      </Section>
+        </div>
+      </div>
 
       {/* Action Buttons */}
-      <ActionButtons>
-        <Button variant="secondary" onClick={onCancel}>
-          {t('common.cancel', 'Anuluj')}
-        </Button>
-        {!isReadOnly && (
-          <>
-            <Button variant="secondary" onClick={handleSave}>
-              {t('common.save', 'Zapisz szkic')}
-            </Button>
-            <Button 
-              variant="primary" 
+      {!isReadOnly && (
+        <div className="self-evaluation-form__action-buttons">
+          <button
+            type="button"
+            className="self-evaluation-form__button self-evaluation-form__button--secondary"
+            onClick={onCancel}
+          >
+            Anuluj
+          </button>
+          
+          <button
+            type="button"
+            className="self-evaluation-form__button self-evaluation-form__button--secondary"
+            onClick={handleSave}
+          >
+            Zapisz wersję roboczą
+          </button>
+          
+          {formData.status === 'draft' && (
+            <button
+              type="button"
+              className="self-evaluation-form__button self-evaluation-form__button--primary"
               onClick={handleSubmit}
-              disabled={!isFormValid()}
+              disabled={progress < 70}
             >
-              {t('common.submit', 'Wyślij')}
-            </Button>
-          </>
-        )}
-      </ActionButtons>
-    </FormContainer>
+              Prześlij do przełożonego
+            </button>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,0 +1,311 @@
+/* IDPFlow component styles */
+.idp-flow {
+  padding: 18px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.idp-flow__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.idp-flow__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 6px;
+  margin-top: 0;
+}
+
+.idp-flow__step {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.idp-flow__step--active {
+  background-color: #f8fafc;
+  border-color: #126678;
+}
+
+.idp-flow__step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.idp-flow__step-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.idp-flow__info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: #126678;
+  color: white;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: fit-content;
+}
+
+.idp-flow__info-badge--training {
+  background-color: #126678;
+}
+
+.idp-flow__info-badge--plan {
+  background-color: #126678;
+}
+
+.idp-flow__info-badge:hover {
+  opacity: 0.9;
+}
+
+.idp-flow__scrollable-container {
+  margin-bottom: 12px;
+  padding-bottom: 30px;
+}
+
+.idp-flow__goals-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.idp-flow__year-section {
+  margin-bottom: 18px;
+}
+
+.idp-flow__year-title {
+  color: #126678;
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.idp-flow__goal-card {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.idp-flow__goal-card:hover {
+  border-color: #126678;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.idp-flow__goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.idp-flow__goal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  flex: 1;
+}
+
+.idp-flow__goal-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.idp-flow__goal-status--draft {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.idp-flow__goal-status--submitted {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.idp-flow__goal-status--approved {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.idp-flow__goal-status--correction-needed {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.idp-flow__goal-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.idp-flow__goal-category {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.idp-flow__goal-category--business {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.idp-flow__goal-category--development {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.idp-flow__goal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.idp-flow__goal-action {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: white;
+  color: #374151;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.idp-flow__goal-action:hover {
+  background-color: #f9fafb;
+  border-color: #126678;
+  color: #126678;
+}
+
+.idp-flow__goal-action--primary {
+  background-color: #126678;
+  color: white;
+  border-color: #126678;
+}
+
+.idp-flow__goal-action--primary:hover {
+  background-color: #0f5459;
+}
+
+.idp-flow__add-goal-section {
+  text-align: center;
+  padding: 20px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.idp-flow__add-goal-button {
+  background-color: #126678;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.idp-flow__add-goal-button:hover {
+  background-color: #0f5459;
+}
+
+.idp-flow__empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.idp-flow__empty-state-title {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.idp-flow__empty-state-description {
+  font-size: 14px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.idp-flow__summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.idp-flow__stat-card {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.idp-flow__stat-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #126678;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.idp-flow__stat-label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .idp-flow {
+    padding: 12px;
+  }
+  
+  .idp-flow__goal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .idp-flow__goal-actions {
+    flex-direction: column;
+  }
+  
+  .idp-flow__summary-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
