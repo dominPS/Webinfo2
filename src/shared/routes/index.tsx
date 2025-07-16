@@ -8,7 +8,6 @@ import {
   DashboardPage,
   LoginPage,
   NotFoundPage,
-  EmployeeReviewPage,
   EmployeeEvaluationPage,
   ProfileSelectionPage,
   WorkerEvaluationPage,
@@ -139,10 +138,6 @@ export const router = createBrowserRouter([
       {
         path: 'projects-activities',
         element: <ProjectsActivitiesPage translationKey="projectsActivities" />,
-      },
-      {
-        path: 'employee-review',
-        element: <EmployeeReviewPage />,
       },
       {
         path: 'employee-evaluation',

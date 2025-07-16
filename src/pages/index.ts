@@ -1,7 +1,6 @@
 import DashboardPage from './Dashboard';
 import LoginPage from './Login';
 import NotFoundPage from './NotFound';
-import EmployeeReviewPage from './EmployeeReview';
 import EmployeeEvaluationPage from './EmployeeEvaluation';
 import ProfileSelectionPage from './ProfileSelection';
 import WorkerEvaluationPage from './WorkerEvaluation';
@@ -14,7 +13,6 @@ export {
   DashboardPage, 
   LoginPage, 
   NotFoundPage, 
-  EmployeeReviewPage, 
   EmployeeEvaluationPage, 
   ProfileSelectionPage,
   WorkerEvaluationPage,

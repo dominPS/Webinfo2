@@ -24,7 +24,6 @@
     "absencePlan": "Plan absencji",
     "monthlyAbsencePlan": "Miesięczny plan absencji",
     "schedule": "Grafik",    "projectsActivities": "Projekty / Czynności",
-    "employeeReview": "Przegląd pracowników",
     "employeeEvaluation": "Ocena pracowników",
     "logout": "Wyloguj się",
     "login": "Zaloguj się",
@@ -77,9 +76,6 @@
   "pages": {
     "employeeEvaluation": {
       "description": "Oceniaj wyniki pracowników i przekazuj informacje zwrotne"
-    },
-    "employeeReview": {
-      "description": "Przeglądaj i zarządzaj sesjami oceny pracowników"
     }
   },
   "employees": {

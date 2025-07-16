@@ -69,11 +69,3 @@ export const ProjectsActivitiesIcon: React.FC<IconProps> = ({ width = 20, height
     <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2zm6.5 10c0 .28-.22.5-.5.5h-1v1c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-1h-1c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h1v-1c0-.28.22-.5.5-.5s.5.22.5.5v1h1c.28 0 .5.22.5.5z"/>
   </svg>
 );
-
-// Employee Review - Person with star
-export const EmployeeReviewIcon: React.FC<IconProps> = ({ width = 20, height = 20, fill = "white" }) => (
-  <svg width={width} height={height} viewBox="0 0 24 24" fill={fill}>
-    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-    <path d="M18 8l1.25 2.75L22 12l-2.75 1.25L18 16l-1.25-2.75L14 12l2.75-1.25z"/>
-  </svg>
-);
