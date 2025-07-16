@@ -1,0 +1,53 @@
+/* EvaluationCriteria component styles */
+.evaluation-criteria {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.evaluation-criteria__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 0;
+  color: #126678;
+}
+
+.evaluation-criteria__description {
+  font-size: 14px;
+  color: #666666;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.evaluation-criteria__options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.evaluation-criteria__option-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 2px solid #126678;
+  background-color: white;
+  color: #126678;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.evaluation-criteria__option-button--selected {
+  background-color: #126678;
+  color: white;
+}
+
+.evaluation-criteria__option-button:hover {
+  background-color: #f8f9fa;
+}
+
+.evaluation-criteria__option-button--selected:hover {
+  background-color: #0f5459;
+}
