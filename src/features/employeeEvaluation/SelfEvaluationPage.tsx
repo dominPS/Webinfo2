@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import SelfEvaluationForm from './components/SelfEvaluationForm';
+import './SelfEvaluationPage.css';
 
 interface SelfEvaluationData {
   id: string;
@@ -20,168 +20,6 @@ interface SelfEvaluationPageProps {
   onBack?: () => void;
 }
 
-const PageContainer = styled.div`
-  padding: 18px;
-  background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.small};
-  min-height: calc(100vh - 200px);
-  display: flex;
-  flex-direction: column;
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const PageHeader = styled.div`
-  margin-bottom: 24px;
-  text-align: center;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 600;
-  color: #126678;
-  margin-bottom: 6px;
-`;
-
-const PageDescription = styled.p`
-  color: ${props => props.theme.colors.text.secondary};
-  font-size: 14px;
-`;
-
-const BackButton = styled.button`
-  margin-bottom: 12px;
-  padding: 5px 10px;
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  align-self: flex-start;
-  
-  &:hover {
-    background-color: #0f5459;
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-`;
-
-const EvaluationListContainer = styled.div`
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-`;
-
-const EvaluationGrid = styled.div`
-  display: grid;
-  gap: 16px;
-  margin-bottom: 24px;
-`;
-
-const EvaluationCard = styled.div`
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background-color: white;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    border-color: #126678;
-    box-shadow: 0 2px 8px rgba(18, 102, 120, 0.15);
-  }
-`;
-
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-`;
-
-const StatusBadge = styled.span<{ status: string }>`
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  
-  ${props => {
-    switch (props.status) {
-      case 'submitted':
-        return `
-          background-color: #fef3c7;
-          color: #92400e;
-        `;
-      case 'approved':
-        return `
-          background-color: #d1fae5;
-          color: #065f46;
-        `;
-      case 'requires_revision':
-        return `
-          background-color: #fecaca;
-          color: #991b1b;
-        `;
-      default:
-        return `
-          background-color: #f3f4f6;
-          color: #6b7280;
-        `;
-    }
-  }}
-`;
-
-const CardContent = styled.div`
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.5;
-`;
-
-const CreateButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  border: 2px dashed #126678;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #126678;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background-color: #f0f9ff;
-    border-color: #0f5459;
-  }
-`;
-
-const EmptyState = styled.div`
-  text-align: center;
-  padding: 48px 24px;
-  color: #6b7280;
-`;
-
 const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({ 
   showBackButton = true, 
   onBack 
@@ -199,10 +37,10 @@ const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({
       employeeName: 'Jan Kowalski',
       position: 'Senior Developer',
       department: 'IT',
-      evaluationPeriod: '2024',
+      evaluationPeriod: 'Ocena roczna 2024',
       status: 'submitted',
-      submissionDate: '2024-03-15',
-      lastModified: '2024-03-15T10:30:00Z'
+      submissionDate: '2024-11-15',
+      lastModified: '2024-11-14'
     },
     {
       id: '2',
@@ -210,151 +48,177 @@ const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({
       employeeName: 'Jan Kowalski',
       position: 'Senior Developer',
       department: 'IT',
-      evaluationPeriod: '2023',
+      evaluationPeriod: 'Ocena półroczna 2024',
       status: 'approved',
-      submissionDate: '2023-12-20',
-      lastModified: '2023-12-20T14:15:00Z'
+      submissionDate: '2024-06-30',
+      lastModified: '2024-06-28'
+    },
+    {
+      id: '3',
+      employeeId: 'EMP001',
+      employeeName: 'Jan Kowalski',
+      position: 'Senior Developer',
+      department: 'IT',
+      evaluationPeriod: 'Ocena kwartalna Q3 2024',
+      status: 'draft',
+      lastModified: '2024-11-20'
     }
   ];
 
-  const handleCreateNew = () => {
+  const getStatusText = (status: string) => {
+    const statusMap = {
+      'draft': 'Szkic',
+      'submitted': 'Przesłane',
+      'approved': 'Zatwierdzone',
+      'requires_revision': 'Wymaga poprawek'
+    };
+    return statusMap[status as keyof typeof statusMap] || status;
+  };
+
+  const getStatusBadgeClass = (status: string) => {
+    return `self-evaluation-page__status-badge self-evaluation-page__status-badge--${status.replace('_', '-')}`;
+  };
+
+  const handleCreateNewEvaluation = () => {
+    setSelectedEvaluation(null);
+    setCurrentView('form');
+    setIsReadOnly(false);
+  };
+
+  const handleEvaluationClick = (evaluation: SelfEvaluationData) => {
+    setSelectedEvaluation(evaluation);
+    setCurrentView('form');
+    // Set read-only if evaluation is submitted or approved
+    setIsReadOnly(evaluation.status === 'submitted' || evaluation.status === 'approved');
+  };
+
+  const handleBackToList = () => {
+    setCurrentView('list');
     setSelectedEvaluation(null);
     setIsReadOnly(false);
-    setCurrentView('form');
   };
 
-  const handleEditEvaluation = (evaluation: SelfEvaluationData) => {
-    setSelectedEvaluation(evaluation);
-    setIsReadOnly(evaluation.status === 'approved' || evaluation.status === 'submitted');
-    setCurrentView('form');
+  const handleSaveEvaluation = (formData: any) => {
+    console.log('Saving evaluation:', formData);
+    // In real app, this would save to API
+    alert('Samoocena została zapisana jako szkic');
+    handleBackToList();
   };
 
-  const handleSave = (data: any) => {
-    console.log('Saving evaluation:', data);
-    // In real app, this would call API to save draft
-    alert(t('evaluation.messages.saved', 'Samoocena została zapisana jako szkic'));
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log('Submitting evaluation:', data);
-    // In real app, this would call API to submit evaluation
-    alert(t('evaluation.messages.submitted', 'Samoocena została wysłana do przełożonego'));
-    setCurrentView('list');
-  };
-
-  const handleCancel = () => {
-    if (currentView === 'form') {
-      setCurrentView('list');
-      setSelectedEvaluation(null);
-    } else if (onBack) {
-      // If we're in list view and have an onBack prop, use it
-      onBack();
-    } else {
-      // Default behavior for standalone usage
-      setCurrentView('list');
-      setSelectedEvaluation(null);
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    const statusTexts = {
-      'draft': t('evaluation.status.draft', 'Szkic'),
-      'submitted': t('evaluation.status.submitted', 'Wysłane'),
-      'approved': t('evaluation.status.approved', 'Zatwierdzone'),
-      'requires_revision': t('evaluation.status.requires_revision', 'Wymaga poprawek')
-    };
-    return statusTexts[status as keyof typeof statusTexts] || status;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pl-PL');
+  const handleSubmitEvaluation = (formData: any) => {
+    console.log('Submitting evaluation:', formData);
+    // In real app, this would submit to API
+    alert('Samoocena została przesłana do przełożonego');
+    handleBackToList();
   };
 
   if (currentView === 'form') {
     return (
-      <PageContainer>
-        <ContentWrapper>
-          {showBackButton && (
-            <BackButton onClick={handleCancel}>
-              ← {t('common.back', 'Powrót')}
-            </BackButton>
+      <div className="self-evaluation-page">
+        <button className="self-evaluation-page__back-button" onClick={handleBackToList}>
+          ← Powrót do listy samoocen
+        </button>
+        
+        <div className="self-evaluation-page__form-container">
+          <div className="self-evaluation-page__form-header">
+            <h2 className="self-evaluation-page__form-title">
+              {selectedEvaluation ? selectedEvaluation.evaluationPeriod : 'Nowa samoocena'}
+            </h2>
+            <p className="self-evaluation-page__form-subtitle">
+              {selectedEvaluation ? 
+                `Status: ${getStatusText(selectedEvaluation.status)}` : 
+                'Wypełnij formularz samooceny dla bieżącego okresu'
+              }
+            </p>
+          </div>
+          
+          {!isReadOnly && (
+            <div className="self-evaluation-page__info-panel">
+              <h4>Wskazówki dotyczące samooceny</h4>
+              <p>Podczas wypełniania formularza pamiętaj o:</p>
+              <ul>
+                <li>Szczerości i obiektywności w ocenie własnych osiągnięć</li>
+                <li>Podawaniu konkretnych przykładów i rezultatów</li>
+                <li>Identyfikowaniu obszarów do rozwoju</li>
+                <li>Wyznaczaniu realistycznych celów na przyszłość</li>
+              </ul>
+            </div>
           )}
+          
           <SelfEvaluationForm
-            onSave={handleSave}
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            initialData={selectedEvaluation || undefined}
-            isReadOnly={isReadOnly}
+            onSave={handleSaveEvaluation}
+            onSubmit={handleSubmitEvaluation}
+            onCancel={handleBackToList}
           />
-        </ContentWrapper>
-      </PageContainer>
+        </div>
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <ContentWrapper>
-        {showBackButton && onBack && (
-          <BackButton onClick={handleCancel}>
-            ← {t('common.back', 'Powrót')}
-          </BackButton>
-        )}
-        <PageHeader>
-          <PageTitle>{t('evaluation.selfEvaluation.pageTitle', 'Moje Samooceny')}</PageTitle>
-          <PageDescription>
-            {t('evaluation.selfEvaluation.pageDescription', 'Zarządzaj swoimi samoocenami i śledź postępy w rozwoju zawodowym')}
-          </PageDescription>
-        </PageHeader>
+    <div className="self-evaluation-page">
+      <div className="self-evaluation-page__header">
+        <h1 className="self-evaluation-page__title">Moje samooceny</h1>
+        <p className="self-evaluation-page__description">
+          Zarządzaj swoimi samoocenami i śledź postępy w rozwoju zawodowym
+        </p>
+      </div>
 
-        <EvaluationListContainer>
-          <EvaluationGrid>
-            <CreateButton onClick={handleCreateNew}>
-              + {t('evaluation.selfEvaluation.createNew', 'Utwórz nową samoocenę')}
-            </CreateButton>
+      {showBackButton && onBack && (
+        <button className="self-evaluation-page__back-button" onClick={onBack}>
+          ← Powrót
+        </button>
+      )}
 
-            {mockEvaluations.length === 0 ? (
-              <EmptyState>
-                {t('evaluation.selfEvaluation.noEvaluations', 'Nie masz jeszcze żadnych samoocen')}
-              </EmptyState>
-            ) : (
-              mockEvaluations.map((evaluation) => (
-                <EvaluationCard
+      <div className="self-evaluation-page__content-wrapper">
+        <button className="self-evaluation-page__create-button" onClick={handleCreateNewEvaluation}>
+          + Rozpocznij nową samoocenę
+        </button>
+
+        <div className="self-evaluation-page__evaluation-list">
+          {mockEvaluations.length > 0 ? (
+            <div className="self-evaluation-page__evaluation-grid">
+              {mockEvaluations.map(evaluation => (
+                <div
                   key={evaluation.id}
-                  onClick={() => handleEditEvaluation(evaluation)}
+                  className="self-evaluation-page__evaluation-card"
+                  onClick={() => handleEvaluationClick(evaluation)}
                 >
-                  <CardHeader>
-                    <CardTitle>
-                      {t('evaluation.selfEvaluation.cardTitle', 'Samoocena za okres {{period}}', {
-                        period: evaluation.evaluationPeriod
-                      })}
-                    </CardTitle>
-                    <StatusBadge status={evaluation.status}>
+                  <div className="self-evaluation-page__card-header">
+                    <h3 className="self-evaluation-page__card-title">
+                      {evaluation.evaluationPeriod}
+                    </h3>
+                    <span className={getStatusBadgeClass(evaluation.status)}>
                       {getStatusText(evaluation.status)}
-                    </StatusBadge>
-                  </CardHeader>
-                  <CardContent>
-                    <div>
-                      <strong>{t('evaluation.personalInfo.position', 'Stanowisko')}:</strong> {evaluation.position}
-                    </div>
-                    <div>
-                      <strong>{t('evaluation.personalInfo.department', 'Dział')}:</strong> {evaluation.department}
-                    </div>
+                    </span>
+                  </div>
+                  
+                  <div className="self-evaluation-page__card-content">
+                    <p><strong>Stanowisko:</strong> {evaluation.position}</p>
+                    <p><strong>Dział:</strong> {evaluation.department}</p>
                     {evaluation.submissionDate && (
-                      <div>
-                        <strong>{t('evaluation.submissionDate', 'Data wysłania')}:</strong> {formatDate(evaluation.submissionDate)}
-                      </div>
+                      <p><strong>Data przesłania:</strong> {evaluation.submissionDate}</p>
                     )}
-                    <div>
-                      <strong>{t('evaluation.lastModified', 'Ostatnia modyfikacja')}:</strong> {formatDate(evaluation.lastModified)}
-                    </div>
-                  </CardContent>
-                </EvaluationCard>
-              ))
-            )}
-          </EvaluationGrid>
-        </EvaluationListContainer>
-      </ContentWrapper>
-    </PageContainer>
+                  </div>
+                  
+                  <div className="self-evaluation-page__card-info">
+                    Ostatnia modyfikacja: {evaluation.lastModified}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="self-evaluation-page__empty-state">
+              <h3>Brak samoocen</h3>
+              <p>Nie masz jeszcze żadnych samoocen. Rozpocznij swoją pierwszą samoocenę.</p>
+              <button className="self-evaluation-page__empty-state-button" onClick={handleCreateNewEvaluation}>
+                Rozpocznij samoocenę
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

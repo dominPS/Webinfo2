@@ -1,0 +1,352 @@
+/* SelfEvaluationPage component styles */
+.self-evaluation-page {
+  padding: 18px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+}
+
+.self-evaluation-page__header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.self-evaluation-page__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 6px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__description {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.self-evaluation-page__back-button {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border: 2px solid #126678;
+  border-radius: 6px;
+  color: #126678;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.self-evaluation-page__back-button:hover {
+  background-color: #126678;
+  color: white;
+}
+
+.self-evaluation-page__content-wrapper {
+  margin-top: 24px;
+}
+
+.self-evaluation-page__evaluation-list {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.self-evaluation-page__evaluation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.self-evaluation-page__evaluation-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.self-evaluation-page__evaluation-card:hover {
+  border-color: #126678;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.self-evaluation-page__card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.self-evaluation-page__card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.self-evaluation-page__status-badge--draft {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.self-evaluation-page__status-badge--submitted {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.self-evaluation-page__status-badge--approved {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.self-evaluation-page__status-badge--requires-revision {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.self-evaluation-page__card-content {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.self-evaluation-page__card-info {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.self-evaluation-page__create-button {
+  width: 100%;
+  padding: 16px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 24px;
+}
+
+.self-evaluation-page__create-button:hover {
+  background-color: #0f5459;
+  transform: translateY(-1px);
+}
+
+.self-evaluation-page__empty-state {
+  text-align: center;
+  color: #6b7280;
+  padding: 40px 20px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+}
+
+.self-evaluation-page__empty-state h3 {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__empty-state p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__empty-state-button {
+  padding: 12px 24px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.self-evaluation-page__empty-state-button:hover {
+  background-color: #0f5459;
+}
+
+/* Form view styles */
+.self-evaluation-page__form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.self-evaluation-page__form-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.self-evaluation-page__form-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__form-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.self-evaluation-page__form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.self-evaluation-page__form-button {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.self-evaluation-page__form-button--primary {
+  background-color: #126678;
+  color: white;
+  border: none;
+}
+
+.self-evaluation-page__form-button--primary:hover {
+  background-color: #0f5459;
+}
+
+.self-evaluation-page__form-button--secondary {
+  background-color: #ffffff;
+  color: #126678;
+  border: 2px solid #126678;
+}
+
+.self-evaluation-page__form-button--secondary:hover {
+  background-color: #126678;
+  color: white;
+}
+
+/* Info panels */
+.self-evaluation-page__info-panel {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.self-evaluation-page__info-panel h4 {
+  color: #126678;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.self-evaluation-page__info-panel p {
+  color: #0c4a6e;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.self-evaluation-page__info-panel ul {
+  color: #0c4a6e;
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+.self-evaluation-page__info-panel li {
+  margin-bottom: 4px;
+}
+
+/* Progress indicator */
+.self-evaluation-page__progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.self-evaluation-page__progress-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.self-evaluation-page__progress-bar {
+  flex: 1;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.self-evaluation-page__progress-fill {
+  height: 100%;
+  background-color: #126678;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.self-evaluation-page__progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #126678;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .self-evaluation-page__evaluation-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .self-evaluation-page__form-actions {
+    flex-direction: column;
+  }
+  
+  .self-evaluation-page__card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
