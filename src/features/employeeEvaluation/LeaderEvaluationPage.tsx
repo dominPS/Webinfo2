@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import IDPFlow from './components/LeaderIDPFlow';
+import LeaderIDPFlow from './components/LeaderIDPComponent';
 import AnnualReviewHistory from './components/LeaderAnnualReviewHistory';
 import LeaderTeamEvaluationFlow from './components/LeaderTeamEvaluationFlow';
 import SelfEvaluationPage from './SelfEvaluationPage';
@@ -168,7 +168,7 @@ const LeaderEvaluationPage: React.FC = () => {
 
   if (activeFlow === 'idpFlow') {
     return (
-      <IDPFlow />
+      <LeaderIDPFlow />
     );
   }
 

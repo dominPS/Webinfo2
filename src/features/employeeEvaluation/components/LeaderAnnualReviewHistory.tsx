@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import './LeaderAnnualReviewHistory.css';
 
 interface ReviewRecord {
   id: string;
@@ -13,152 +13,6 @@ interface ReviewRecord {
   goalResults: string[];
   reportDate: string;
 }
-
-const HistoryContainer = styled.div`
-  padding: 24px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-`;
-
-const Title = styled.h1`
-  font-size: 28px;
-  font-weight: 600;
-  color: #1f2937;
-`;
-
-const YearTabs = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-`;
-
-const ScrollableReviewsContainer = styled.div`
-  padding-bottom: 40px;
-`;
-
-const YearTab = styled.button<{ isActive: boolean }>`
-  padding: 8px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: ${props => props.isActive ? '#126678' : 'white'};
-  color: ${props => props.isActive ? 'white' : '#126678'};
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: ${props => props.isActive ? '#126678' : '#f8f9fa'};
-    border-color: #126678;
-  }
-`;
-
-const ReviewCard = styled.div`
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
-  background-color: white;
-`;
-
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  color: #126678;
-`;
-
-const StatusGroup = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-`;
-
-const StatusBadge = styled.span<{ status: string }>`
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: ${props => {
-    switch (props.status) {
-      case 'A': return '#126678'; // Primary color for excellent
-      case 'B': return '#1e7a8a'; // Slightly lighter for good
-      case 'C': return '#4a6670'; // Medium shade for satisfactory
-      case 'D': return '#6b5b73'; // Muted purple-gray for needs improvement
-      default: return '#8b7d85'; // Light gray-purple for unknown
-    }
-  }};
-  color: white;
-`;
-
-const ReportButton = styled.button`
-  padding: 6px 12px;
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #0f5459;
-  }
-`;
-
-const ContentGrid = styled.div`
-  display: grid;
-  gap: 16px;
-`;
-
-const ContentSection = styled.div`
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px;
-`;
-
-const SectionLabel = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const SectionContent = styled.div`
-  color: #374151;
-  line-height: 1.5;
-`;
-
-const ResultList = styled.ul`
-  margin: 0;
-  padding-left: 20px;
-  
-  li {
-    margin-bottom: 4px;
-  }
-`;
 
 // Mock data matching the Figma design
 const mockReviewHistory: ReviewRecord[] = [
@@ -298,75 +152,102 @@ const LeaderAnnualReviewHistory: React.FC = () => {
     alert('Czas sprawozania - funkcja w przygotowaniu');
   };
 
-  return (
-    <HistoryContainer>
-      <Header>
-        <Title>{t('annualReview.history.title', 'Historia Ocen')}</Title>
-      </Header>
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+      case 'A': return 'leader-annual-review-history__status-badge--a';
+      case 'B': return 'leader-annual-review-history__status-badge--b';
+      case 'C': return 'leader-annual-review-history__status-badge--c';
+      case 'D': return 'leader-annual-review-history__status-badge--d';
+      default: return 'leader-annual-review-history__status-badge--default';
+    }
+  };
 
-      <YearTabs>
+  return (
+    <div className="leader-annual-review-history">
+      <div className="leader-annual-review-history__header">
+        <h1 className="leader-annual-review-history__title">
+          {t('annualReview.history.title', 'Historia Ocen')}
+        </h1>
+      </div>
+
+      <div className="leader-annual-review-history__year-tabs">
         {availableYears.map(year => (
-          <YearTab
+          <button
             key={year}
-            isActive={selectedYear === year}
+            className={`leader-annual-review-history__year-tab ${
+              selectedYear === year ? 'leader-annual-review-history__year-tab--active' : ''
+            }`}
             onClick={() => setSelectedYear(year)}
           >
             {year}
-          </YearTab>
+          </button>
         ))}
-      </YearTabs>
+      </div>
 
-      <ScrollableReviewsContainer>
+      <div className="leader-annual-review-history__scrollable-container">
         {filteredReviews.length === 0 ? (
-          <ContentSection>
-            <SectionContent>
+          <div className="leader-annual-review-history__content-section">
+            <div className="leader-annual-review-history__section-content">
               {t('annualReview.history.noReviews', 'Brak dostępnych ocen dla roku')} {selectedYear}.
-            </SectionContent>
-          </ContentSection>
+            </div>
+          </div>
         ) : (
           filteredReviews.map(review => (
-            <ReviewCard key={review.id}>
-              <CardHeader>
-                <CardTitle>
+            <div key={review.id} className="leader-annual-review-history__review-card">
+              <div className="leader-annual-review-history__card-header">
+                <h3 className="leader-annual-review-history__card-title">
                   {t(`annualReview.history.types.${review.type}`, review.type)} {review.year} - {t('annualReview.history.employee', 'Pracownik')}: {review.employee}
-                </CardTitle>
-                <StatusGroup>
-                  <StatusBadge status={review.status}>
+                </h3>
+                <div className="leader-annual-review-history__status-group">
+                  <span className={`leader-annual-review-history__status-badge ${getStatusBadgeClass(review.status)}`}>
                     {t(`annualReview.history.status.${review.status}`, `Ocena ${review.status}`)}
-                  </StatusBadge>
-                  <ReportButton onClick={() => handleReportClick(review.id)}>
+                  </span>
+                  <button 
+                    className="leader-annual-review-history__report-button"
+                    onClick={() => handleReportClick(review.id)}
+                  >
                     {t('annualReview.history.generateReport', 'Czas sprawozania')}
-                  </ReportButton>
-                </StatusGroup>
-              </CardHeader>
+                  </button>
+                </div>
+              </div>
 
-              <ContentGrid>
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalDetails', 'Szczegóły celu')}</SectionLabel>
-                  <SectionContent>{review.detailedGoals}</SectionContent>
-                </ContentSection>
+              <div className="leader-annual-review-history__content-grid">
+                <div className="leader-annual-review-history__content-section">
+                  <div className="leader-annual-review-history__section-label">
+                    {t('annualReview.history.sections.goalDetails', 'Szczegóły celu')}
+                  </div>
+                  <div className="leader-annual-review-history__section-content">
+                    {review.detailedGoals}
+                  </div>
+                </div>
 
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalType', 'Typ celu')}</SectionLabel>
-                  <SectionContent>{review.goalType}</SectionContent>
-                </ContentSection>
+                <div className="leader-annual-review-history__content-section">
+                  <div className="leader-annual-review-history__section-label">
+                    {t('annualReview.history.sections.goalType', 'Typ celu')}
+                  </div>
+                  <div className="leader-annual-review-history__section-content">
+                    {review.goalType}
+                  </div>
+                </div>
 
-                <ContentSection>
-                  <SectionLabel>{t('annualReview.history.sections.goalResults', 'Wyniki celu')}</SectionLabel>
-                  <SectionContent>
-                    <ResultList>
+                <div className="leader-annual-review-history__content-section">
+                  <div className="leader-annual-review-history__section-label">
+                    {t('annualReview.history.sections.goalResults', 'Wyniki celu')}
+                  </div>
+                  <div className="leader-annual-review-history__section-content">
+                    <ul className="leader-annual-review-history__result-list">
                       {review.goalResults.map((result, index) => (
                         <li key={index}>{result}</li>
                       ))}
-                    </ResultList>
-                  </SectionContent>
-                </ContentSection>
-              </ContentGrid>
-            </ReviewCard>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           ))
         )}
-      </ScrollableReviewsContainer>
-    </HistoryContainer>
+      </div>
+    </div>
   );
 };
 

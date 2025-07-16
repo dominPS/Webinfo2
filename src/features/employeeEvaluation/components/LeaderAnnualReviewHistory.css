@@ -1,0 +1,183 @@
+.leader-annual-review-history {
+  padding: 24px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.leader-annual-review-history__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.leader-annual-review-history__title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.leader-annual-review-history__year-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.leader-annual-review-history__year-tab {
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  color: #126678;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.leader-annual-review-history__year-tab--active {
+  background-color: #126678;
+  color: white;
+}
+
+.leader-annual-review-history__year-tab:hover {
+  background-color: #f8f9fa;
+  border-color: #126678;
+}
+
+.leader-annual-review-history__year-tab--active:hover {
+  background-color: #126678;
+}
+
+.leader-annual-review-history__scrollable-container {
+  padding-bottom: 40px;
+}
+
+.leader-annual-review-history__review-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  background-color: white;
+}
+
+.leader-annual-review-history__card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.leader-annual-review-history__card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #126678;
+  margin: 0;
+}
+
+.leader-annual-review-history__status-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.leader-annual-review-history__status-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.leader-annual-review-history__status-badge--a {
+  background-color: #126678;
+}
+
+.leader-annual-review-history__status-badge--b {
+  background-color: #1e7a8a;
+}
+
+.leader-annual-review-history__status-badge--c {
+  background-color: #4a6670;
+}
+
+.leader-annual-review-history__status-badge--d {
+  background-color: #6b5b73;
+}
+
+.leader-annual-review-history__status-badge--default {
+  background-color: #8b7d85;
+}
+
+.leader-annual-review-history__report-button {
+  padding: 6px 12px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.leader-annual-review-history__report-button:hover {
+  background-color: #0f5459;
+}
+
+.leader-annual-review-history__content-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.leader-annual-review-history__content-section {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.leader-annual-review-history__section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.leader-annual-review-history__section-content {
+  color: #374151;
+  line-height: 1.5;
+}
+
+.leader-annual-review-history__result-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.leader-annual-review-history__result-list li {
+  margin-bottom: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .leader-annual-review-history {
+    padding: 16px;
+  }
+  
+  .leader-annual-review-history__title {
+    font-size: 24px;
+  }
+  
+  .leader-annual-review-history__card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .leader-annual-review-history__year-tabs {
+    flex-wrap: wrap;
+  }
+}
