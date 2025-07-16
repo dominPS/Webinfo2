@@ -1,0 +1,151 @@
+/* ScheduleReview component styles */
+.schedule-review {
+  background-color: white;
+  border-radius: 8px;
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.schedule-review__title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #374151;
+  margin-top: 0;
+}
+
+.schedule-review__form {
+  width: 100%;
+}
+
+.schedule-review__form-group {
+  margin-bottom: 20px;
+}
+
+.schedule-review__label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.schedule-review__input,
+.schedule-review__select,
+.schedule-review__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  color: #374151;
+  background-color: white;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.schedule-review__input:focus,
+.schedule-review__select:focus,
+.schedule-review__textarea:focus {
+  outline: none;
+  border-color: #126678;
+  box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
+}
+
+.schedule-review__input::placeholder,
+.schedule-review__textarea::placeholder {
+  color: #9ca3af;
+}
+
+.schedule-review__textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.schedule-review__select {
+  cursor: pointer;
+}
+
+.schedule-review__button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.schedule-review__button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.schedule-review__button--primary {
+  background-color: #126678;
+  color: white;
+}
+
+.schedule-review__button--primary:hover {
+  background-color: #0f5459;
+}
+
+.schedule-review__button--primary:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.schedule-review__button--secondary {
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.schedule-review__button--secondary:hover {
+  background-color: #f9fafb;
+}
+
+.schedule-review__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.schedule-review__help-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.schedule-review__required {
+  color: #dc2626;
+}
+
+.schedule-review__error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .schedule-review__form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .schedule-review__button-group {
+    flex-direction: column-reverse;
+  }
+  
+  .schedule-review__button {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,114 +1,27 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import './ScheduleReview.css';
 
 interface ScheduleReviewProps {
-  onSubmit: (data: any) => void;
+  onSave: (data: any) => void;
   onCancel: () => void;
 }
-
-const FormContainer = styled.div`
-  background-color: white;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: ${props => props.theme.shadows.medium};
-  max-width: 600px;
-  margin: 0 auto;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 24px;
-  color: ${props => props.theme.colors.text.primary};
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: ${props => props.theme.colors.text.primary};
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.border};
-  font-size: 14px;
-`;
-
-const Select = styled.select`
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.border};
-  font-size: 14px;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.border};
-  font-size: 14px;
-  resize: vertical;
-  min-height: 100px;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-`;
-
-const Button = styled.button`
-  padding: 10px 24px;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-`;
-
-const CancelButton = styled(Button)`
-  background-color: transparent;
-  color: ${props => props.theme.colors.text.primary};
-  border: 1px solid ${props => props.theme.colors.border};
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-`;
-
-const SubmitButton = styled(Button)`
-  background-color: ${props => props.theme.colors.primary};
-  color: white;
-  border: none;
-  
-  &:hover {
-    opacity: 0.9;
-  }
-`;
 
 /**
  * ScheduleReview Component
  * Form for scheduling a new employee review
  */
-const ScheduleReview: React.FC<ScheduleReviewProps> = ({ onSubmit, onCancel }) => {
+const ScheduleReview: React.FC<ScheduleReviewProps> = ({ onSave, onCancel }) => {
   const { t } = useTranslation();
   
   // Mock employee data - In a real app, this would come from an API
   const mockEmployees = [
-    { id: 'emp001', name: t('employees.johnSmith', 'John Smith') },
-    { id: 'emp002', name: t('employees.janeDoe', 'Jane Doe') },
-    { id: 'emp003', name: t('employees.michaelJohnson', 'Michael Johnson') },
-    { id: 'emp004', name: t('employees.sarahWilliams', 'Sarah Williams') },
-    { id: 'emp005', name: t('employees.robertBrown', 'Robert Brown') },
-    { id: 'emp006', name: t('employees.emilyDavis', 'Emily Davis') },
+    { id: 'emp001', name: 'Anna Kowalska', position: 'Senior Developer' },
+    { id: 'emp002', name: 'Jan Wiśniewski', position: 'UX Designer' },
+    { id: 'emp003', name: 'Katarzyna Dąbrowska', position: 'Project Manager' },
+    { id: 'emp004', name: 'Michał Lewandowski', position: 'QA Engineer' },
+    { id: 'emp005', name: 'Piotr Nowak', position: 'Frontend Developer' },
+    { id: 'emp006', name: 'Maria Zielińska', position: 'Team Lead' },
   ];
   
   const [formData, setFormData] = useState({
@@ -119,6 +32,8 @@ const ScheduleReview: React.FC<ScheduleReviewProps> = ({ onSubmit, onCancel }) =
     objective: '',
     notes: ''
   });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -126,115 +41,201 @@ const ScheduleReview: React.FC<ScheduleReviewProps> = ({ onSubmit, onCancel }) =
       ...prev,
       [name]: value
     }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.employeeId) {
+      newErrors.employeeId = 'Wybierz pracownika';
+    }
+    if (!formData.title.trim()) {
+      newErrors.title = 'Podaj tytuł oceny';
+    }
+    if (!formData.date) {
+      newErrors.date = 'Wybierz datę oceny';
+    } else {
+      const selectedDate = new Date(formData.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selectedDate < today) {
+        newErrors.date = 'Data oceny nie może być z przeszłości';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    const selectedEmployee = mockEmployees.find(emp => emp.id === formData.employeeId);
+    
+    onSave({
       ...formData,
+      employeeName: selectedEmployee?.name || '',
+      employeePosition: selectedEmployee?.position || '',
       status: 'scheduled',
+      reviewer: 'Aktualny użytkownik', // In real app, this would be the current user
       createdAt: new Date().toISOString()
     });
   };
+
+  const getMinDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
   
   return (
-    <FormContainer>
-      <FormTitle>{t('review.schedule.title', 'Schedule New Review')}</FormTitle>
+    <div className="schedule-review">
+      <h2 className="schedule-review__title">Zaplanuj nową ocenę</h2>
       
-      <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="employeeId">{t('review.schedule.employee', 'Employee')}</Label>
-          <Select 
+      <form className="schedule-review__form" onSubmit={handleSubmit}>
+        <div className="schedule-review__form-group">
+          <label htmlFor="employeeId" className="schedule-review__label">
+            Pracownik <span className="schedule-review__required">*</span>
+          </label>
+          <select 
             id="employeeId"
             name="employeeId"
+            className="schedule-review__select"
             value={formData.employeeId}
             onChange={handleChange}
-            required
           >
-            <option value="">{t('review.schedule.selectEmployee', '-- Select Employee --')}</option>
+            <option value="">-- Wybierz pracownika --</option>
             {mockEmployees.map(employee => (
               <option key={employee.id} value={employee.id}>
-                {employee.name}
+                {employee.name} - {employee.position}
               </option>
             ))}
-          </Select>
-        </FormGroup>
+          </select>
+          {errors.employeeId && (
+            <div className="schedule-review__error">{errors.employeeId}</div>
+          )}
+        </div>
         
-        <FormGroup>
-          <Label htmlFor="title">{t('review.schedule.reviewTitle', 'Review Title')}</Label>
-          <Input
+        <div className="schedule-review__form-row">
+          <div className="schedule-review__form-group">
+            <label htmlFor="type" className="schedule-review__label">
+              Typ oceny <span className="schedule-review__required">*</span>
+            </label>
+            <select
+              id="type"
+              name="type"
+              className="schedule-review__select"
+              value={formData.type}
+              onChange={handleChange}
+            >
+              <option value="quarterly">Ocena kwartalna</option>
+              <option value="annual">Ocena roczna</option>
+              <option value="project">Ocena projektowa</option>
+              <option value="probation">Ocena próbna</option>
+              <option value="other">Inna</option>
+            </select>
+          </div>
+
+          <div className="schedule-review__form-group">
+            <label htmlFor="date" className="schedule-review__label">
+              Data oceny <span className="schedule-review__required">*</span>
+            </label>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              className="schedule-review__input"
+              value={formData.date}
+              onChange={handleChange}
+              min={getMinDate()}
+            />
+            {errors.date && (
+              <div className="schedule-review__error">{errors.date}</div>
+            )}
+          </div>
+        </div>
+        
+        <div className="schedule-review__form-group">
+          <label htmlFor="title" className="schedule-review__label">
+            Tytuł oceny <span className="schedule-review__required">*</span>
+          </label>
+          <input
             id="title"
             name="title"
             type="text"
+            className="schedule-review__input"
             value={formData.title}
             onChange={handleChange}
-            placeholder={t('review.schedule.titlePlaceholder', 'e.g., Quarterly Performance Review')}
-            required
+            placeholder="np. Ocena kwartalna Q4 2024"
           />
-        </FormGroup>
+          {errors.title && (
+            <div className="schedule-review__error">{errors.title}</div>
+          )}
+        </div>
         
-        <FormGroup>
-          <Label htmlFor="type">{t('review.schedule.type', 'Review Type')}</Label>
-          <Select
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-          >
-            <option value="quarterly">{t('review.types.quarterly', 'Quarterly Check-in')}</option>
-            <option value="annual">{t('review.types.annual', 'Annual Performance Review')}</option>
-            <option value="probation">{t('review.types.probation', 'Probation Review')}</option>
-            <option value="pip">{t('review.types.pip', 'Performance Improvement Plan')}</option>
-            <option value="other">{t('review.types.other', 'Other')}</option>
-          </Select>
-        </FormGroup>
-        
-        <FormGroup>
-          <Label htmlFor="date">{t('review.schedule.date', 'Review Date')}</Label>
-          <Input
-            id="date"
-            name="date"
-            type="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        
-        <FormGroup>
-          <Label htmlFor="objective">{t('review.schedule.objective', 'Objective')}</Label>
-          <Input
+        <div className="schedule-review__form-group">
+          <label htmlFor="objective" className="schedule-review__label">
+            Cel oceny
+          </label>
+          <input
             id="objective"
             name="objective"
             type="text"
+            className="schedule-review__input"
             value={formData.objective}
             onChange={handleChange}
-            placeholder={t('review.schedule.objectivePlaceholder', 'What is the purpose of this review?')}
+            placeholder="Jaki jest cel tej oceny?"
           />
-        </FormGroup>
+          <div className="schedule-review__help-text">
+            Opcjonalnie opisz główny cel lub fokus tej oceny
+          </div>
+        </div>
         
-        <FormGroup>
-          <Label htmlFor="notes">{t('review.schedule.notes', 'Preparation Notes')}</Label>
-          <TextArea
+        <div className="schedule-review__form-group">
+          <label htmlFor="notes" className="schedule-review__label">
+            Notatki przygotowawcze
+          </label>
+          <textarea
             id="notes"
             name="notes"
+            className="schedule-review__textarea"
             value={formData.notes}
             onChange={handleChange}
-            placeholder={t('review.schedule.notesPlaceholder', 'Add any preparation notes or topics to cover during the review')}
+            placeholder="Dodaj notatki przygotowawcze lub tematy do omówienia podczas oceny"
           />
-        </FormGroup>
+          <div className="schedule-review__help-text">
+            Te notatki pomogą w przygotowaniu się do rozmowy oceniającej
+          </div>
+        </div>
         
-        <ButtonGroup>
-          <CancelButton type="button" onClick={onCancel}>
-            {t('common.cancel', 'Cancel')}
-          </CancelButton>
-          <SubmitButton type="submit">
-            {t('review.schedule.submit', 'Schedule Review')}
-          </SubmitButton>
-        </ButtonGroup>
+        <div className="schedule-review__button-group">
+          <button 
+            type="button" 
+            className="schedule-review__button schedule-review__button--secondary"
+            onClick={onCancel}
+          >
+            Anuluj
+          </button>
+          <button 
+            type="submit" 
+            className="schedule-review__button schedule-review__button--primary"
+          >
+            Zaplanuj ocenę
+          </button>
+        </div>
       </form>
-    </FormContainer>
+    </div>
   );
 };
 
