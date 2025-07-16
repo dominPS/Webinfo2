@@ -1,99 +1,13 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import EvaluationCriteria from './EvaluationCriteria';
+import './EvaluationForm.css';
 
 interface EvaluationFormProps {
   employeeId: string;
   employeeName: string;
   onSubmit: (data: any) => void;
 }
-
-const FormContainer = styled.div`
-  background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  padding: 24px;
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const EmployeeInfo = styled.div`
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-`;
-
-const EmployeeName = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #126678;
-`;
-
-const FormActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  margin-top: 32px;
-`;
-
-const Button = styled.button`
-  padding: 10px 24px;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-`;
-
-const PrimaryButton = styled(Button)`
-  background-color: #126678;
-  color: white;
-  border: none;
-
-  &:hover {
-    background-color: #0f5459;
-  }
-`;
-
-const SecondaryButton = styled(Button)`
-  background-color: white;
-  color: #126678;
-  border: 2px solid #126678;
-
-  &:hover {
-    background-color: #f8f9fa;
-  }
-`;
-
-const CommentsSection = styled.div`
-  margin-bottom: 24px;
-`;
-
-const CommentsTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #126678;
-`;
-
-const CommentsTextarea = styled.textarea`
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  border-radius: 4px;
-  border: 2px solid #e5e7eb;
-  font-family: inherit;
-  resize: vertical;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
-  }
-`;
 
 /**
  * EvaluationForm Component
@@ -149,12 +63,12 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
   };
 
   return (
-    <FormContainer>
+    <div className="evaluation-form">
       <form onSubmit={handleSubmit}>
-        <EmployeeInfo>
-          <EmployeeName>{employeeName}</EmployeeName>
+        <div className="evaluation-form__employee-info">
+          <h2 className="evaluation-form__employee-name">{employeeName}</h2>
           <div>Employee ID: {employeeId}</div>
-        </EmployeeInfo>
+        </div>
 
         <EvaluationCriteria
           title={t('evaluation.performance.title', 'Job Performance')}
@@ -196,26 +110,27 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
           onChange={(value) => handleCriteriaChange('leadership', value)}
         />
 
-        <CommentsSection>
-          <CommentsTitle>{t('evaluation.comments.title', 'Additional Comments')}</CommentsTitle>
-          <CommentsTextarea
+        <div className="evaluation-form__comments">
+          <h3 className="evaluation-form__comments-title">{t('evaluation.comments.title', 'Additional Comments')}</h3>
+          <textarea
+            className="evaluation-form__comments-textarea"
             rows={5}
             value={evaluation.comments}
             onChange={handleCommentsChange}
             placeholder={t('evaluation.comments.placeholder', 'Provide any additional feedback or observations...')}
           />
-        </CommentsSection>
+        </div>
 
-        <FormActions>
-          <SecondaryButton type="button">
+        <div className="evaluation-form__actions">
+          <button type="button" className="evaluation-form__button evaluation-form__button--secondary">
             {t('common.cancel', 'Cancel')}
-          </SecondaryButton>
-          <PrimaryButton type="submit">
+          </button>
+          <button type="submit" className="evaluation-form__button evaluation-form__button--primary">
             {t('common.submit', 'Submit Evaluation')}
-          </PrimaryButton>
-        </FormActions>
+          </button>
+        </div>
       </form>
-    </FormContainer>
+    </div>
   );
 };
 

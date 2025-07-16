@@ -1,0 +1,348 @@
+/* HREvaluationPage component styles */
+.hr-evaluation-page {
+  padding: 18px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+}
+
+.hr-evaluation-page__header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.hr-evaluation-page__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 6px;
+  margin-top: 0;
+}
+
+.hr-evaluation-page__description {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.hr-evaluation-page__controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+  max-width: 1000px;
+  margin: 0 auto 32px auto;
+}
+
+.hr-evaluation-page__main-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+  min-height: 600px;
+}
+
+.hr-evaluation-page__content-section {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.hr-evaluation-page__module-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.hr-evaluation-page__section-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.hr-evaluation-page__section-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  background-color: #126678;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hr-evaluation-page__module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.hr-evaluation-page__module-button {
+  padding: 20px;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  color: #374151;
+  font-size: 14px;
+}
+
+.hr-evaluation-page__module-button:hover {
+  border-color: #126678;
+  background-color: #f0f9ff;
+  color: #126678;
+}
+
+.hr-evaluation-page__alert-item {
+  padding: 16px;
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.hr-evaluation-page__alert-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #92400e;
+}
+
+.hr-evaluation-page__alert-description {
+  font-size: 12px;
+  color: #78350f;
+  margin-top: 4px;
+}
+
+.hr-evaluation-page__dashboard-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.hr-evaluation-page__dashboard-card:hover {
+  border-color: #126678;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hr-evaluation-page__dashboard-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.hr-evaluation-page__dashboard-description {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.hr-evaluation-page__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.hr-evaluation-page__stat-card {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.hr-evaluation-page__stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #126678;
+  margin-bottom: 4px;
+}
+
+.hr-evaluation-page__stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.hr-evaluation-page__round-management {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.hr-evaluation-page__round-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.hr-evaluation-page__round-management-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #126678;
+  margin: 0;
+}
+
+.hr-evaluation-page__back-button {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border: 2px solid #126678;
+  border-radius: 6px;
+  color: #126678;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.hr-evaluation-page__back-button:hover {
+  background-color: #126678;
+  color: white;
+}
+
+.hr-evaluation-page__content-wrapper {
+  margin-top: 24px;
+}
+
+.hr-evaluation-page__workflow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.hr-evaluation-page__workflow-section {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.hr-evaluation-page__workflow-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 16px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+}
+
+.hr-evaluation-page__workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hr-evaluation-page__workflow-step {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hr-evaluation-page__step-title {
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+}
+
+.hr-evaluation-page__step-description {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.hr-evaluation-page__step-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.hr-evaluation-page__step-badge--completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.hr-evaluation-page__step-badge--pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.hr-evaluation-page__action-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.hr-evaluation-page__action-button {
+  padding: 16px 20px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.hr-evaluation-page__action-button:hover {
+  background-color: #0f5459;
+  transform: translateY(-1px);
+}
+
+.hr-evaluation-page__control-button {
+  padding: 12px 24px;
+  background-color: #126678;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.hr-evaluation-page__control-button:hover {
+  background-color: #0f5459;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hr-evaluation-page__workflow-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hr-evaluation-page__controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hr-evaluation-page__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
