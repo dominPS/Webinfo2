@@ -13,6 +13,7 @@ import {
   WorkerEvaluationPage,
   LeaderEvaluationPage,
   HREvaluationPage,
+  ETeczkaPage,
   MobileAppsPage,
   AssignmentsPage,
   MapRegistrationsPage,
@@ -138,6 +139,10 @@ export const router = createBrowserRouter([
       {
         path: 'projects-activities',
         element: <ProjectsActivitiesPage translationKey="projectsActivities" />,
+      },
+      {
+        path: 'e-teczka',
+        element: <ETeczkaPage />,
       },
       {
         path: 'employee-evaluation',

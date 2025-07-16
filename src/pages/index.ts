@@ -6,6 +6,7 @@ import ProfileSelectionPage from './ProfileSelection';
 import WorkerEvaluationPage from './WorkerEvaluation';
 import LeaderEvaluationPage from './LeaderEvaluation';
 import HREvaluationPage from './HREvaluation';
+import ETeczkaPage from './ETeczka';
 import { BasePage } from '@/shared/components/BasePage';
 
 // Named exports for each page
@@ -17,7 +18,8 @@ export {
   ProfileSelectionPage,
   WorkerEvaluationPage,
   LeaderEvaluationPage,
-  HREvaluationPage
+  HREvaluationPage,
+  ETeczkaPage
 };
 
 // Placeholder pages (can be gradually replaced with real implementations)

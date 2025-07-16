@@ -69,3 +69,11 @@ export const ProjectsActivitiesIcon: React.FC<IconProps> = ({ width = 20, height
     <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2zm6.5 10c0 .28-.22.5-.5.5h-1v1c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-1h-1c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h1v-1c0-.28.22-.5.5-.5s.5.22.5.5v1h1c.28 0 .5.22.5.5z"/>
   </svg>
 );
+
+// E-Teczka - Digital folder with documents
+export const ETeczkaIcon: React.FC<IconProps> = ({ width = 20, height = 20, fill = "white" }) => (
+  <svg width={width} height={height} viewBox="0 0 24 24" fill={fill}>
+    <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+    <path d="M15,9V7H9V9H15M15,11H9V13H15V11Z"/>
+  </svg>
+);

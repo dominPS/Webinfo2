@@ -26,7 +26,8 @@ import {
   AbsencePlanIcon,
   MonthlyAbsencePlanIcon,
   ScheduleIcon,
-  ProjectsActivitiesIcon
+  ProjectsActivitiesIcon,
+  ETeczkaIcon
 } from '@/shared/components/PlaceholderIcons';
 
 const SIDEBAR_WIDTH = 280;
@@ -198,7 +199,8 @@ const navigationItems: NavItem[] = [
   { path: '/absence-plan', translationKey: 'absencePlan', icon: AbsencePlanIcon },
   { path: '/monthly-absence-plan', translationKey: 'monthlyAbsencePlan', icon: MonthlyAbsencePlanIcon },
   { path: '/schedule', translationKey: 'schedule', icon: ScheduleIcon },
-  { path: '/projects-activities', translationKey: 'projectsActivities', icon: ProjectsActivitiesIcon }
+  { path: '/projects-activities', translationKey: 'projectsActivities', icon: ProjectsActivitiesIcon },
+  { path: '/e-teczka', translationKey: 'eTeczka', icon: ETeczkaIcon }
 ];
 
 export const Sidebar: React.FC = () => {

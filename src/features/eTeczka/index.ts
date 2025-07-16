@@ -1,0 +1,1 @@
+export { ETeczkaPage } from './ETeczkaPage';
