@@ -1,0 +1,222 @@
+/* TeamCharts component styles */
+.team-charts {
+  padding: 20px;
+}
+
+.team-charts__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.team-charts__chart-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.team-charts__chart-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.team-charts__chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #126678;
+  margin-bottom: 16px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-charts__chart-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #126678 0%, #0f5459 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.team-charts__full-width-chart {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.team-charts__chart-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+.team-charts__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.team-charts__stat-card {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.team-charts__stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #126678;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.team-charts__stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.team-charts__chart-wrapper {
+  height: 300px;
+  width: 100%;
+}
+
+.team-charts__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.team-charts__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.team-charts__legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.team-charts__progress-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.team-charts__progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-charts__progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-charts__progress-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.team-charts__progress-percentage {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.team-charts__progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.team-charts__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #126678 0%, #2dd4bf 100%);
+  border-radius: 4px;
+  transition: width 0.8s ease;
+}
+
+.team-charts__no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.team-charts__no-data-title {
+  font-size: 16px;
+  color: #374151;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.team-charts__no-data-description {
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .team-charts__container {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-charts__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .team-charts__chart-wrapper {
+    height: 250px;
+  }
+  
+  .team-charts__legend {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-charts__stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-charts__chart-card {
+    padding: 16px;
+  }
+  
+  .team-charts__full-width-chart {
+    padding: 16px;
+  }
+}
