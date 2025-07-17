@@ -17,7 +17,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  color: ${props => props.theme.colors.text.secondary};
+  color: #666666;
   font-size: 14px;
   margin: 0;
 `;
@@ -32,12 +32,12 @@ const ContentGrid = styled.div`
 const CardTitle = styled.h3`
   font-size: 16px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #333333;
   margin: 0 0 12px 0;
 `;
 
 const CardDescription = styled.p`
-  color: ${props => props.theme.colors.text.secondary};
+  color: #666666;
   font-size: 14px;
   line-height: 1.5;
   margin: 0 0 16px 0;

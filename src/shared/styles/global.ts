@@ -18,7 +18,6 @@ export const globalStyles = css`
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
     overflow: hidden;
     background: #F5F5F5;

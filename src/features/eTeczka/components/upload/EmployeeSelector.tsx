@@ -22,10 +22,10 @@ const SearchSection = styled.div`
 
 const SearchInput = styled.input`
   padding: 12px 16px;
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid #e0e0e0;
   border-radius: 5px;
   font-size: 14px;
-  font-family: ${props => props.theme.fonts.primary};
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   
   &:focus {
     outline: none;
@@ -35,9 +35,9 @@ const SearchInput = styled.input`
 `;
 
 const EmployeeList = styled.div`
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background-color: ${props => props.theme.colors.surface};
+  background-color: white;
   max-height: 400px;
   overflow-y: auto;
 `;
@@ -46,7 +46,7 @@ const EmployeeItem = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   transition: all 0.2s ease;
   background-color: ${props => props.selected ? 'rgba(18, 102, 120, 0.05)' : 'transparent'};
@@ -83,13 +83,13 @@ const EmployeeInfo = styled.div`
 const EmployeeName = styled.div`
   font-size: 14px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #333333;
   margin-bottom: 2px;
 `;
 
 const EmployeeDetails = styled.div`
   font-size: 12px;
-  color: ${props => props.theme.colors.text.secondary};
+  color: #666666;
   display: flex;
   gap: 8px;
 `;

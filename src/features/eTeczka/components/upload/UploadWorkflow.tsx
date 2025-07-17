@@ -30,7 +30,6 @@ const StepIndicator = styled.div`
 const Step = styled.div<{ active: boolean; completed: boolean }>`
   display: flex;
   align-items: center;
-  gap: 8px;
   padding: 8px 16px;
   border-radius: 8px;
   background: ${props => 
@@ -45,19 +44,6 @@ const Step = styled.div<{ active: boolean; completed: boolean }>`
   };
   font-weight: ${props => props.active ? '600' : '500'};
   transition: all 0.3s ease;
-`;
-
-const StepNumber = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: currentColor;
-  color: ${props => props.theme?.colors?.background || 'white'};
-  font-size: 12px;
-  font-weight: 700;
 `;
 
 const ContentArea = styled.div`
@@ -180,7 +166,6 @@ export const UploadWorkflow: React.FC = () => {
               active={step.key === currentStep}
               completed={getCurrentStepIndex() > index}
             >
-              <StepNumber>{index + 1}</StepNumber>
               {step.label}
             </Step>
           ))}

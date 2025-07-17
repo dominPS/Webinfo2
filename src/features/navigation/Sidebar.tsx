@@ -86,7 +86,9 @@ const NavContainer = styled.div<{ $isCollapsed: boolean }>`
   }
 `;
 
-const NavItem = styled(NavLink)<{ $isCollapsed: boolean }>`
+const NavItem = styled(NavLink, {
+  shouldForwardProp: (prop: string) => prop !== '$isCollapsed'
+})<{ $isCollapsed: boolean }>`
   display: flex;
   align-items: center;
   gap: ${props => props.$isCollapsed ? '0' : '12px'};
