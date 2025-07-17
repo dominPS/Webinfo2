@@ -23,13 +23,13 @@ const StyledInput = styled.input<StyledInputProps>`
   
   border: 1px solid ${props => {
     if (props.$error) return '#dc2626';
-    return props.theme.colors.border;
+    return '#e0e0e0';
   }};
   
   border-radius: 5px;
-  background-color: ${props => props.$disabled ? props.theme.colors.border : props.theme.colors.surface};
-  color: ${props => props.$disabled ? props.theme.colors.text.secondary : props.theme.colors.text.primary};
-  font-family: ${props => props.theme.fonts.primary};
+  background-color: ${props => props.$disabled ? '#e0e0e0' : 'white'};
+  color: ${props => props.$disabled ? '#666666' : '#333333'};
+  font-family: 'Open Sans', sans-serif;
   transition: all 0.2s ease;
   outline: none;
   
@@ -39,7 +39,7 @@ const StyledInput = styled.input<StyledInputProps>`
   }
   
   &::placeholder {
-    color: ${props => props.theme.colors.text.secondary};
+    color: #666666;
   }
   
   &:disabled {

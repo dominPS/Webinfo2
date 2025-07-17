@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import { Button, Container, Input } from '../../../../components/ui';
 import type { UploadedFile, DocumentRange, PageData } from '../../types';
 
 interface DocumentSplitterProps {
@@ -9,17 +10,11 @@ interface DocumentSplitterProps {
   onRangesChange: (ranges: DocumentRange[]) => void;
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
 const FileSection = styled.div`
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;
-  background-color: ${props => props.theme.colors.surface};
+  background-color: white;
 `;
 
 const FileHeader = styled.div`
@@ -32,7 +27,7 @@ const FileHeader = styled.div`
 const FileName = styled.h3`
   font-size: 16px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #333333;
   margin: 0;
 `;
 
@@ -44,7 +39,7 @@ const PageGrid = styled.div`
   max-height: 400px;
   overflow-y: auto;
   padding: 8px;
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
 `;
 
@@ -55,7 +50,7 @@ const PageItem = styled.div<{ selected: boolean; inRange: boolean }>`
   border: 2px solid ${props => {
     if (props.selected) return '#126678';
     if (props.inRange) return '#10b981';
-    return props.theme.colors.border;
+    return '#e0e0e0';
   }};
   border-radius: 6px;
   background-color: ${props => {
@@ -79,7 +74,7 @@ const PageItem = styled.div<{ selected: boolean; inRange: boolean }>`
 const PageNumber = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #333333;
   margin-bottom: 4px;
 `;
 
@@ -87,13 +82,13 @@ const PageThumbnail = styled.div`
   width: 80%;
   height: 70%;
   background-color: white;
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid #e0e0e0;
   border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  color: ${props => props.theme.colors.text.secondary};
+  color: #666666;
 `;
 
 const SelectionControls = styled.div`
@@ -101,64 +96,6 @@ const SelectionControls = styled.div`
   gap: 12px;
   margin-bottom: 20px;
   flex-wrap: wrap;
-`;
-
-const Button = styled.button<{ variant?: 'primary' | 'secondary' }>`
-  padding: 8px 16px;
-  border-radius: 5px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  
-  ${props => {
-    if (props.variant === 'primary') {
-      return `
-        background-color: #126678;
-        color: white;
-        
-        &:hover {
-          background-color: #0f5459;
-        }
-        
-        &:disabled {
-          background-color: ${props.theme.colors.border};
-          color: ${props.theme.colors.text.secondary};
-          cursor: not-allowed;
-        }
-      `;
-    }
-    return `
-      background-color: transparent;
-      color: #126678;
-      border: 1px solid #126678;
-      
-      &:hover {
-        background-color: #126678;
-        color: white;
-      }
-      
-      &:disabled {
-        border-color: ${props.theme.colors.border};
-        color: ${props.theme.colors.text.secondary};
-        cursor: not-allowed;
-      }
-    `;
-  }}
-`;
-
-const RangeInput = styled.input`
-  padding: 6px 8px;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 4px;
-  font-size: 13px;
-  width: 120px;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-  }
 `;
 
 const RangesList = styled.div`
@@ -320,7 +257,7 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
             >
               {t('eTeczka.upload.clearSelection', 'Wyczyść zaznaczenie')}
             </Button>
-            <RangeInput
+            <Input
               placeholder={t('eTeczka.upload.documentTitle', 'Nazwa dokumentu...')}
               value={rangeTitle}
               onChange={(e) => setRangeTitle(e.target.value)}
