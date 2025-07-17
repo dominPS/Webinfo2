@@ -1,9 +1,9 @@
-import { ThemeProvider } from '@/shared/theme/ThemeProvider';
+import { ThemeProvider } from './shared/theme/ThemeProvider';
 import { RouterProvider } from 'react-router-dom';
-import { router } from '@/shared/routes';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
-import { SidebarProvider } from '@/contexts/SidebarContext';
-import '@/i18n';
+import { router } from './shared/routes';
+import { ErrorBoundary } from './shared/components/ErrorBoundary';
+import { SidebarProvider } from './contexts/SidebarContext';
+import './i18n';
 
 export const App = () => {
   return (

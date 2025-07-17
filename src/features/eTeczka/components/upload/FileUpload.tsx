@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import type { UploadedFile, PageData } from './UploadWorkflow';
+import type { UploadedFile, PageData } from '../../types';
 
 interface FileUploadProps {
   uploadedFiles: UploadedFile[];

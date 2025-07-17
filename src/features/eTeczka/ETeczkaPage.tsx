@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import { Button, Card, Container } from '../../components/ui';
 import { UploadWorkflow } from './components/upload/UploadWorkflow';
-
-const Container = styled.div`
-  padding: 24px;
-  background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.small};
-  min-height: calc(100vh - 200px);
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
 
 const Header = styled.div`
   margin-bottom: 32px;
@@ -41,21 +29,6 @@ const ContentGrid = styled.div`
   margin-bottom: 32px;
 `;
 
-const Card = styled.div`
-  padding: 20px;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 8px;
-  background-color: ${props => props.theme.colors.surface};
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    border-color: #126678;
-    box-shadow: 0 2px 8px rgba(18, 102, 120, 0.15);
-    transform: translateY(-2px);
-  }
-`;
-
 const CardTitle = styled.h3`
   font-size: 16px;
   font-weight: 600;
@@ -68,27 +41,6 @@ const CardDescription = styled.p`
   font-size: 14px;
   line-height: 1.5;
   margin: 0 0 16px 0;
-`;
-
-const Button = styled.button`
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #0f5459;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;
 
 export const ETeczkaPage: React.FC = () => {
@@ -130,7 +82,7 @@ export const ETeczkaPage: React.FC = () => {
       case 'folders':
       case 'search':
         return (
-          <Card style={{ marginTop: '20px' }}>
+          <Card padding="large">
             <CardTitle>
               {t(`eTeczka.${selectedSection}.title`, 'Wybrana sekcja')}
             </CardTitle>
@@ -158,14 +110,14 @@ export const ETeczkaPage: React.FC = () => {
 
       <ContentGrid>
         {sections.map((section) => (
-          <Card key={section.id}>
+          <Card key={section.id} hoverable onClick={section.action}>
             <CardTitle>
               {section.title}
             </CardTitle>
             <CardDescription>
               {section.description}
             </CardDescription>
-            <Button onClick={section.action}>
+            <Button size="small">
               {t('eTeczka.openSection', 'Otwórz sekcję')}
             </Button>
           </Card>

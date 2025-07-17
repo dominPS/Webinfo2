@@ -7,7 +7,7 @@ import WorkerEvaluationPage from './WorkerEvaluation';
 import LeaderEvaluationPage from './LeaderEvaluation';
 import HREvaluationPage from './HREvaluation';
 import ETeczkaPage from './ETeczka';
-import { BasePage } from '@/shared/components/BasePage';
+import { BasePage } from '../shared/components/BasePage';
 
 // Named exports for each page
 export { 

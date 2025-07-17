@@ -2,12 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sidebar } from '@/features/navigation/Sidebar';
-import { LanguageSelector } from '@/shared/components/LanguageSelector';
-import { ReportsLogo } from '@/shared/components/ReportsLogo';
-import { TopMenu } from '@/shared/components/TopMenu';
-import { Footer } from '@/shared/components/Footer';
-import { useSidebar } from '@/contexts/SidebarContext';
+import { Sidebar } from '../features/navigation/Sidebar';
+import { LanguageSelector } from '../shared/components/LanguageSelector';
+import { ReportsLogo } from '../shared/components/ReportsLogo';
+import { TopMenu } from '../shared/components/TopMenu';
+import { Footer } from '../shared/components/Footer';
+import { useSidebar } from '../contexts/SidebarContext';
 
 const SIDEBAR_WIDTH = 280;
 const COLLAPSED_SIDEBAR_WIDTH = 50;

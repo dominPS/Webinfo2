@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import type { SelectedEmployee } from './UploadWorkflow';
+import type { SelectedEmployee } from '../../types';
 
 interface EmployeeSelectorProps {
   selectedEmployee: SelectedEmployee | null;

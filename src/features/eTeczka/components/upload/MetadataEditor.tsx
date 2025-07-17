@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import type { DocumentRange } from './UploadWorkflow';
+import type { DocumentRange } from '../../types';
 
 interface MetadataEditorProps {
   documentRanges: DocumentRange[];

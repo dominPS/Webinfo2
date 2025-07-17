@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { MainLayout } from '@/layouts/MainLayout';
-import { LicensesPage } from '@/features/licenses/LicensesPage';
-import { ClientsPage } from '@/features/clients/ClientsPage';
-import { InvoicesPage } from '@/features/invoices/InvoicesPage';
-import { SettingsPage } from '@/features/settings/SettingsPage';
+import { MainLayout } from '../../layouts/MainLayout';
+import { LicensesPage } from '../../features/licenses/LicensesPage';
+import { ClientsPage } from '../../features/clients/ClientsPage';
+import { InvoicesPage } from '../../features/invoices/InvoicesPage';
+import { SettingsPage } from '../../features/settings/SettingsPage';
 import {
   DashboardPage,
   LoginPage,
@@ -33,7 +33,7 @@ import {
   MonthlyAbsencePlanPage,
   SchedulePage,
   ProjectsActivitiesPage,
-} from '@/pages';
+} from '../../pages';
 
 export const router = createBrowserRouter([
   {

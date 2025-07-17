@@ -2,21 +2,21 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Logo } from '@/shared/components/Logo';
-import { useAuth } from '@/hooks/useAuth';
-import { useUIState } from '@/hooks/useUIState';
-import { useSidebar } from '@/contexts/SidebarContext';
-import WorkerdetailsIcon from '@/shared/assets/icons/Workerdetails.png';
-import MobileAppsIcon from '@/shared/assets/icons/mobileapps.png';
-import AssignmentsIcon from '@/shared/assets/icons/assigments.png';
-import AttendanceListIcon from '@/shared/assets/icons/attendanceList.png';
-import ScheduleAttendanceIcon from '@/shared/assets/icons/scheduleAttendance.png';
-import ReserveVehicleIcon from '@/shared/assets/icons/reserveVehicle.png';
-import CanteenIcon from '@/shared/assets/icons/canteen.png';
-import EmployeeRequestsIcon from '@/shared/assets/icons/employeeRequests.png';
-import VacationsIcon from '@/shared/assets/icons/vacations.png';
-import VacationPlanIcon from '@/shared/assets/icons/vacationPlan.png';
-import WeekendWorkIcon from '@/shared/assets/icons/weekendWork.png';
+import { Logo } from '../../shared/components/Logo';
+import { useAuth } from '../../hooks/useAuth';
+import { useUIState } from '../../hooks/useUIState';
+import { useSidebar } from '../../contexts/SidebarContext';
+import WorkerdetailsIcon from '../../shared/assets/icons/Workerdetails.png';
+import MobileAppsIcon from '../../shared/assets/icons/mobileapps.png';
+import AssignmentsIcon from '../../shared/assets/icons/assigments.png';
+import AttendanceListIcon from '../../shared/assets/icons/attendanceList.png';
+import ScheduleAttendanceIcon from '../../shared/assets/icons/scheduleAttendance.png';
+import ReserveVehicleIcon from '../../shared/assets/icons/reserveVehicle.png';
+import CanteenIcon from '../../shared/assets/icons/canteen.png';
+import EmployeeRequestsIcon from '../../shared/assets/icons/employeeRequests.png';
+import VacationsIcon from '../../shared/assets/icons/vacations.png';
+import VacationPlanIcon from '../../shared/assets/icons/vacationPlan.png';
+import WeekendWorkIcon from '../../shared/assets/icons/weekendWork.png';
 import {
   MapRegistrationsIcon,
   EmployeeEvaluationIcon,
@@ -28,7 +28,7 @@ import {
   ScheduleIcon,
   ProjectsActivitiesIcon,
   ETeczkaIcon
-} from '@/shared/components/PlaceholderIcons';
+} from '../../shared/components/PlaceholderIcons';
 
 const SIDEBAR_WIDTH = 280;
 const COLLAPSED_SIDEBAR_WIDTH = 50;
