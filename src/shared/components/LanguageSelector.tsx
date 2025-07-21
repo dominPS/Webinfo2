@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import { availableLanguages } from '../../i18n';
+import { availableLanguages } from '../../app/i18n';
 
 const LanguageButton = styled.button`
   font-weight: 700;
