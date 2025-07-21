@@ -34,30 +34,60 @@ Aplikacja została zbudowana zgodnie z architekturą opartą na komponentach, z 
 
 ```
 src/
-  ├── App.tsx                  # Główny komponent aplikacji
-  ├── main.tsx                 # Punkt wejścia aplikacji
-  ├── i18n.ts                  # Konfiguracja internacjonalizacji
-  ├── features/                # Funkcjonalności aplikacji
-  │   ├── ai/                  # Funkcje związane z AI
-  │   ├── auth/                # Uwierzytelnianie i autoryzacja
-  │   ├── clients/             # Zarządzanie klientami
-  │   ├── dashboard/           # Strona główna
-  │   ├── invoices/            # Zarządzanie fakturami
-  │   ├── licenses/            # Zarządzanie licencjami
-  │   ├── navigation/          # Komponenty nawigacyjne
-  │   ├── pages/               # Różne strony aplikacji
-  │   └── settings/            # Ustawienia
-  ├── hooks/                   # Własne hooki React
-  │   ├── useAuth.ts           # Hook uwierzytelniania
-  │   └── useUIState.ts        # Hook stanu UI
-  ├── layouts/                 # Szablony układu stron
-  │   └── MainLayout.tsx       # Główny układ aplikacji
-  ├── shared/                  # Współdzielone zasoby
-  │   ├── components/          # Współdzielone komponenty
-  │   ├── routes/              # Konfiguracja routingu
-  │   ├── styles/              # Współdzielone style
-  │   └── theme/               # Konfiguracja motywu
-  └── types/                   # Definicje typów TypeScript
+  App.tsx                # Główny komponent aplikacji
+  main.ts                # Punkt wejścia aplikacji
+  main.tsx               # Alternatywny punkt wejścia (np. dla React)
+  style.css              # Globalne style
+  typescript.svg         # Ikona projektu
+  vite-env.d.ts          # Typy środowiska Vite
+  emotion.d.ts           # Typy dla Emotion
+  app/
+    i18n.ts              # Konfiguracja internacjonalizacji
+    providers/           # Dostawcy kontekstu (Theme, MUI)
+    router/              # Konfiguracja routera
+  components/
+    ui/                  # Komponenty UI (Button, Card, Container, Input, LoadingSpinner)
+  contexts/              # Konteksty React (np. SidebarContext)
+  features/
+    auth/                # Logowanie i autoryzacja
+    clients/             # Zarządzanie klientami
+    dashboard/           # Strona główna
+    employeeEvaluation/  # Ocena pracowników
+    eTeczka/             # Elektroniczna teczka
+    invoices/            # Faktury
+    licenses/            # Licencje
+    mui-demo/            # Demo komponentów MUI
+    navigation/          # Sidebar, TopBar
+    settings/            # Ustawienia
+  hooks/
+    useAuth.ts           # Hook uwierzytelniania
+    useUIState.ts        # Hook stanu UI
+  layouts/
+    MainLayout.tsx       # Główny układ aplikacji
+  lib/
+    styles/global.ts     # Globalne style JS
+  pages/
+    index.ts             # Strony aplikacji
+    Dashboard/           # Dashboard
+    EmployeeEvaluation/  # Ocena pracowników
+    ETeczka/             # Elektroniczna teczka
+    HREvaluation/        # Ocena HR
+    LeaderEvaluation/    # Ocena lidera
+    Login/               # Logowanie
+    NotFound/            # Strona 404
+    ProfileSelection/    # Wybór profilu
+    WorkerEvaluation/    # Ocena pracownika
+  shared/
+    assets/              # Ikony, obrazy
+    components/          # Wspólne komponenty (BasePage, ErrorBoundary, Footer, Icon)
+    test/                # Testy jednostkowe i narzędzia
+      setup.ts           # Konfiguracja testów
+      utils/             # Funkcje pomocnicze do testów
+  types/
+    i18next.d.ts         # Typy dla i18next
+public/
+  logo.svg, logo-new.svg, vite.svg   # Pliki graficzne
+  locales/               # Tłumaczenia (de, en, fr, pl, uk)
 ```
 
 ## Technologie
@@ -100,7 +130,9 @@ Komponenty odpowiedzialne za wyświetlanie logo aplikacji w pasku bocznym i gór
 
 ### LanguageSelector
 
-Komponent umożliwiający zmianę języka aplikacji. Obsługuje pięć języków: angielski, polski, francuski, niemiecki i ukraiński.
+Komponent umożliwiający zmianę języka aplikacji. Dostępne języki:
+- polski (PL)
+- angielski (EN)
 
 ## Zarządzanie stanem
 
@@ -152,12 +184,10 @@ Przykładowe ścieżki:
 
 ## Internacjonalizacja (i18n)
 
-Aplikacja wspiera pięć języków:
-- Angielski (EN) - domyślny
-- Polski (PL)
-- Francuski (FR)
-- Niemiecki (DE)
-- Ukraiński (UK)
+
+Aktualnie dostępne języki:
+- polski (PL) — domyślny
+- angielski (EN)
 
 Konfiguracja i18n znajduje się w pliku `src/i18n.ts`. Tłumaczenia są przechowywane w katalogu `public/locales/{kod_języka}/translation.json`.
 
@@ -169,12 +199,31 @@ const { t } = useTranslation();
 
 ## Stylizacja
 
-Aplikacja korzysta z Emotion do stylizacji komponentów. Zastosowano podejście CSS-in-JS, co pozwala na:
-- Stylizację zależną od props
-- Dziedziczenie stylów
-- Zarządzanie tematem aplikacji
 
-Globalne style i konfiguracja motywu znajdują się w `src/shared/theme`.
+Aplikacja korzysta z biblioteki Emotion do stylizacji komponentów w podejściu CSS-in-JS. Dzięki temu:
+- Style są definiowane bezpośrednio w plikach TypeScript/TSX jako funkcje lub template stringi
+- Możliwa jest dynamiczna stylizacja na podstawie propsów komponentu
+- Łatwo zarządzać motywem globalnym (np. kolory, spacing, typografia)
+- Komponenty mogą dziedziczyć style i korzystać z ThemeProvider
+- Możliwe jest stosowanie animacji, responsywności i warunkowych styli
+
+Globalne style, motyw oraz ThemeProvider znajdują się w `src/shared/theme` oraz w `src/app/providers/ThemeProvider.tsx`.
+Przykładowe użycie:
+```tsx
+import styled from '@emotion/styled';
+
+const MyButton = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background 0.2s;
+  &:hover {
+    background: ${props => props.theme.colors.primaryDark};
+  }
+`;
+```
 
 ## Uwierzytelnianie
 

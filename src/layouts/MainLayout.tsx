@@ -15,10 +15,16 @@ const TOP_SPACING = 30;
 
 const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
   display: flex;
+  flex-direction: column; /* ← ADD THIS */
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
   padding-top: ${TOP_SPACING}px;
   padding-bottom: ${TOP_SPACING}px;
+`;
+
+const LayoutWrapper = styled.div<{ $sidebarCollapsed: boolean }>`
+  display: flex;
+  flex: 1;
   padding-left: ${props => props.$sidebarCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
   transition: padding-left 0.3s ease;
 `;
@@ -26,9 +32,12 @@ const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
 const ContentContainer = styled.div`
   flex: 1;
   padding: 0 ${props => props.theme.spacing.lg};
+  padding-left: 20px; 
+  padding-right: 20px;
   display: flex;
   flex-direction: column;
   height: calc(100vh - ${TOP_SPACING * 2}px);
+  margin-top: 20px;
 `;
 
 const MainContent = styled.div`
@@ -115,33 +124,46 @@ const ProfileButton = styled.button`
   }
 `;
 
+// Add a FooterWrapper to position footer correctly
+const FooterWrapper = styled.div<{ $sidebarCollapsed: boolean }>`
+  position: relative;
+  z-index: 1; /* Footer should be behind sidebar */
+  margin-left: ${props => props.$sidebarCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
+  transition: margin-left 0.3s ease;
+`;
+
 export const MainLayout = () => {
   const { t } = useTranslation();
   const { isCollapsed } = useSidebar();
 
   return (
     <MainContainer $sidebarCollapsed={isCollapsed}>
-      <Sidebar />
-      <ContentContainer>
-        <TopBar>
-          <TopBarLeft>
-            <TopMenu />
-            <ReportsLogo />
-          </TopBarLeft>
-          <TopBarRight>
-            <LanguageSelector />
-            <NotificationButton title={t('header.notifications')}>
-              🔔
-            </NotificationButton>
-            <ProfileButton>
-              👤 Test
-            </ProfileButton>
-          </TopBarRight>        </TopBar>
-        <MainContent>
-          <Outlet />
-        </MainContent>
+      <LayoutWrapper $sidebarCollapsed={isCollapsed}>
+        <Sidebar />
+        <ContentContainer>
+          <TopBar>
+            <TopBarLeft>
+              <TopMenu />
+              <ReportsLogo />
+            </TopBarLeft>
+            <TopBarRight>
+              <LanguageSelector />
+              <NotificationButton title={t('header.notifications')}>
+                🔔
+              </NotificationButton>
+              <ProfileButton>
+                👤 Test
+              </ProfileButton>
+            </TopBarRight>
+          </TopBar>
+          <MainContent>
+            <Outlet />
+          </MainContent>
+        </ContentContainer>
+      </LayoutWrapper>
+      <FooterWrapper $sidebarCollapsed={isCollapsed}>
         <Footer />
-      </ContentContainer>
+      </FooterWrapper>
     </MainContainer>
   );
 };

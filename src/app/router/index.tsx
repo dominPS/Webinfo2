@@ -4,6 +4,7 @@ import { LicensesPage } from '../../features/licenses/LicensesPage';
 import { ClientsPage } from '../../features/clients/ClientsPage';
 import { InvoicesPage } from '../../features/invoices/InvoicesPage';
 import { SettingsPage } from '../../features/settings/SettingsPage';
+import { MUIComponentsDemo } from '../../features/mui-demo/MUIComponentsDemo';
 import {
   DashboardPage,
   LoginPage,
@@ -163,6 +164,10 @@ export const router = createBrowserRouter([
       {
         path: 'employee-evaluation/form',
         element: <EmployeeEvaluationPage />,
+      },
+      {
+        path: 'mui-demo',
+        element: <MUIComponentsDemo />,
       },
       {
         path: '*',

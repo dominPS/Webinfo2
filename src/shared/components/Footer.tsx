@@ -1,34 +1,40 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const FooterContainer = styled.footer`
-  background: ${props => props.theme.colors.background};
-  border-top: 1px solid ${props => props.theme.colors.border || '#e0e0e0'};
-  padding: 6px ${props => props.theme.spacing.md};
-  margin-top: auto;
+const FooterContainer = styled.div`
+  padding: ${props => props.theme.spacing.md};
   color: ${props => props.theme.colors.text.secondary};
-  font-size: 10px;
-  line-height: 1.2;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  width: 100%;
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
 `;
 
 const FooterContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  marigin-bottom: 20px;
 `;
 
 const ServerInfo = styled.div`
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   font-family: 'Roboto', monospace;
+  line-height: 1.2;
 `;
 
 const Copyright = styled.div`
   font-weight: 400;
+  line-height: 1.2;
 `;
 
 export const Footer: React.FC = () => {

@@ -1,4 +1,5 @@
 import { ThemeProvider } from './app/providers/ThemeProvider';
+import { MUIProvider } from './app/providers/MUIProvider';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './app/router';
 import { ErrorBoundary } from './shared/components/ErrorBoundary';
@@ -9,9 +10,11 @@ export const App = () => {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <SidebarProvider>
-          <RouterProvider router={router} />
-        </SidebarProvider>
+        <MUIProvider>
+          <SidebarProvider>
+            <RouterProvider router={router} />
+          </SidebarProvider>
+        </MUIProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

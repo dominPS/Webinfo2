@@ -7,6 +7,7 @@ const Container = styled.div`
   background: white;
   border-radius: ${props => props.theme.borderRadius.large};
   box-shadow: ${props => props.theme.shadows.medium};
+  margin-top: 20px;
 `;
 
 const Title = styled.h1`

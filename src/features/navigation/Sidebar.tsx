@@ -48,6 +48,7 @@ const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
   z-index: 10;
   transition: width 0.3s ease;
   overflow: hidden;
+  margin-top: 20px; // Add margin to the top of the sidebar
 `;
 
 const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
