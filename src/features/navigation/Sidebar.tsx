@@ -33,15 +33,16 @@ import {
   ETeczkaIcon
 } from '../../shared/components/PlaceholderIcons';
 
-const SIDEBAR_WIDTH = 280;
+const SIDEBAR_WIDTH = 220;
 const COLLAPSED_SIDEBAR_WIDTH = 50;
-const TOP_SPACING = 30;
+const TOP_SPACING = -5;
+const BOTTOM_SPACING = 20;  
 
 const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
   width: ${props => props.$isCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
   position: fixed;
   top: ${TOP_SPACING}px;
-  bottom: ${TOP_SPACING}px;
+  bottom: ${BOTTOM_SPACING}px;
   left: 0;
   background: ${props => props.theme.colors.primary};
   border-radius: 0 20px 20px 0;
@@ -66,10 +67,10 @@ const SidebarHeader = styled.div<{ $isCollapsed: boolean }>`
 
 const NavContainer = styled.div<{ $isCollapsed: boolean }>`
   flex: 1;
-  padding: ${props => props.$isCollapsed ? '0 8px' : '0 24px'};
+  padding: ${props => props.$isCollapsed ? '0 8px' : '0 10px'};
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
   transition: all 0.3s ease;
 
   &::-webkit-scrollbar {
@@ -95,14 +96,16 @@ const NavItem = styled(NavLink, {
 })<{ $isCollapsed: boolean }>`
   display: flex;
   align-items: center;
-  gap: ${props => props.$isCollapsed ? '0' : '12px'};
-  padding: ${props => props.$isCollapsed ? '8px' : '12px 16px'};
+  gap: ${props => props.$isCollapsed ? '0' : '10px'};
+  padding: ${props => props.$isCollapsed ? '8px' : '14px 12px'};
   color: white;
   text-decoration: none;
-  border-radius: 13px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  opacity: 0.8;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin-bottom: 4px;
+  font-size: 12px;
+  width: 100%;
+  opacity: 1;
   transition: all 0.2s ease;
   justify-content: ${props => props.$isCollapsed ? 'center' : 'flex-start'};
   position: relative;
@@ -151,15 +154,15 @@ const NavItemText = styled.span<{ $isCollapsed: boolean }>`
 `;
 
 const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
-  margin: 24px ${props => props.$isCollapsed ? '6px' : '30px'};
+  margin: 22px ${props => props.$isCollapsed ? '6px' : '30px'};
   padding: 0 16px;
-  height: 40px;
+  height: 30px;
   background: rgba(255, 255, 255, 0.1);
-  border: none;
+  border: 1px solid white;
   color: white;
-  border-radius: 13px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -299,7 +302,7 @@ export const Sidebar: React.FC = () => {
           <LogoutIcon size={20} />
         </button>
       ) : (
-        <LogoutButton $isCollapsed={isCollapsed}>
+        <LogoutButton $isCollapsed={isCollapsed} style={{ marginBottom: '8px' }}>
           <LogoutIcon size={20} />
           {t('navigation.logout')}
         </LogoutButton>

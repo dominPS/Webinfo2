@@ -9,9 +9,9 @@ import { TopMenu } from '../shared/components/TopMenu';
 import { Footer } from '../shared/components/Footer';
 import { useSidebar } from '../contexts/SidebarContext';
 
-const SIDEBAR_WIDTH = 280;
+const SIDEBAR_WIDTH = 220;
 const COLLAPSED_SIDEBAR_WIDTH = 50;
-const TOP_SPACING = 30;
+const TOP_SPACING = 0;
 
 const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
   display: flex;
@@ -68,13 +68,14 @@ const MainContent = styled.div`
 const TopBar = styled.div`
   background: ${props => props.theme.colors.primary};
   border-radius: ${props => props.theme.borderRadius.large};
-  height: 120px;
+  height: 70px;
   padding: 0 40px;
   margin-bottom: ${props => props.theme.spacing.xl};
   box-shadow: ${props => props.theme.shadows.medium};
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between;  
+  margin-top: -5px;
 `;
 
 const TopBarLeft = styled.div`
