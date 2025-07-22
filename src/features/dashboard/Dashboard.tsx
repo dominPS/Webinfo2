@@ -78,12 +78,6 @@ export const Dashboard = () => {
     <Container>
       <Title>{t('homepage.title')}</Title>
       <WelcomeText>{t('homepage.welcome')}</WelcomeText>
-      <LoginSection>
-        <LoginInstructions>{t('homepage.loginInstructions')}</LoginInstructions>
-        <LoginOption>{t('homepage.employeeLogin')}</LoginOption>
-        <LoginOption>{t('homepage.managerLogin')}</LoginOption>
-        <LoginOption>{t('homepage.adminLogin')}</LoginOption>
-      </LoginSection>
     </Container>
   );
 };

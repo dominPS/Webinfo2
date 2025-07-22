@@ -1,8 +1,11 @@
 import React from 'react';
+import { useTheme } from '../../app/providers/ThemeProvider';
 import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '../../shared/components/Logo';
+import { SunIcon, MoonIcon } from '../../shared/components/ThemeIcons';
+import { LoginIcon, LogoutIcon } from '../../shared/components/AuthIcons';
 import { useAuth } from '../../hooks/useAuth';
 import { useUIState } from '../../hooks/useUIState';
 import { useSidebar } from '../../contexts/SidebarContext';
@@ -210,10 +213,10 @@ export const Sidebar: React.FC = () => {
   const { t, i18n } = useTranslation('translation', {
     useSuspense: false
   });
-  const { isLoggedIn, logout } = useAuth();
-  const { setShowLoginForm } = useUIState();
+  // ...existing code...
   const navigate = useNavigate();
   const { isCollapsed, setIsCollapsed } = useSidebar();
+  const { isDark, toggleTheme } = useTheme();
 
   // Force update hook
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
@@ -232,15 +235,7 @@ export const Sidebar: React.FC = () => {
     };
   }, [i18n]);
 
-  const handleAuthAction = () => {
-    if (isLoggedIn) {
-      logout();
-      setShowLoginForm(false);
-      console.log('Logged out');
-    } else {
-      setShowLoginForm(true);
-    }
-  };
+  // ...existing code...
 
   const handleSidebarClick = (e: React.MouseEvent) => {
     // Jeśli kliknięto w puste miejsce (nie w button, link, lub inne interaktywne elementy)
@@ -296,9 +291,37 @@ export const Sidebar: React.FC = () => {
         })}
       </NavContainer>
       
-      <LogoutButton $isCollapsed={isCollapsed} onClick={handleAuthAction}>
-        {isLoggedIn ? t('navigation.logout') : t('navigation.login')}
-      </LogoutButton>
+      {isCollapsed ? (
+        <button
+          style={{ margin: '8px 6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          aria-label={t('navigation.logout')}
+        >
+          <LogoutIcon size={20} />
+        </button>
+      ) : (
+        <LogoutButton $isCollapsed={isCollapsed}>
+          <LogoutIcon size={20} />
+          {t('navigation.logout')}
+        </LogoutButton>
+      )}
+      {/* Przycisk/ikona zmiany trybu jasny/ciemny */}
+      {isCollapsed ? (
+        <button
+          onClick={toggleTheme}
+          style={{ margin: '8px 6px', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          aria-label={isDark ? t('navigation.lightMode', 'Tryb jasny') : t('navigation.darkMode', 'Tryb ciemny')}
+        >
+          {isDark ? <SunIcon size={24} /> : <MoonIcon size={24} />}
+        </button>
+      ) : (
+        <LogoutButton
+          $isCollapsed={isCollapsed}
+          onClick={toggleTheme}
+          style={{ marginTop: '8px', background: 'rgba(255,255,255,0.15)' }}
+        >
+          {isDark ? t('navigation.lightMode', 'Tryb jasny') : t('navigation.darkMode', 'Tryb ciemny')}
+        </LogoutButton>
+      )}
     </SidebarContainer>
   );
 };

@@ -48,11 +48,10 @@
   },
   "homepage": {
     "title": "WebInfo®",
-    "welcome": "Welcome to the WebInfo system. Please log in to browse WebInfo content.",
-    "loginInstructions": "You can log in using username and password:",
-    "employeeLogin": "employee / employee - employee view",
-    "managerLogin": "manager / manager - manager view",
-    "adminLogin": "admin / admin - view with administrative functions"
+    "welcome": "Welcome to the WebInfo system."
+
+
+
   },
   "login": {
     "title": "Login",
