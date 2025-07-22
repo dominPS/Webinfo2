@@ -29,12 +29,15 @@ const FooterContent = styled.div`
 const ServerInfo = styled.div`
   margin-bottom: 4px;
   font-family: 'Roboto', monospace;
-  line-height: 1.2;
+  line-height: 1;
+  font-size: 10px;
 `;
 
 const Copyright = styled.div`
+  margin-bottom: 4px;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1;
+  font-size: 10px;
 `;
 
 export const Footer: React.FC = () => {

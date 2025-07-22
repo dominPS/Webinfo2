@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const ReportsSvg = styled.svg`
   width: 71px;
   height: 20px;
+  border: none;
 `;
 
 const StyledLink = styled(Link)`
@@ -11,9 +12,12 @@ const StyledLink = styled(Link)`
   align-items: center;
   cursor: pointer;
   text-decoration: none;
-  transition: opacity 0.2s;
+  padding: 8px 16px;
+  border-radius: ${props => props.theme.borderRadius.small};
+  transition: background-color 0.2s ease, opacity 0.2s;
 
   &:hover {
+    background: rgba(255, 255, 255, 0.1);
     opacity: 0.8;
   }
 `;

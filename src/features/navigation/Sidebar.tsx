@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '../../shared/components/Logo';
 import { SunIcon, MoonIcon } from '../../shared/components/ThemeIcons';
-import { LoginIcon, LogoutIcon } from '../../shared/components/AuthIcons';
+import { LogoutIcon } from '../../shared/components/AuthIcons';
 import { useAuth } from '../../hooks/useAuth';
 import { useUIState } from '../../hooks/useUIState';
 import { useSidebar } from '../../contexts/SidebarContext';

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { availableLanguages } from '../../app/i18n';
 
 const LanguageButton = styled.button`
-  font-weight: 700;
+  font-weight: 350;
   font-size: 14px;
   color: white;
   cursor: pointer;

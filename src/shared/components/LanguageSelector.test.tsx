@@ -7,9 +7,6 @@ vi.mock('@/i18n', () => ({
   availableLanguages: {
     en: 'English',
     pl: 'Polski',
-    fr: 'Français',
-    de: 'Deutsch',
-    uk: 'Українська'
   }
 }));
 

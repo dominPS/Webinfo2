@@ -13,13 +13,15 @@ const MenuButton = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
+  font-weight: 350;
   font-size: 14px;
   color: white;
   cursor: pointer;
-  padding: 8px;
+  padding: 8px 16px;
   background: transparent;
   border: none;
+  border-radius: ${props => props.theme.borderRadius.small};
+  transition: background-color 0.2s ease;
   transition: opacity 0.2s;
   min-width: 110px;
   justify-content: flex-start;
@@ -31,7 +33,7 @@ const MenuButton = styled.button`
   }
 
   &:hover {
-    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.1);
   }
 `;
 
