@@ -22,7 +22,7 @@ export {
   ETeczkaPage
 };
 
-// Placeholder pages (can be gradually replaced with real implementations)
+// Placeholder pages 
 export const MobileAppsPage = BasePage;
 export const AssignmentsPage = BasePage;
 export const MapRegistrationsPage = BasePage;
