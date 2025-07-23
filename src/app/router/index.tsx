@@ -34,15 +34,22 @@ import {
   SchedulePage,
   ProjectsActivitiesPage,
 } from '../../pages';
+import { LoginLayout } from '../../layouts/auth-layout';
 
 export const router = createBrowserRouter([
   {
     path: '/login',
-    element: <LoginPage />,
+    element: <LoginLayout />, // layout dla logowania
+    children: [
+      {
+        index: true,
+        element: <LoginPage />,
+      },
+    ],
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: <MainLayout />, 
     children: [
       {
         index: true,

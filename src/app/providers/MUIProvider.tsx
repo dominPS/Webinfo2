@@ -21,11 +21,27 @@ export const MUIProvider: React.FC<Props> = ({ children }) => {
       mode: isDark ? 'dark' : 'light',
       primary: {
         main: emotionTheme.colors.primary,
-        dark: '#0D4A56', // Darker version of primary
-        light: '#4A9FB3', // Lighter version of primary
+        dark: '#0D4A56',
+        light: '#4A9FB3',
       },
       secondary: {
         main: emotionTheme.colors.secondary,
+      },
+      // Dodane własne kolory
+      accent_field: {
+        main: '#84B8D0',
+        dark: '#6a94a6',
+        light: '#a0c9dc',
+      },
+      accent_hover: {
+        main: '#47a49a',
+        dark: '#3a847c',
+        light: '#6bb5ac',
+      },
+      accent_white: {
+        main: '#ffffff',
+        dark: '#f5f5f5',
+        light: '#ffffff',
       },
       background: {
         default: emotionTheme.colors.background,
@@ -36,15 +52,15 @@ export const MUIProvider: React.FC<Props> = ({ children }) => {
         secondary: emotionTheme.colors.text.secondary,
       },
       error: {
-        main: '#f44336', // Standard Material Design error color
+        main: '#f44336',
       },
       warning: {
-        main: '#ff9800', // Standard Material Design warning color
+        main: '#ff9800',
       },
       success: {
-        main: '#4caf50', // Standard Material Design success color
+        main: '#4caf50',
       },
-    },
+    } as any,
     typography: {
       fontFamily: '"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif',
       h1: {

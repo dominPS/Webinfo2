@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import { LoginPage } from '@/features/auth/LoginPage';
+import LoginPage from '../../pages/Login';
 import { useUIState } from '@/hooks/useUIState';
 import { useAuth } from '@/hooks/useAuth';
 

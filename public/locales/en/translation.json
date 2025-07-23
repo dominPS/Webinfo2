@@ -1,4 +1,8 @@
 {
+  "login-aut": "Login",
+  "login_edit_user": "Username",
+  "login-password": "Password",
+  "login_info": "To log in to the system, enter your login credentials or use your card.",
   "topMenu": {
     "licenses": "Licenses",
     "clients": "Clients",

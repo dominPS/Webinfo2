@@ -1,4 +1,7 @@
 {
+  "login-aut": "Zaloguj",
+  "login_edit_user": "Nazwa użytkownika",
+  "login-password": "Hasło",
   "topMenu": {
     "licenses": "Licencje",
     "clients": "Klienci",
@@ -768,6 +771,9 @@
       "title": "Zaufanie - Budowanie Silnych Relacji"
     }
   },
+  "login_info": "Aby zalogować się do systemu wpisz swoje dane logowania, lub użyj karty.",
+  "login_copyright": "Copyright © Polsystem SI 2013 - 2024",
+  "login_server": "Server: 192.168.1.21, Database: widemo, Version: 1.7.0.13082, Build for: Default",
   "dateFormat": {
     "locale": "pl-PL"
   }

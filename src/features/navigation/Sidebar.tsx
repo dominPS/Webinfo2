@@ -216,10 +216,17 @@ export const Sidebar: React.FC = () => {
   const { t, i18n } = useTranslation('translation', {
     useSuspense: false
   });
-  // ...existing code...
   const navigate = useNavigate();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const { isDark, toggleTheme } = useTheme();
+  // Wylogowanie i przekierowanie do /login
+  const handleLogout = () => {
+    // Jeśli masz logikę czyszczenia auth, wywołaj ją tutaj
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token'); // lub inny klucz auth jeśli używasz
+    }
+    navigate('/login', { replace: true });
+  };
 
   // Force update hook
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
@@ -315,13 +322,14 @@ export const Sidebar: React.FC = () => {
       {/* Przycisk wylogowania */}
       {isCollapsed ? (
         <button
+          onClick={handleLogout}
           style={{ margin: '8px 6px 22px 6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
           aria-label={t('navigation.logout')}
         >
           <LogoutIcon size={20} />
         </button>
       ) : (
-        <LogoutButton $isCollapsed={isCollapsed} style={{ margin: '8px 30px 22px 30px' }}>
+        <LogoutButton $isCollapsed={isCollapsed} style={{ margin: '8px 30px 22px 30px' }} onClick={handleLogout}>
           <LogoutIcon size={20} />
           {t('navigation.logout')}
         </LogoutButton>
