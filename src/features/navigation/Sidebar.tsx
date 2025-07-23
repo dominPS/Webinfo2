@@ -294,24 +294,11 @@ export const Sidebar: React.FC = () => {
         })}
       </NavContainer>
       
-      {isCollapsed ? (
-        <button
-          style={{ margin: '8px 6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-          aria-label={t('navigation.logout')}
-        >
-          <LogoutIcon size={20} />
-        </button>
-      ) : (
-        <LogoutButton $isCollapsed={isCollapsed} style={{ marginBottom: '8px' }}>
-          <LogoutIcon size={20} />
-          {t('navigation.logout')}
-        </LogoutButton>
-      )}
       {/* Przycisk/ikona zmiany trybu jasny/ciemny */}
       {isCollapsed ? (
         <button
           onClick={toggleTheme}
-          style={{ margin: '8px 6px', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          style={{ margin: '22px 6px 8px 6px', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
           aria-label={isDark ? t('navigation.lightMode', 'Tryb jasny') : t('navigation.darkMode', 'Tryb ciemny')}
         >
           {isDark ? <SunIcon size={24} /> : <MoonIcon size={24} />}
@@ -320,9 +307,23 @@ export const Sidebar: React.FC = () => {
         <LogoutButton
           $isCollapsed={isCollapsed}
           onClick={toggleTheme}
-          style={{ marginTop: '8px', background: 'rgba(255,255,255,0.15)' }}
+          style={{ margin: '22px 30px 8px 30px', background: 'rgba(255,255,255,0.15)' }}
         >
           {isDark ? t('navigation.lightMode', 'Tryb jasny') : t('navigation.darkMode', 'Tryb ciemny')}
+        </LogoutButton>
+      )}
+      {/* Przycisk wylogowania */}
+      {isCollapsed ? (
+        <button
+          style={{ margin: '8px 6px 22px 6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 13, width: 34, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          aria-label={t('navigation.logout')}
+        >
+          <LogoutIcon size={20} />
+        </button>
+      ) : (
+        <LogoutButton $isCollapsed={isCollapsed} style={{ margin: '8px 30px 22px 30px' }}>
+          <LogoutIcon size={20} />
+          {t('navigation.logout')}
         </LogoutButton>
       )}
     </SidebarContainer>
