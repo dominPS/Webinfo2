@@ -32,7 +32,9 @@
     "employeeEvaluation": "Employee Evaluation",
     "logout": "Logout",
     "login": "Login",
-    "sidebarHint": "Click to toggle"
+    "sidebarHint": "Click to toggle",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode"
   },
   "languages": {
     "en": "English",
@@ -52,10 +54,9 @@
   },
   "homepage": {
     "title": "WebInfo®",
-    "welcome": "Welcome to the WebInfo system."
-
-
-
+    "welcome": "Welcome to the WebInfo system.",
+    "loggedInAs": "You are logged in as {{username}}.",
+    "loggedInWelcome": "Welcome to the WebInfo system."
   },
   "login": {
     "title": "Login",

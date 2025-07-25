@@ -8,6 +8,7 @@ import { ReportsLogo } from '../shared/components/ReportsLogo';
 import { TopMenu } from '../shared/components/TopMenu';
 import { Footer } from '../shared/components/Footer';
 import { useSidebar } from '../contexts/SidebarContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const SIDEBAR_WIDTH = 220;
 const COLLAPSED_SIDEBAR_WIDTH = 50;
@@ -136,6 +137,7 @@ const FooterWrapper = styled.div<{ $sidebarCollapsed: boolean }>`
 export const MainLayout = () => {
   const { t } = useTranslation();
   const { isCollapsed } = useSidebar();
+  const { user } = useAuth();
 
   return (
     <MainContainer $sidebarCollapsed={isCollapsed}>
@@ -153,7 +155,7 @@ export const MainLayout = () => {
                 🔔
               </NotificationButton>
               <ProfileButton>
-                👤 Test
+                👤 {user?.user || 'User'}
               </ProfileButton>
             </TopBarRight>
           </TopBar>

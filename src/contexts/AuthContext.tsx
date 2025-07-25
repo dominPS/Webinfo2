@@ -5,6 +5,7 @@ import { authService } from '@/services/authServices';
 interface User {
   id: string;
   email: string;
+  user: string;
 }
 
 interface AuthContextType {
@@ -25,11 +26,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
-      const res = await authService.login(email, password);
-      if (res.success) {
-          const userData = await authService.getCurrentUser();
-          setUser(userData);
-      }
+    const res = await authService.login(email, password);
+    if (res.success) {
+      const userData = await authService.getCurrentUser();
+      // Fallback: jeśli backend nie zwraca username, ustaw na email przed @
+      setUser({
+        ...userData,
+        user: userData?.user || (userData?.email ? userData.email.split('@')[0] : ''),
+      });
+    }
   };
 
   const logout = async () => {
@@ -39,10 +44,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     authService
-        .getCurrentUser()
-        .then(setUser)
-        .finally(() => setLoading(false));
-}, []);
+      .getCurrentUser()
+      .then((userData) => {
+        if (userData) {
+          setUser({
+            ...userData,
+            user: userData?.user || (userData?.email ? userData.email.split('@')[0] : ''),
+          });
+        } else {
+          setUser(null);
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
     return (
         <AuthContext.Provider value={{ user, loading, login, logout }}>

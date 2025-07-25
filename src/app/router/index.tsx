@@ -32,8 +32,9 @@ import {
   AbsencePlanPage,
   MonthlyAbsencePlanPage,
   SchedulePage,
-  ProjectsActivitiesPage,
+  ProjectsActivitiesPage
 } from '../../pages';
+import { RequireAuth } from './RequireAuth';
 import { LoginLayout } from '../../layouts/auth-layout';
 
 export const router = createBrowserRouter([
@@ -49,7 +50,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <MainLayout />, 
+    element: (
+      <RequireAuth>
+        <MainLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         index: true,
@@ -57,123 +62,123 @@ export const router = createBrowserRouter([
       },
       {
         path: 'licenses',
-        element: <LicensesPage />,
+        element: <LicensesPage />, 
       },
       {
         path: 'clients',
-        element: <ClientsPage />,
+        element: <ClientsPage />, 
       },
       {
         path: 'invoices',
-        element: <InvoicesPage />,
+        element: <InvoicesPage />, 
       },
       {
         path: 'settings',
-        element: <SettingsPage />,
+        element: <SettingsPage />, 
       },
       {
         path: 'mobile-apps',
-        element: <MobileAppsPage translationKey="mobileApps" />,
+        element: <MobileAppsPage translationKey="mobileApps" />, 
       },
       {
         path: 'assignments',
-        element: <AssignmentsPage translationKey="assignments" />,
+        element: <AssignmentsPage translationKey="assignments" />, 
       },
       {
         path: 'map-registrations',
-        element: <MapRegistrationsPage translationKey="mapRegistrations" />,
+        element: <MapRegistrationsPage translationKey="mapRegistrations" />, 
       },
       {
         path: 'attendance-list',
-        element: <AttendanceListPage translationKey="attendanceList" />,
+        element: <AttendanceListPage translationKey="attendanceList" />, 
       },
       {
         path: 'schedule-attendance',
-        element: <ScheduleAttendancePage translationKey="scheduleAttendance" />,
+        element: <ScheduleAttendancePage translationKey="scheduleAttendance" />, 
       },
       {
         path: 'employee-data',
-        element: <EmployeeDataPage translationKey="employeeData" />,
+        element: <EmployeeDataPage translationKey="employeeData" />, 
       },
       {
         path: 'reserve-vehicle',
-        element: <ReserveVehiclePage translationKey="reserveVehicle" />,
+        element: <ReserveVehiclePage translationKey="reserveVehicle" />, 
       },
       {
         path: 'canteen',
-        element: <CanteenPage translationKey="canteen" />,
+        element: <CanteenPage translationKey="canteen" />, 
       },
       {
         path: 'vacation-plan',
-        element: <VacationPlanPage translationKey="vacationPlan" />,
+        element: <VacationPlanPage translationKey="vacationPlan" />, 
       },
       {
         path: 'weekend-work',
-        element: <WeekendWorkPage translationKey="weekendWork" />,
+        element: <WeekendWorkPage translationKey="weekendWork" />, 
       },
       {
         path: 'employee-requests',
-        element: <EmployeeRequestsPage translationKey="employeeRequests" />,
+        element: <EmployeeRequestsPage translationKey="employeeRequests" />, 
       },
       {
         path: 'vacations',
-        element: <VacationsPage translationKey="vacations" />,
+        element: <VacationsPage translationKey="vacations" />, 
       },
       {
         path: 'monthly-summary',
-        element: <MonthlySummaryPage translationKey="monthlySummary" />,
+        element: <MonthlySummaryPage translationKey="monthlySummary" />, 
       },
       {
         path: 'exams-and-training',
-        element: <ExamsAndTrainingPage translationKey="examsAndTraining" />,
+        element: <ExamsAndTrainingPage translationKey="examsAndTraining" />, 
       },
       {
         path: 'settlement',
-        element: <SettlementPage translationKey="settlement" />,
+        element: <SettlementPage translationKey="settlement" />, 
       },
       {
         path: 'absence-plan',
-        element: <AbsencePlanPage translationKey="absencePlan" />,
+        element: <AbsencePlanPage translationKey="absencePlan" />, 
       },
       {
         path: 'monthly-absence-plan',
-        element: <MonthlyAbsencePlanPage translationKey="monthlyAbsencePlan" />,
+        element: <MonthlyAbsencePlanPage translationKey="monthlyAbsencePlan" />, 
       },
       {
         path: 'schedule',
-        element: <SchedulePage translationKey="schedule" />,
+        element: <SchedulePage translationKey="schedule" />, 
       },
       {
         path: 'projects-activities',
-        element: <ProjectsActivitiesPage translationKey="projectsActivities" />,
+        element: <ProjectsActivitiesPage translationKey="projectsActivities" />, 
       },
       {
         path: 'e-teczka',
-        element: <ETeczkaPage />,
+        element: <ETeczkaPage />, 
       },
       {
         path: 'employee-evaluation',
-        element: <ProfileSelectionPage />,
+        element: <ProfileSelectionPage />, 
       },
       {
         path: 'employee-evaluation/worker',
-        element: <WorkerEvaluationPage />,
+        element: <WorkerEvaluationPage />, 
       },
       {
         path: 'employee-evaluation/leader',
-        element: <LeaderEvaluationPage />,
+        element: <LeaderEvaluationPage />, 
       },
       {
         path: 'employee-evaluation/hr',
-        element: <HREvaluationPage />,
+        element: <HREvaluationPage />, 
       },
       {
         path: 'employee-evaluation/form',
-        element: <EmployeeEvaluationPage />,
+        element: <EmployeeEvaluationPage />, 
       },
       {
         path: '*',
-        element: <NotFoundPage />,
+        element: <NotFoundPage />, 
       },
     ],
   },

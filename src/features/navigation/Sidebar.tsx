@@ -6,9 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Logo } from '../../shared/components/Logo';
 import { SunIcon, MoonIcon } from '../../shared/components/ThemeIcons';
 import { LogoutIcon } from '../../shared/components/AuthIcons';
-import { useAuth } from '../../hooks/useAuth';
-import { useUIState } from '../../hooks/useUIState';
 import { useSidebar } from '../../contexts/SidebarContext';
+import { useAuth } from '../../contexts/AuthContext';
 import WorkerdetailsIcon from '../../shared/assets/icons/Workerdetails.png';
 import MobileAppsIcon from '../../shared/assets/icons/mobileapps.png';
 import AssignmentsIcon from '../../shared/assets/icons/assigments.png';
@@ -220,11 +219,9 @@ export const Sidebar: React.FC = () => {
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const { isDark, toggleTheme } = useTheme();
   // Wylogowanie i przekierowanie do /login
-  const handleLogout = () => {
-    // Jeśli masz logikę czyszczenia auth, wywołaj ją tutaj
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token'); // lub inny klucz auth jeśli używasz
-    }
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login', { replace: true });
   };
 

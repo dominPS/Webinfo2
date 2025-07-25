@@ -54,7 +54,7 @@
     "welcome": "Witaj w systemie WebInfo.",
 
     "loggedInAs": "Jesteś zalogowany jako {{username}}.",
-    "loggedInWelcome": "Witaj w systemie WebInfo. Kliknij w przyciski menu, aby przeglądać swoje dane RCP."
+    "loggedInWelcome": "Witaj w systemie WebInfo."
   },
   "login": {
     "title": "Logowanie",
