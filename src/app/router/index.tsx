@@ -98,7 +98,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'employee-data',
-        element: <EmployeeDataPage translationKey="employeeData" />, 
+        element: <EmployeeDataPage />, 
       },
       {
         path: 'reserve-vehicle',

@@ -28,7 +28,7 @@ export const AssignmentsPage = BasePage;
 export const MapRegistrationsPage = BasePage;
 export const AttendanceListPage = BasePage;
 export const ScheduleAttendancePage = BasePage;
-export const EmployeeDataPage = BasePage;
+export { default as EmployeeDataPage } from './EmployeeDataPage';
 export const ReserveVehiclePage = BasePage;
 export const CanteenPage = BasePage;
 export const VacationPlanPage = BasePage;

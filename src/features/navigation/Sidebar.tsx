@@ -188,12 +188,12 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
+  { path: '/employee-data', translationKey: 'employeeData', icon: WorkerdetailsIcon },
   { path: '/mobile-apps', translationKey: 'mobileApps', icon: MobileAppsIcon },
   { path: '/assignments', translationKey: 'assignments', icon: AssignmentsIcon },
   { path: '/map-registrations', translationKey: 'mapRegistrations', icon: MapRegistrationsIcon },
   { path: '/attendance-list', translationKey: 'attendanceList', icon: AttendanceListIcon },
   { path: '/schedule-attendance', translationKey: 'scheduleAttendance', icon: ScheduleAttendanceIcon },
-  { path: '/employee-data', translationKey: 'employeeData', icon: WorkerdetailsIcon },
   { path: '/employee-evaluation', translationKey: 'employeeEvaluation', icon: EmployeeEvaluationIcon },
   { path: '/reserve-vehicle', translationKey: 'reserveVehicle', icon: ReserveVehicleIcon },
   { path: '/canteen', translationKey: 'canteen', icon: CanteenIcon },
