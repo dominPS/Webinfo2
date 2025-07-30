@@ -145,27 +145,6 @@ const WorkerActionButton: React.FC<{
                 size={size}
                 variant="contained"
                 startIcon={icon}
-                sx={{
-                    textTransform: 'none',
-                    borderRadius: 2,
-                    padding: size === 'small' ? '6px 12px' : '8px 16px',
-                    minHeight: size === 'small' ? '32px' : '40px',
-                    fontSize: size === 'small' ? '0.75rem' : '0.875rem',
-                    fontWeight: 500,
-                    boxShadow: theme.shadows[2],
-                    transition: theme.transitions.create([
-                        'background-color',
-                        'transform',
-                        'box-shadow'
-                    ], {
-                        duration: theme.transitions.duration.short,
-                    }),
-                    '&:active': {
-                        transform: disabled ? 'none' : 'translateY(1px)',
-                        boxShadow: disabled ? 'none' : theme.shadows[1],
-                    },
-                    ...getVariantStyles(),
-                }}
             >
                 {children}
             </Button>
@@ -638,131 +617,57 @@ export const BeginEndPartial: React.FC<Props> = ({
     };
 
     return (
-        <Box
-            id="beginEndPartial"
-            sx={{
-                width: '100%',
-                maxWidth: '620px',
-                minHeight: '1px',
-                marginRight: '20px',
-                marginBottom: '5px',
-                position: 'relative',
-                transition: theme.transitions.create(['background-color'], {
-                    duration: theme.transitions.duration.standard,
-                }),
-                '@media (max-width: 768px)': {
-                    maxWidth: '100%',
-                    marginLeft: 0,
-                    marginRight: 0,
-                },
-                '@media (min-width: 2500px)': {
-                    maxWidth: '800px',
-                }
-            }}
-        >
+        <Box id="beginEndPartial">
             {/* Dark Mode Toggle */}
-            <Box sx={{ position: 'absolute', top: -8, right: -8, zIndex: 1 }}>
-                <Tooltip title={`Prze��cz na tryb ${isDarkMode ? 'jasny' : 'ciemny'}`}>
+            <Box>
+                <Tooltip title={`Przełącz na tryb ${isDarkMode ? 'jasny' : 'ciemny'}`}>
                     <IconButton
                         onClick={toggleDarkMode}
                         color="primary"
                         size="small"
-                        sx={{
-                            backgroundColor: theme.palette.background.paper,
-                            boxShadow: theme.shadows[2],
-                            '&:hover': {
-                                backgroundColor: theme.palette.action.hover,
-                                transform: 'scale(1.1)',
-                            },
-                            transition: theme.transitions.create(['transform', 'background-color'], {
-                                duration: theme.transitions.duration.shorter,
-                            }),
-                        }}
                     >
                         {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
                     </IconButton>
                 </Tooltip>
             </Box>
 
-            {/* Message display - FIXED: moved outside table */}
+            {/* Message display */}
             {data.WorkerRegModel?.Message && (
-                <Alert
-                    severity="info"
-                    sx={{
-                        marginBottom: 2,
-                        '& .MuiAlert-message': {
-                            fontSize: '0.875rem',
-                        }
-                    }}
-                >
+                <Alert severity="info">
                     <div dangerouslySetInnerHTML={{ __html: data.WorkerRegModel.Message }} />
                 </Alert>
             )}
 
-            {/* Non-RCP Reader warning - FIXED: moved outside table */}
+            {/* Non-RCP Reader warning */}
             {data.NonRCPReader && (
-                <Alert severity="warning" sx={{ marginBottom: 2 }}>
+                <Alert severity="warning">
                     {t('Worker.CautionCurrentReaderIsNotYourRCPReader')}
                 </Alert>
             )}
 
-            {/* Yesterday work not finished warning - FIXED: moved outside table */}
+            {/* Yesterday work not finished warning */}
             {data.WorkerRegModel?.Schedule && data.IsLastDayNotOver && (
-                <Box sx={{ marginBottom: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Alert severity="warning" sx={{ flex: 1 }}>
+                <Box>
+                    <Alert severity="warning">
                         {t('Schedule.HelloYesterdayWorkWasNotFInished')}
                     </Alert>
                     {renderSettlementButton()}
                 </Box>
             )}
 
-            {/* Table with enhanced MUI styling */}
-            <Paper
-                elevation={3}
-                sx={{
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    transition: theme.transitions.create(['box-shadow'], {
-                        duration: theme.transitions.duration.standard,
-                    }),
-                    '&:hover': {
-                        boxShadow: theme.shadows[6],
-                    }
-                }}
-            >
+            {/* Table with default MUI styling */}
+            <Paper>
                 <Table>
                     <TableBody>
                         {/* Header row */}
-                        <TableRow
-                            sx={{
-                                backgroundColor: getHeaderBackgroundColor(""),
-                            }}
-                        >
-                            <TableCell
-                                component="th"
-                                sx={{
-                                    fontWeight: 600,
-                                    color: theme.palette.text.secondary
-                                }}
-                            >
+                        <TableRow>
+                            <TableCell component="th">
                                 {t('Columns.Col_Schedule')}
                             </TableCell>
-                            <TableCell
-                                component="th"
-                                sx={{
-                                    fontWeight: 600,
-                                    color: theme.palette.text.secondary
-                                }}
-                            >
+                            <TableCell component="th">
                                 {t('Columns.Col_Status')}
                             </TableCell>
-                            <TableCell
-                                component="th"
-                                sx={{
-                                    fontWeight: 600,
-                                    color: theme.palette.text.secondary
-                                }}
-                            >
+                            <TableCell component="th">
                                 {t('Columns.Col_DayType')}
                             </TableCell>
                             <TableCell component="th" />

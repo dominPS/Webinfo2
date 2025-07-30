@@ -95,7 +95,7 @@ export const ZoneChangeComponent: React.FC<ZoneChangeComponentProps> = ({
         if (zones.length === 0) {
             return (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    {t('Worker.NoAvailableZones', 'Brak dost�pnych stref')}
+                    {t('Worker.NoAvailableZones', 'Brak dostępnych stref')}
                 </Typography>
             );
         }
@@ -208,7 +208,7 @@ export const ZoneChangeComponent: React.FC<ZoneChangeComponentProps> = ({
                             <TableRow>
                                 <TableCell>
                                     <Typography variant="body2" color="info.main">
-                                        {t('Worker.ClickToChangeWhatYouAreWorkingOn', 'Kliknij aby zmieni� na czym pracujesz')}
+                                        {t('Worker.ClickToChangeWhatYouAreWorkingOn', 'Kliknij aby zmienić na czym pracujesz')}
                                     </Typography>
                                 </TableCell>
                             </TableRow>
@@ -226,7 +226,7 @@ export const ZoneChangeComponent: React.FC<ZoneChangeComponentProps> = ({
                                         <Typography component="span" fontWeight="bold">
                                             {t('Worker.ReportRequired', 'Wymagany raport')}
                                         </Typography>{' '}
-                                        {t('Worker.AfterEnd', 'Po zako�czeniu')}{' '}
+                                        {t('Worker.AfterEnd', 'Po zakończeniu')}{' '}
                                         <Typography component="span" fontWeight="bold">
                                             {t('Worker.DailyReport', 'Raport dzienny')}
                                         </Typography>
@@ -253,7 +253,7 @@ export const ZoneChangeComponent: React.FC<ZoneChangeComponentProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <ScheduleIcon color="warning" fontSize="small" />
                                 <Typography variant="body2" color="warning.main">
-                                    {t('Worker.StartWorkToPointWhatYouAreWorkingOn', 'Rozpocznij prac� aby wskaza� na czym pracujesz')}
+                                    {t('Worker.StartWorkToPointWhatYouAreWorkingOn', 'Rozpocznij pracę aby wskazać na czym pracujesz')}
                                 </Typography>
                             </Box>
                         </TableCell>

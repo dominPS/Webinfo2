@@ -26,7 +26,7 @@ export {
 export const MobileAppsPage = BasePage;
 export const AssignmentsPage = BasePage;
 export const MapRegistrationsPage = BasePage;
-export const AttendanceListPage = BasePage;
+export { default as AttendanceListPage } from './AttendanceList/AttendanceListPage';
 export const ScheduleAttendancePage = BasePage;
 export { default as EmployeeDataPage } from './EmployeeDataPage';
 export const ReserveVehiclePage = BasePage;

@@ -100,9 +100,10 @@ const NavItem = styled(NavLink, {
   color: white;
   text-decoration: none;
   border-radius: 10px;
-  border: 1px solid white;
+  border: none;
   margin-bottom: 4px;
   font-size: 12px;
+  font-family: 'Roboto', Arial, sans-serif;
   width: 100%;
   opacity: 1;
   transition: all 0.2s ease;
@@ -150,6 +151,7 @@ const NavItemIcon = styled.img`
 const NavItemText = styled.span<{ $isCollapsed: boolean }>`
   display: ${props => props.$isCollapsed ? 'none' : 'block'};
   white-space: nowrap;
+  font-family: 'Roboto', Arial, sans-serif;
 `;
 
 const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
@@ -157,11 +159,12 @@ const LogoutButton = styled.button<{ $isCollapsed: boolean }>`
   padding: 0 16px;
   height: 30px;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid white;
+  border: none;
   color: white;
   border-radius: 10px;
   cursor: pointer;
   font-size: 12px;
+  font-family: 'Roboto', Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,7 +314,7 @@ export const Sidebar: React.FC = () => {
         <LogoutButton
           $isCollapsed={isCollapsed}
           onClick={toggleTheme}
-          style={{ margin: '22px 30px 8px 30px', background: 'rgba(255,255,255,0.15)' }}
+          style={{ margin: '22px 30px 8px 30px', background: 'rgba(255,255,255,0.15)', border: 'none' }}
         >
           {isDark ? t('navigation.lightMode', 'Tryb jasny') : t('navigation.darkMode', 'Tryb ciemny')}
         </LogoutButton>
@@ -326,7 +329,7 @@ export const Sidebar: React.FC = () => {
           <LogoutIcon size={20} />
         </button>
       ) : (
-        <LogoutButton $isCollapsed={isCollapsed} style={{ margin: '8px 30px 22px 30px' }} onClick={handleLogout}>
+        <LogoutButton $isCollapsed={isCollapsed} style={{ margin: '8px 30px 22px 30px', border: 'none' }} onClick={handleLogout}>
           <LogoutIcon size={20} />
           {t('navigation.logout')}
         </LogoutButton>

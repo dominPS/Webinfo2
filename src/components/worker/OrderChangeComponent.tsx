@@ -75,14 +75,14 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
     const bulkOrders: OrderItem[] = useMemo(() => [
         { id: 1, code: 'BULK001', name: 'Projekt zbiorczy A', number: 1001, isAvailable: true, isCurrent: false },
         { id: 2, code: 'BULK002', name: 'Projekt zbiorczy B', number: 1002, isAvailable: true, isCurrent: true },
-        { id: 3, code: 'BULK003', name: 'Projekt zbiorczy C (niedost�pny)', number: 1003, isAvailable: false, isCurrent: false }
+        { id: 3, code: 'BULK003', name: 'Projekt zbiorczy C (niedostępny)', number: 1003, isAvailable: false, isCurrent: false }
     ], []);
 
     const orders: OrderItem[] = useMemo(() => [
-        { id: 1, code: 'ORD001', name: 'Rozw�j aplikacji mobilnej', number: 2001, isAvailable: true, isCurrent: false },
+        { id: 1, code: 'ORD001', name: 'Rozwój aplikacji mobilnej', number: 2001, isAvailable: true, isCurrent: false },
         { id: 2, code: 'ORD002', name: 'Implementacja systemu CRM', number: 2002, isAvailable: true, isCurrent: true },
         { id: 3, code: 'ORD003', name: 'Modernizacja infrastruktury IT', number: 2003, isAvailable: true, isCurrent: false },
-        { id: 4, code: 'ORD004', name: 'Projekt niedost�pny', number: 2004, isAvailable: false, isCurrent: false }
+        { id: 4, code: 'ORD004', name: 'Projekt niedostępny', number: 2004, isAvailable: false, isCurrent: false }
     ], []);
 
     const details: OrderItem[] = useMemo(() => [
@@ -92,8 +92,8 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
     ], []);
 
     const activities: ActivityItem[] = useMemo(() => [
-        { id: 1, code: 'ACT001', name: 'Programowanie komponent�w React', shortName: 'React Dev', number: 4001, detailNumber: 3001, orderNumber: 2002, isAvailable: true, isCurrent: false },
-        { id: 2, code: 'ACT002', name: 'Testowanie funkcjonalno�ci', shortName: 'Testing', number: 4002, detailNumber: 3002, orderNumber: 2002, isAvailable: true, isCurrent: true },
+        { id: 1, code: 'ACT001', name: 'Programowanie komponentów React', shortName: 'React Dev', number: 4001, detailNumber: 3001, orderNumber: 2002, isAvailable: true, isCurrent: false },
+        { id: 2, code: 'ACT002', name: 'Testowanie funkcjonalności', shortName: 'Testing', number: 4002, detailNumber: 3002, orderNumber: 2002, isAvailable: true, isCurrent: true },
         { id: 3, code: 'ACT003', name: 'Code Review i dokumentacja', shortName: 'Review', number: 4003, detailNumber: 3002, orderNumber: 2002, isAvailable: true, isCurrent: false }
     ], []);
 
@@ -204,7 +204,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                             disabled={data.NonRCPReader}
                             sx={{ ml: 2 }}
                         >
-                            {t('Buttons.EndActivity', 'Zako�cz dzia�anie')}
+                            {t('Buttons.EndActivity', 'Zakończ działanie')}
                         </Button>
                     )}
                 </Box>
@@ -212,7 +212,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
         } else {
             return (
                 <Typography variant="body2" color="warning.main">
-                    {t('Worker.LogInInOfficeHours', 'Zaloguj si� w godzinach pracy')}
+                    {t('Worker.LogInInOfficeHours', 'Zaloguj się w godzinach pracy')}
                 </Typography>
             );
         }
@@ -224,7 +224,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
         if (filteredItems.length === 0) {
             return (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    {filter ? t('WorkerZone.NoItemsMatchFilter', 'Brak element�w pasuj�cych do filtra') : t('WorkerZone.NoAvailableItems', 'Brak dost�pnych element�w')}
+                    {filter ? t('WorkerZone.NoItemsMatchFilter', 'Brak elementów pasujących do filtra') : t('WorkerZone.NoAvailableItems', 'Brak dostępnych elementów')}
                 </Typography>
             );
         }
@@ -293,7 +293,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
         if (!currentOrderNb || !currentDetailNb) {
             return (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    {t('WorkerZone.ChooseProjectToGetToActivityList', 'Wybierz projekt aby uzyska� list� dzia�a�')}
+                    {t('WorkerZone.ChooseProjectToGetToActivityList', 'Wybierz projekt aby uzyskać listę działań')}
                 </Typography>
             );
         }
@@ -306,7 +306,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
         if (filteredActivities.length === 0) {
             return (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    {activityFilter ? t('WorkerZone.NoActivitiesMatchFilter', 'Brak dzia�a� pasuj�cych do filtra') : t('WorkerZone.NoAvailableActivities', 'Brak dost�pnych dzia�a�')}
+                    {activityFilter ? t('WorkerZone.NoActivitiesMatchFilter', 'Brak działań pasujących do filtra') : t('WorkerZone.NoAvailableActivities', 'Brak dostępnych działań')}
                 </Typography>
             );
         }
@@ -424,7 +424,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                             <TableRow>
                                 <TableCell>
                                     <Typography variant="body2" fontWeight="bold">
-                                        {t('WorkerZone.YouAreAssignedToProjectGroup', 'Jeste� przypisany do grupy projektowej')}: {data.OrderGroup}
+                                        {t('WorkerZone.YouAreAssignedToProjectGroup', 'Jesteś przypisany do grupy projektowej')}: {data.OrderGroup}
                                     </Typography>
                                 </TableCell>
                             </TableRow>
@@ -435,7 +435,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                             <TableRow>
                                 <TableCell>
                                     <Typography variant="body2" color="info.main">
-                                        {t('Worker.ClickToChangeWhatYouAreWorkingOn', 'Kliknij aby zmieni� na czym pracujesz')}
+                                        {t('Worker.ClickToChangeWhatYouAreWorkingOn', 'Kliknij aby zmienić na czym pracujesz')}
                                     </Typography>
                                 </TableCell>
                             </TableRow>
@@ -453,7 +453,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                                         <Typography component="span" fontWeight="bold">
                                             {t('Worker.ReportRequired', 'Wymagany raport')}
                                         </Typography>{' '}
-                                        {t('Worker.AfterEnd', 'Po zako�czeniu')}{' '}
+                                        {t('Worker.AfterEnd', 'Po zakończeniu')}{' '}
                                         <Typography component="span" fontWeight="bold">
                                             {t('Worker.DailyReport', 'Raport dzienny')}
                                         </Typography>
@@ -547,7 +547,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                                 <TableRow>
                                     <TableCell>
                                         <Typography variant="subtitle2" fontWeight="bold">
-                                            {t('WorkerZone.ActivityClient', 'Dzia�anie/Klient')}:
+                                            {t('WorkerZone.ActivityClient', 'Działanie/Klient')}:
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -588,7 +588,7 @@ export const OrderChangeComponent: React.FC<OrderChangeComponentProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <ScheduleIcon color="warning" fontSize="small" />
                                 <Typography variant="body2" color="warning.main">
-                                    {t('Worker.StartWorkToPointWhatYouAreWorkingOn', 'Rozpocznij prac� aby wskaza� na czym pracujesz')}
+                                    {t('Worker.StartWorkToPointWhatYouAreWorkingOn', 'Rozpocznij pracę aby wskazać na czym pracujesz')}
                                 </Typography>
                             </Box>
                         </TableCell>

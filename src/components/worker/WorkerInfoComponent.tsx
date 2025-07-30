@@ -36,7 +36,7 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
         },
         {
             key: 'Name',
-            label: t('Worker.FirstName', 'Imiê'),
+            label: t('Worker.FirstName', 'ImiÄ™'),
             value: data.Name,
             icon: <PersonIcon fontSize="small" />,
             required: true
@@ -50,7 +50,7 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
         },
         {
             key: 'Department',
-            label: t('Worker.Department', 'Wydzia³'),
+            label: t('Worker.Department', 'WydziaÅ‚'),
             value: data.Department,
             icon: <BusinessIcon fontSize="small" />,
             required: true
@@ -82,6 +82,10 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
         <Table
             size="small"
             sx={{
+                tableLayout: 'auto',
+                minWidth: 220,
+                maxWidth: '100%',
+                width: 'auto',
                 '& .MuiTableCell-root': {
                     fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
                     fontSize: '10pt',
@@ -90,7 +94,9 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
                     lineHeight: '12pt',
                     padding: '6px 8px',
                     borderBottom: `1px solid ${theme.palette.divider}`,
-                    color: theme.palette.text.primary
+                    color: theme.palette.text.primary,
+                    whiteSpace: 'pre-line',
+                    wordBreak: 'break-word',
                 }
             }}
         >
@@ -114,7 +120,11 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
                                     backgroundColor: theme.palette.mode === 'dark'
                                         ? theme.palette.grey[800]
                                         : theme.palette.grey[50],
-                                    width: '45%'
+                                    minWidth: 120,
+                                    maxWidth: 400,
+                                    width: 'auto',
+                                    whiteSpace: 'pre-line',
+                                    wordBreak: 'break-word',
                                 }}
                             >
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -132,10 +142,15 @@ export const WorkerInfoComponent: React.FC<WorkerInfoComponentProps> = ({ data }
                                         color: field.value
                                             ? theme.palette.text.primary
                                             : theme.palette.text.disabled,
-                                        fontSize: '10pt'
+                                        fontSize: '10pt',
+                                        minWidth: 80,
+                                        maxWidth: 600,
+                                        width: 'auto',
+                                        whiteSpace: 'pre-line',
+                                        wordBreak: 'break-word',
                                     }}
                                 >
-                                    {field.value || t('Common.NotSpecified', 'Nie okreœlono')}
+                                    {field.value || t('Common.NotSpecified', 'Nie okreï¿½lono')}
                                 </Typography>
                             </TableCell>
                         </TableRow>
