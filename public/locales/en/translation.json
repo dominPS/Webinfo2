@@ -43,7 +43,82 @@
   
   "AttendanceList": {
     "Title": "Attendance List",
-    "Description": "This is the Attendance List Page."
+    "Print": "PRINT",
+    "Table": {
+      "Headers": {
+        "Id": "ID No.",
+        "LastName": "Last Name",
+        "FirstName": "First Name",
+        "Attendance": "Attendance",
+        "Date": "Date",
+        "CardNumber": "Card No.",
+        "CardType": "Card Type",
+        "CardStatus": "Card Status",
+        "CardState": "Card State",
+        "Device": "Device"
+      }
+    },
+    "GuestTable": {
+      "Headers": {
+        "LogicalNumber": "Logical No.",
+        "PhysicalNumber": "Physical No.",
+        "Type": "Type",
+        "FirstName": "First Name",
+        "LastName": "Last Name",
+        "Company": "Company",
+        "Document": "Document",
+        "Purpose": "Purpose",
+        "IssueDate": "Issue Date",
+        "ReturnDate": "Return Date",
+        "ToWhom": "To Whom"
+      }
+    },
+    "PresentGuestTable": {
+      "Headers": {
+        "FirstName": "First Name",
+        "LastName": "Last Name",
+        "Company": "Company",
+        "LogicalNumber": "Logical No.",
+        "PhysicalNumber": "Physical No.",
+        "Type": "Type",
+        "Attendance": "Attendance",
+        "Entrance": "Entrance",
+        "Exit": "Exit",
+        "Stay": "Stay",
+        "ToWhom": "To Whom"
+      }
+    },
+    "VehicleTable": {
+      "Headers": {
+        "Number": "Number",
+        "Type": "Type",
+        "Note": "Note",
+        "EntryDate": "Entry Date",
+        "Driver": "Driver"
+      }
+    },
+    "Pagination": {
+      "RowsPerPage": "Rows per page:",
+      "DisplayedRows": "{{from}}-{{to}} of {{count}}"
+    },
+    "Tabs": {
+      "Employees": {
+        "Label": "Employees",
+        "Content": "Employees page content"
+      },
+      "Guests": {
+        "Label": "Guests",
+        "Content": "Guests page content"
+      },
+      "PresentGuests": {
+        "Label": "Present Guests",
+        "Content": "Present guests page content"
+      },
+      "Vehicles": {
+        "Label": "Vehicles",
+        "Content": "Vehicles page content"
+      }
+    }
   },
   "common": {
     "username": "John Smith",

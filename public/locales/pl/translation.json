@@ -39,7 +39,82 @@
   },
   "AttendanceList": {
     "Title": "Lista obecności",
-    "Description": "To jest strona listy obecności."
+    "Print": "DRUKUJ",
+    "Table": {
+      "Headers": {
+        "Id": "Nr ewid.",
+        "LastName": "Nazwisko",
+        "FirstName": "Imię",
+        "Attendance": "Obecność",
+        "Date": "Data",
+        "CardNumber": "Nr karty",
+        "CardType": "Typ karty",
+        "CardStatus": "Status karty",
+        "CardState": "Stan karty",
+        "Device": "Urządzenie"
+      }
+    },
+    "GuestTable": {
+      "Headers": {
+        "LogicalNumber": "Nr logiczny",
+        "PhysicalNumber": "Nr fizyczny",
+        "Type": "Typ",
+        "FirstName": "Imię",
+        "LastName": "Nazwisko",
+        "Company": "Firma",
+        "Document": "Dokument",
+        "Purpose": "Cel",
+        "IssueDate": "Data wydania",
+        "ReturnDate": "Data zwrotu",
+        "ToWhom": "Do kogo"
+      }
+    },
+    "PresentGuestTable": {
+      "Headers": {
+        "FirstName": "Imię",
+        "LastName": "Nazwisko",
+        "Company": "Firma",
+        "LogicalNumber": "Nr logiczny",
+        "PhysicalNumber": "Nr fizyczny",
+        "Type": "Typ",
+        "Attendance": "Obecność",
+        "Entrance": "Wejście",
+        "Exit": "Wyjście",
+        "Stay": "Pobyt",
+        "ToWhom": "Do kogo"
+      }
+    },
+    "VehicleTable": {
+      "Headers": {
+        "Number": "Numer",
+        "Type": "Typ",
+        "Note": "Notatka",
+        "EntryDate": "Data wjazdu",
+        "Driver": "Kierowca"
+      }
+    },
+    "Pagination": {
+      "RowsPerPage": "Wierszy na stronie:",
+      "DisplayedRows": "{{from}}-{{to}} z {{count}}"
+    },
+    "Tabs": {
+      "Employees": {
+        "Label": "Pracownicy",
+        "Content": "Zawartość podstrony Pracownicy"
+      },
+      "Guests": {
+        "Label": "Goście",
+        "Content": "Zawartość podstrony Goście"
+      },
+      "PresentGuests": {
+        "Label": "Obecni goście",
+        "Content": "Zawartość podstrony Obecni goście"
+      },
+      "Vehicles": {
+        "Label": "Pojazdy",
+        "Content": "Zawartość podstrony Pojazdy"
+      }
+    }
   },
   "common": {
     "username": "Jan Kowalski",
