@@ -4,6 +4,7 @@ import { LicensesPage } from '../../features/licenses/LicensesPage';
 import { ClientsPage } from '../../features/clients/ClientsPage';
 import { InvoicesPage } from '../../features/invoices/InvoicesPage';
 import { SettingsPage } from '../../features/settings/SettingsPage';
+import AttendanceListPage from "../../pages/AttendanceList/AttendanceListPage";
 import {
   DashboardPage,
   LoginPage,
@@ -17,7 +18,6 @@ import {
   MobileAppsPage,
   AssignmentsPage,
   MapRegistrationsPage,
-  AttendanceListPage,
   ScheduleAttendancePage,
   EmployeeDataPage,
   ReserveVehiclePage,

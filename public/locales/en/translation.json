@@ -40,6 +40,11 @@
     "en": "English",
     "pl": "Polish"
   },
+  
+  "AttendanceList": {
+    "Title": "Attendance List",
+    "Description": "This is the Attendance List Page."
+  },
   "common": {
     "username": "John Smith",
     "logout": "Logout",

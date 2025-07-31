@@ -37,6 +37,10 @@
     "en": "Angielski",
     "pl": "Polski"
   },
+  "AttendanceList": {
+    "Title": "Lista obecności",
+    "Description": "To jest strona listy obecności."
+  },
   "common": {
     "username": "Jan Kowalski",
     "logout": "Wyloguj się",
