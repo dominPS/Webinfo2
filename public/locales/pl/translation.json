@@ -39,7 +39,13 @@
   },
   "AttendanceList": {
     "Title": "Lista obecności",
-    "Print": "DRUKUJ",
+    "Loading": "Ładowanie danych...",
+    "Error": "Błąd podczas ładowania danych:",
+    "Refresh": "ODŚWIEŻ",
+    "Print": {
+      "Button": "DRUKUJ",
+      "GeneratedOn": "Wygenerowano:"
+    },
     "Table": {
       "Headers": {
         "Id": "Nr ewid.",

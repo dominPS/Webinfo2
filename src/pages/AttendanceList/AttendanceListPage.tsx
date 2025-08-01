@@ -61,6 +61,219 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
     ]);
   };
 
+  // Print function for current tab
+  const handlePrint = () => {
+    let printContent = '';
+    let title = '';
+    
+    const generateTableHeader = (headers: string[]) => {
+      return `<tr>${headers.map(header => `<th style="border: 1px solid #ddd; padding: 8px; background-color: #f5f5f5;">${header}</th>`).join('')}</tr>`;
+    };
+
+    const generateTableRow = (cells: string[]) => {
+      return `<tr>${cells.map(cell => `<td style="border: 1px solid #ddd; padding: 8px;">${cell}</td>`).join('')}</tr>`;
+    };
+
+    switch (activeTab) {
+      case 'employees':
+        title = t('AttendanceList.Tabs.Employees.Label', 'Pracownicy');
+        const employeeHeaders = [
+          t('AttendanceList.Table.Headers.Id', 'Nr ewid.'),
+          t('AttendanceList.Table.Headers.LastName', 'Nazwisko'),
+          t('AttendanceList.Table.Headers.FirstName', 'Imię'),
+          t('AttendanceList.Table.Headers.Attendance', 'Obecność'),
+          t('AttendanceList.Table.Headers.Date', 'Data'),
+          t('AttendanceList.Table.Headers.Device', 'Urządzenie')
+        ];
+        const employeeRows = sortedEmployees.map(employee => [
+          String(employee.Badge || ''),
+          String(employee.Surname || ''),
+          String(employee.Name || ''),
+          String(employee.Presence || ''),
+          formatDate(employee.Date) || '-',
+          String(employee.DeviceName || '-')
+        ]);
+        printContent = `
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            ${generateTableHeader(employeeHeaders)}
+            ${employeeRows.map(row => generateTableRow(row)).join('')}
+          </table>
+        `;
+        break;
+
+      case 'guests':
+        title = t('AttendanceList.Tabs.Guests.Label', 'Goście');
+        const guestHeaders = [
+          t('AttendanceList.GuestTable.Headers.LogicalNumber', 'Nr logiczny'),
+          t('AttendanceList.GuestTable.Headers.Type', 'Typ'),
+          t('AttendanceList.GuestTable.Headers.FirstName', 'Imię'),
+          t('AttendanceList.GuestTable.Headers.LastName', 'Nazwisko'),
+          t('AttendanceList.GuestTable.Headers.Company', 'Firma'),
+          t('AttendanceList.GuestTable.Headers.Document', 'Dokument'),
+          t('AttendanceList.GuestTable.Headers.IssueDate', 'Data wydania'),
+          t('AttendanceList.GuestTable.Headers.ReturnDate', 'Data zwrotu'),
+          t('AttendanceList.GuestTable.Headers.ToWhom', 'Do kogo')
+        ];
+        const guestRows = sortedGuests.map(guest => [
+          String(guest.CardLog || ''),
+          String(guest.CardType || ''),
+          String(guest.Name || ''),
+          String(guest.Surname || ''),
+          String(guest.Company || '-'),
+          String(guest.Document || '-'),
+          formatDate(guest.ReleaseDate) || formatDate(guest.Date) || formatDate(guest.DataWydania) || '-',
+          formatDate(guest.ReturnDate) || '-',
+          String(guest.ToWhom || '-')
+        ]);
+        printContent = `
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            ${generateTableHeader(guestHeaders)}
+            ${guestRows.map(row => generateTableRow(row)).join('')}
+          </table>
+        `;
+        break;
+
+      case 'presentGuests':
+        title = t('AttendanceList.Tabs.PresentGuests.Label', 'Obecni goście');
+        const presentGuestHeaders = [
+          t('AttendanceList.PresentGuestTable.Headers.FirstName', 'Imię'),
+          t('AttendanceList.PresentGuestTable.Headers.LastName', 'Nazwisko'),
+          t('AttendanceList.PresentGuestTable.Headers.Company', 'Firma'),
+          t('AttendanceList.PresentGuestTable.Headers.LogicalNumber', 'Nr logiczny'),
+          t('AttendanceList.PresentGuestTable.Headers.PhysicalNumber', 'Nr fizyczny'),
+          t('AttendanceList.PresentGuestTable.Headers.Type', 'Typ'),
+          t('AttendanceList.PresentGuestTable.Headers.Attendance', 'Obecność'),
+          t('AttendanceList.PresentGuestTable.Headers.Entrance', 'Wejście'),
+          t('AttendanceList.PresentGuestTable.Headers.Exit', 'Wyjście'),
+          t('AttendanceList.PresentGuestTable.Headers.Stay', 'Pobyt'),
+          t('AttendanceList.PresentGuestTable.Headers.ToWhom', 'Do kogo')
+        ];
+        const presentGuestRows = sortedPresentGuests.map(guest => [
+          String(guest.FirstName || ''),
+          String(guest.LastName || ''),
+          String(guest.Company || '-'),
+          String(guest.NumerLogiczny || '-'),
+          String(guest.NumerFizyczny || '-'),
+          String(guest.TypKarty || '-'),
+          String(guest.Obecnosc || ''),
+          formatDate(guest.EntryDate) || '-',
+          formatDate(guest.ExitDate) || '-',
+          String(guest.Duration || '-'),
+          String(guest.DoKogo || guest.ContactPerson || '-')
+        ]);
+        printContent = `
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            ${generateTableHeader(presentGuestHeaders)}
+            ${presentGuestRows.map(row => generateTableRow(row)).join('')}
+          </table>
+        `;
+        break;
+
+      case 'vehicles':
+        title = t('AttendanceList.Tabs.Vehicles.Label', 'Pojazdy');
+        const vehicleHeaders = [
+          t('AttendanceList.VehicleTable.Headers.Number', 'Numer'),
+          t('AttendanceList.VehicleTable.Headers.Type', 'Typ'),
+          t('AttendanceList.VehicleTable.Headers.Note', 'Notatka'),
+          t('AttendanceList.VehicleTable.Headers.EntryDate', 'Data wjazdu'),
+          t('AttendanceList.VehicleTable.Headers.Driver', 'Kierowca')
+        ];
+        const vehicleRows = sortedVehicles.map(vehicle => [
+          String(vehicle.VehicleNumber || ''),
+          String(vehicle.VehicleType || '-'),
+          String(vehicle.VehicleNote || '-'),
+          formatDate(vehicle.LastDate) || '-',
+          String(vehicle.Driver || '-')
+        ]);
+        printContent = `
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            ${generateTableHeader(vehicleHeaders)}
+            ${vehicleRows.map(row => generateTableRow(row)).join('')}
+          </table>
+        `;
+        break;
+
+      default:
+        return;
+    }
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      const currentDate = new Date().toLocaleString('pl-PL');
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${t('AttendanceList.Title', 'Lista obecności')} - ${title}</title>
+          <meta charset="utf-8">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+              font-size: 12px;
+            }
+            h1 {
+              text-align: center;
+              margin-bottom: 10px;
+              font-size: 18px;
+            }
+            h2 {
+              text-align: center;
+              margin-bottom: 20px;
+              font-size: 14px;
+              color: #666;
+            }
+            .print-info {
+              text-align: right;
+              margin-bottom: 20px;
+              font-size: 10px;
+              color: #888;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th, td {
+              border: 1px solid #ddd;
+              padding: 6px;
+              text-align: left;
+              font-size: 10px;
+            }
+            th {
+              background-color: #f5f5f5;
+              font-weight: bold;
+            }
+            tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            @media print {
+              body { margin: 0; }
+              .print-info { font-size: 8px; }
+              table { font-size: 8px; }
+              th, td { padding: 4px; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${t('AttendanceList.Title', 'Lista obecności')}</h1>
+          <h2>${title}</h2>
+          <div class="print-info">
+            ${t('AttendanceList.Print.GeneratedOn', 'Wygenerowano:')} ${currentDate}
+          </div>
+          ${printContent}
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      
+      // Auto-print after a short delay
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+  };
+
   // Sorting states
   const [employeeSort, setEmployeeSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
   const [guestSort, setGuestSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
@@ -826,8 +1039,10 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
         <Button 
           variant="outlined"
           sx={{ ml: 1 }}
+          onClick={handlePrint}
+          disabled={isAnyLoading}
         >
-          {t('AttendanceList.Print', 'DRUKUJ')}
+          {t('AttendanceList.Print.Button', 'DRUKUJ')}
         </Button>
       </Box>
 

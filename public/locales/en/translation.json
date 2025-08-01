@@ -43,7 +43,13 @@
   
   "AttendanceList": {
     "Title": "Attendance List",
-    "Print": "PRINT",
+    "Loading": "Loading data...",
+    "Error": "Error loading data:",
+    "Refresh": "REFRESH",
+    "Print": {
+      "Button": "PRINT",
+      "GeneratedOn": "Generated on:"
+    },
     "Table": {
       "Headers": {
         "Id": "ID No.",
