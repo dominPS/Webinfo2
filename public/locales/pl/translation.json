@@ -99,6 +99,27 @@
         "Driver": "Kierowca"
       }
     },
+    "Status": {
+      "Present": "Obecny",
+      "PresentNoCard": "Obecny (Brak odbić)",
+      "Absent": "Nieobecny",
+      "EnteredNotExited": "Wszedł, nie wyszedł",
+      "ExitedNotEntered": "Wyszedł, nie wszedł"
+    },
+    "GuestType": {
+      "Guest": "Gość",
+      "Contractor": "Kontrahent",
+      "Visitor": "Odwiedzający",
+      "ServiceProvider": "Usługodawca",
+      "Delivery": "Dostawa"
+    },
+    "Document": {
+      "NoData": "<brak danych>",
+      "ID": "Dowód osobisty",
+      "Passport": "Paszport",
+      "DriverLicense": "Prawo jazdy",
+      "Other": "Inne"
+    },
     "Pagination": {
       "RowsPerPage": "Wierszy na stronie:",
       "DisplayedRows": "{{from}}-{{to}} z {{count}}"

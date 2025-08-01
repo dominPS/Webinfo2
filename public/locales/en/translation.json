@@ -103,6 +103,27 @@
         "Driver": "Driver"
       }
     },
+    "Status": {
+      "Present": "Present",
+      "PresentNoCard": "Present (No card reads)",
+      "Absent": "Absent",
+      "EnteredNotExited": "Entered, not exited",
+      "ExitedNotEntered": "Exited, not entered"
+    },
+    "GuestType": {
+      "Guest": "Guest",
+      "Contractor": "Contractor",
+      "Visitor": "Visitor",
+      "ServiceProvider": "Service Provider",
+      "Delivery": "Delivery"
+    },
+    "Document": {
+      "NoData": "<no data>",
+      "ID": "ID Card",
+      "Passport": "Passport",
+      "DriverLicense": "Driver's License",
+      "Other": "Other"
+    },
     "Pagination": {
       "RowsPerPage": "Rows per page:",
       "DisplayedRows": "{{from}}-{{to}} of {{count}}"
