@@ -31,14 +31,26 @@ export const eventPath = {
     path: '/mapregistration',
     getHref: () => '/mapregistration',
   },
-  attendancelist: {
-    path: '/attendancelist',
-    getHref: () => '/attendancelist',
-  },
-  attendanceaccschedulelist: {
-    path: '/attendanceaccschedulelist',
-    getHref: () => '/attendanceaccschedulelist',
-  },
+   attendancelist: {
+     path: '/AttendanceList/AttendanceListJson',
+     getHref: (redirectTo?: string | null | undefined) =>
+         `/AttendanceList/AttendanceListJson${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+ },
+ attendanceguests: {
+   path: '/AttendanceList/GuestsListJson',
+   getHref: (redirectTo?: string | null | undefined) =>
+     `/AttendanceList/GuestsListJson${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+ },
+ attendanceguestspresence: {
+   path: '/AttendanceList/GuestsPresenceListJson',
+   getHref: (redirectTo?: string | null | undefined) =>
+     `/AttendanceList/GuestsPresenceListJson${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+ },
+ attendancevehicles: {
+   path: '/AttendanceList/VehiclesListJson',
+   getHref: (redirectTo?: string | null | undefined) =>
+     `/AttendanceList/VehiclesListJson${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+ },
   worktime: {
     path: '/worktime',
     getHref: () => '/worktime',

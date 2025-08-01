@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel } from '@mui/material';
+import { Button, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, CircularProgress, Alert } from '@mui/material';
+import { useAttendanceList } from '@/hooks/useAttendanceList';
+import { useAttendanceGuests } from '@/hooks/useAttendanceGuests';
+import { useAttendanceGuestsPresence } from '@/hooks/useAttendanceGuestsPresence';
+import { useAttendanceVehicles } from '@/hooks/useAttendanceVehicles';
 
 interface AttendanceListPageProps {
   translationKey?: string;
@@ -20,61 +24,58 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
   const [vehiclePage, setVehiclePage] = useState(0);
   const [vehicleRowsPerPage, setVehicleRowsPerPage] = useState(10);
 
+  // Format date function
+  const formatDate = (dateString: any): string => {
+    if (!dateString) return '';
+    try {
+      // Handle .NET Date format: /Date(1753953897640)/
+      if (typeof dateString === 'string' && dateString.startsWith('/Date(') && dateString.endsWith(')/')) {
+        const timestamp = parseInt(dateString.slice(6, -2));
+        if (!isNaN(timestamp)) {
+          const date = new Date(timestamp);
+          return date.toLocaleString('sv-SE').replace('T', ' ');
+        }
+      }
+      
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString;
+      return date.toLocaleString('sv-SE').replace('T', ' ');
+    } catch {
+      return dateString;
+    }
+  };
+
+  // API hooks for real data
+  const { data: attendanceData, error: attendanceError, isLoading: attendanceLoading, refetch: attendanceRefetch } = useAttendanceList();
+  const { data: guestsData, error: guestsError, isLoading: guestsLoading, refetch: guestsRefetch } = useAttendanceGuests();
+  const { data: guestsPresenceData, error: guestsPresenceError, isLoading: guestsPresenceLoading, refetch: guestsPresenceRefetch } = useAttendanceGuestsPresence();
+  const { data: vehiclesData, error: vehiclesError, isLoading: vehiclesLoading, refetch: vehiclesRefetch } = useAttendanceVehicles();
+
+  // Refresh function for all data
+  const handleRefreshAll = async () => {
+    await Promise.all([
+      attendanceRefetch(),
+      guestsRefetch(),
+      guestsPresenceRefetch(),
+      vehiclesRefetch()
+    ]);
+  };
+
   // Sorting states
   const [employeeSort, setEmployeeSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
   const [guestSort, setGuestSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
   const [presentGuestSort, setPresentGuestSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
   const [vehicleSort, setVehicleSort] = useState<{ key: string; order: SortOrder }>({ key: '', order: 'asc' });
 
-  // Mock data - będzie zastąpione danymi z backendu
-  const mockEmployees = Array.from({ length: 50 }, (_, index) => ({
-    id: `EMP${index + 1}`,
-    lastName: `Nazwisko${index + 1}`,
-    firstName: `Imię${index + 1}`,
-    attendance: index % 2 === 0 ? 'Obecny' : 'Nieobecny',
-    date: '2025-07-31',
-    cardNumber: `CARD${1000 + index}`,
-    cardType: 'Standard',
-    cardStatus: 'Aktywna',
-    cardState: 'Dobry',
-    device: `Urządzenie${(index % 3) + 1}`
-  }));
+  // Extract real data from API responses
+  const employees = attendanceData?.Elements || [];
+  const guests = guestsData?.Elements || [];
+  const presentGuests = guestsPresenceData?.Elements || [];
+  const vehicles = vehiclesData?.Elements || [];
 
-  const mockGuests = Array.from({ length: 30 }, (_, index) => ({
-    logicalNumber: `LOG${index + 1}`,
-    physicalNumber: `PHY${1000 + index}`,
-    type: index % 3 === 0 ? 'Goś stały' : index % 3 === 1 ? 'Goś tymczasowy' : 'Dostawca',
-    firstName: `Imię${index + 1}`,
-    lastName: `Nazwisko${index + 1}`,
-    company: `Firma${(index % 5) + 1}`,
-    document: `DOC${2000 + index}`,
-    purpose: index % 4 === 0 ? 'Spotkanie' : index % 4 === 1 ? 'Dostawa' : index % 4 === 2 ? 'Serwis' : 'Wizyta',
-    issueDate: '2025-07-31',
-    returnDate: '2025-07-31',
-    toWhom: `Pracownik${(index % 10) + 1}`
-  }));
-
-  const mockPresentGuests = Array.from({ length: 20 }, (_, index) => ({
-    firstName: `Imię${index + 1}`,
-    lastName: `Nazwisko${index + 1}`,
-    company: `Firma${(index % 5) + 1}`,
-    logicalNumber: `LOG${index + 1}`,
-    physicalNumber: `PHY${1000 + index}`,
-    type: index % 3 === 0 ? 'Goś stały' : index % 3 === 1 ? 'Goś tymczasowy' : 'Dostawca',
-    attendance: index % 4 === 0 ? 'Obecny' : 'Na terenie',
-    entrance: `${8 + (index % 4)}:${String((index % 6) * 10).padStart(2, '0')}`,
-    exit: index % 3 === 0 ? `${16 + (index % 3)}:${String((index % 6) * 10).padStart(2, '0')}` : '-',
-    stay: `${index + 1}h ${(index % 6) * 10}min`,
-    toWhom: `Pracownik${(index % 10) + 1}`
-  }));
-
-  const mockVehicles = Array.from({ length: 15 }, (_, index) => ({
-    number: `${['WA', 'KR', 'WB', 'PO'][index % 4]} ${String(1000 + index).slice(-3)}${String.fromCharCode(65 + (index % 26))}${String.fromCharCode(65 + ((index + 1) % 26))}`,
-    type: index % 4 === 0 ? 'Osobowy' : index % 4 === 1 ? 'Dostawczy' : index % 4 === 2 ? 'Ciężarowy' : 'Motocykl',
-    note: index % 3 === 0 ? 'Wizyta służbowa' : index % 3 === 1 ? 'Dostawa materiałów' : 'Spotkanie z klientem',
-    entryDate: '2025-07-31',
-    driver: `${['Jan', 'Anna', 'Piotr', 'Maria', 'Tomasz'][index % 5]} ${['Kowalski', 'Nowak', 'Wiśniewski', 'Wójcik', 'Kowalczyk'][index % 5]}`
-  }));
+  // Loading and error states for all tabs
+  const isAnyLoading = attendanceLoading || guestsLoading || guestsPresenceLoading || vehiclesLoading;
+  const hasAnyError = attendanceError || guestsError || guestsPresenceError || vehiclesError;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -193,22 +194,22 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
   };
 
   // Sorting data
-  const sortedEmployees = [...mockEmployees].sort((a: any, b: any) => {
+  const sortedEmployees = [...employees].sort((a: any, b: any) => {
     if (!employeeSort.key) return 0;
     return smartSort(a, b, employeeSort.key, employeeSort.order);
   });
 
-  const sortedGuests = [...mockGuests].sort((a: any, b: any) => {
+  const sortedGuests = [...guests].sort((a: any, b: any) => {
     if (!guestSort.key) return 0;
     return smartSort(a, b, guestSort.key, guestSort.order);
   });
 
-  const sortedPresentGuests = [...mockPresentGuests].sort((a: any, b: any) => {
+  const sortedPresentGuests = [...presentGuests].sort((a: any, b: any) => {
     if (!presentGuestSort.key) return 0;
     return smartSort(a, b, presentGuestSort.key, presentGuestSort.order);
   });
 
-  const sortedVehicles = [...mockVehicles].sort((a: any, b: any) => {
+  const sortedVehicles = [...vehicles].sort((a: any, b: any) => {
     if (!vehicleSort.key) return 0;
     return smartSort(a, b, vehicleSort.key, vehicleSort.order);
   });
@@ -229,90 +230,90 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                   <TableRow>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'id'}
-                        direction={employeeSort.key === 'id' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('id')}
+                        active={employeeSort.key === 'Badge'}
+                        direction={employeeSort.key === 'Badge' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Badge')}
                       >
                         {t('AttendanceList.Table.Headers.Id', 'Nr ewid.')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'lastName'}
-                        direction={employeeSort.key === 'lastName' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('lastName')}
+                        active={employeeSort.key === 'Surname'}
+                        direction={employeeSort.key === 'Surname' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Surname')}
                       >
                         {t('AttendanceList.Table.Headers.LastName', 'Nazwisko')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'firstName'}
-                        direction={employeeSort.key === 'firstName' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('firstName')}
+                        active={employeeSort.key === 'Name'}
+                        direction={employeeSort.key === 'Name' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Name')}
                       >
                         {t('AttendanceList.Table.Headers.FirstName', 'Imię')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'attendance'}
-                        direction={employeeSort.key === 'attendance' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('attendance')}
+                        active={employeeSort.key === 'Presence'}
+                        direction={employeeSort.key === 'Presence' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Presence')}
                       >
                         {t('AttendanceList.Table.Headers.Attendance', 'Obecność')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'date'}
-                        direction={employeeSort.key === 'date' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('date')}
+                        active={employeeSort.key === 'Date'}
+                        direction={employeeSort.key === 'Date' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Date')}
                       >
                         {t('AttendanceList.Table.Headers.Date', 'Data')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'cardNumber'}
-                        direction={employeeSort.key === 'cardNumber' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('cardNumber')}
+                        active={employeeSort.key === 'CardNumber'}
+                        direction={employeeSort.key === 'CardNumber' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('CardNumber')}
                       >
                         {t('AttendanceList.Table.Headers.CardNumber', 'Nr karty')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'cardType'}
-                        direction={employeeSort.key === 'cardType' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('cardType')}
+                        active={employeeSort.key === 'Status'}
+                        direction={employeeSort.key === 'Status' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Status')}
                       >
                         {t('AttendanceList.Table.Headers.CardType', 'Typ karty')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'cardStatus'}
-                        direction={employeeSort.key === 'cardStatus' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('cardStatus')}
+                        active={employeeSort.key === 'Status'}
+                        direction={employeeSort.key === 'Status' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Status')}
                       >
                         {t('AttendanceList.Table.Headers.CardStatus', 'Status karty')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'cardState'}
-                        direction={employeeSort.key === 'cardState' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('cardState')}
+                        active={employeeSort.key === 'Status'}
+                        direction={employeeSort.key === 'Status' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('Status')}
                       >
                         {t('AttendanceList.Table.Headers.CardState', 'Stan karty')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={employeeSort.key === 'device'}
-                        direction={employeeSort.key === 'device' ? employeeSort.order : 'asc'}
-                        onClick={() => handleEmployeeSort('device')}
+                        active={employeeSort.key === 'DeviceName'}
+                        direction={employeeSort.key === 'DeviceName' ? employeeSort.order : 'asc'}
+                        onClick={() => handleEmployeeSort('DeviceName')}
                       >
                         {t('AttendanceList.Table.Headers.Device', 'Urządzenie')}
                       </TableSortLabel>
@@ -322,7 +323,7 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                 <TableBody>
                   {displayedEmployees.map((employee) => (
                     <TableRow 
-                      key={employee.id}
+                      key={employee.IdWorker}
                       sx={{
                         '&:hover': {
                           backgroundColor: 'primary.main',
@@ -334,16 +335,16 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                         }
                       }}
                     >
-                      <TableCell>{employee.id}</TableCell>
-                      <TableCell>{employee.lastName}</TableCell>
-                      <TableCell>{employee.firstName}</TableCell>
-                      <TableCell>{employee.attendance}</TableCell>
-                      <TableCell>{employee.date}</TableCell>
-                      <TableCell>{employee.cardNumber}</TableCell>
-                      <TableCell>{employee.cardType}</TableCell>
-                      <TableCell>{employee.cardStatus}</TableCell>
-                      <TableCell>{employee.cardState}</TableCell>
-                      <TableCell>{employee.device}</TableCell>
+                      <TableCell>{employee.Badge}</TableCell>
+                      <TableCell>{employee.Surname}</TableCell>
+                      <TableCell>{employee.Name}</TableCell>
+                      <TableCell>{employee.Presence}</TableCell>
+                      <TableCell>{formatDate(employee.Date) || '-'}</TableCell>
+                      <TableCell>-</TableCell>
+                      <TableCell>{employee.Status || '-'}</TableCell>
+                      <TableCell>{employee.Status || '-'}</TableCell>
+                      <TableCell>{employee.Status || '-'}</TableCell>
+                      <TableCell>{employee.DeviceName || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -373,99 +374,81 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                   <TableRow>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'logicalNumber'}
-                        direction={guestSort.key === 'logicalNumber' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('logicalNumber')}
+                        active={guestSort.key === 'CardLog'}
+                        direction={guestSort.key === 'CardLog' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('CardLog')}
                       >
                         {t('AttendanceList.GuestTable.Headers.LogicalNumber', 'Nr logiczny')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'physicalNumber'}
-                        direction={guestSort.key === 'physicalNumber' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('physicalNumber')}
-                      >
-                        {t('AttendanceList.GuestTable.Headers.PhysicalNumber', 'Nr fizyczny')}
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell>
-                      <TableSortLabel
-                        active={guestSort.key === 'type'}
-                        direction={guestSort.key === 'type' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('type')}
+                        active={guestSort.key === 'CardType'}
+                        direction={guestSort.key === 'CardType' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('CardType')}
                       >
                         {t('AttendanceList.GuestTable.Headers.Type', 'Typ')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'firstName'}
-                        direction={guestSort.key === 'firstName' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('firstName')}
+                        active={guestSort.key === 'Name'}
+                        direction={guestSort.key === 'Name' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('Name')}
                       >
                         {t('AttendanceList.GuestTable.Headers.FirstName', 'Imię')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'lastName'}
-                        direction={guestSort.key === 'lastName' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('lastName')}
+                        active={guestSort.key === 'Surname'}
+                        direction={guestSort.key === 'Surname' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('Surname')}
                       >
                         {t('AttendanceList.GuestTable.Headers.LastName', 'Nazwisko')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'company'}
-                        direction={guestSort.key === 'company' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('company')}
+                        active={guestSort.key === 'Company'}
+                        direction={guestSort.key === 'Company' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('Company')}
                       >
                         {t('AttendanceList.GuestTable.Headers.Company', 'Firma')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'document'}
-                        direction={guestSort.key === 'document' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('document')}
+                        active={guestSort.key === 'Document'}
+                        direction={guestSort.key === 'Document' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('Document')}
                       >
                         {t('AttendanceList.GuestTable.Headers.Document', 'Dokument')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'purpose'}
-                        direction={guestSort.key === 'purpose' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('purpose')}
-                      >
-                        {t('AttendanceList.GuestTable.Headers.Purpose', 'Cel')}
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell>
-                      <TableSortLabel
-                        active={guestSort.key === 'issueDate'}
-                        direction={guestSort.key === 'issueDate' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('issueDate')}
+                        active={guestSort.key === 'Date'}
+                        direction={guestSort.key === 'Date' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('Date')}
                       >
                         {t('AttendanceList.GuestTable.Headers.IssueDate', 'Data wydania')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'returnDate'}
-                        direction={guestSort.key === 'returnDate' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('returnDate')}
+                        active={guestSort.key === 'ReturnDate'}
+                        direction={guestSort.key === 'ReturnDate' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('ReturnDate')}
                       >
                         {t('AttendanceList.GuestTable.Headers.ReturnDate', 'Data zwrotu')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={guestSort.key === 'toWhom'}
-                        direction={guestSort.key === 'toWhom' ? guestSort.order : 'asc'}
-                        onClick={() => handleGuestSort('toWhom')}
+                        active={guestSort.key === 'ToWhom'}
+                        direction={guestSort.key === 'ToWhom' ? guestSort.order : 'asc'}
+                        onClick={() => handleGuestSort('ToWhom')}
                       >
                         {t('AttendanceList.GuestTable.Headers.ToWhom', 'Do kogo')}
                       </TableSortLabel>
@@ -475,7 +458,7 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                 <TableBody>
                   {displayedGuests.map((guest, index) => (
                     <TableRow 
-                      key={guest.logicalNumber}
+                      key={guest.CardLog || index}
                       sx={{
                         '&:hover': {
                           backgroundColor: 'primary.main',
@@ -487,17 +470,15 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                         }
                       }}
                     >
-                      <TableCell>{guest.logicalNumber}</TableCell>
-                      <TableCell>{guest.physicalNumber}</TableCell>
-                      <TableCell>{guest.type}</TableCell>
-                      <TableCell>{guest.firstName}</TableCell>
-                      <TableCell>{guest.lastName}</TableCell>
-                      <TableCell>{guest.company}</TableCell>
-                      <TableCell>{guest.document}</TableCell>
-                      <TableCell>{guest.purpose}</TableCell>
-                      <TableCell>{guest.issueDate}</TableCell>
-                      <TableCell>{guest.returnDate}</TableCell>
-                      <TableCell>{guest.toWhom}</TableCell>
+                      <TableCell>{guest.CardLog}</TableCell>
+                      <TableCell>{guest.CardType}</TableCell>
+                      <TableCell>{guest.Name}</TableCell>
+                      <TableCell>{guest.Surname}</TableCell>
+                      <TableCell>{guest.Company || '-'}</TableCell>
+                      <TableCell>{guest.Document || '-'}</TableCell>
+                      <TableCell>{formatDate(guest.ReleaseDate) || formatDate(guest.Date) || formatDate(guest.DataWydania) || '-'}</TableCell>
+                      <TableCell>{formatDate(guest.ReturnDate) || '-'}</TableCell>
+                      <TableCell>{guest.ToWhom || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -527,99 +508,99 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                   <TableRow>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'firstName'}
-                        direction={presentGuestSort.key === 'firstName' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('firstName')}
+                        active={presentGuestSort.key === 'FirstName'}
+                        direction={presentGuestSort.key === 'FirstName' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('FirstName')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.FirstName', 'Imię')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'lastName'}
-                        direction={presentGuestSort.key === 'lastName' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('lastName')}
+                        active={presentGuestSort.key === 'LastName'}
+                        direction={presentGuestSort.key === 'LastName' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('LastName')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.LastName', 'Nazwisko')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'company'}
-                        direction={presentGuestSort.key === 'company' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('company')}
+                        active={presentGuestSort.key === 'Company'}
+                        direction={presentGuestSort.key === 'Company' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('Company')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Company', 'Firma')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'logicalNumber'}
-                        direction={presentGuestSort.key === 'logicalNumber' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('logicalNumber')}
+                        active={presentGuestSort.key === 'NumerLogiczny'}
+                        direction={presentGuestSort.key === 'NumerLogiczny' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('NumerLogiczny')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.LogicalNumber', 'Nr logiczny')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'physicalNumber'}
-                        direction={presentGuestSort.key === 'physicalNumber' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('physicalNumber')}
+                        active={presentGuestSort.key === 'NumerFizyczny'}
+                        direction={presentGuestSort.key === 'NumerFizyczny' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('NumerFizyczny')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.PhysicalNumber', 'Nr fizyczny')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'type'}
-                        direction={presentGuestSort.key === 'type' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('type')}
+                        active={presentGuestSort.key === 'TypKarty'}
+                        direction={presentGuestSort.key === 'TypKarty' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('TypKarty')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Type', 'Typ')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'attendance'}
-                        direction={presentGuestSort.key === 'attendance' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('attendance')}
+                        active={presentGuestSort.key === 'Obecnosc'}
+                        direction={presentGuestSort.key === 'Obecnosc' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('Obecnosc')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Attendance', 'Obecność')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'entrance'}
-                        direction={presentGuestSort.key === 'entrance' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('entrance')}
+                        active={presentGuestSort.key === 'EntryDate'}
+                        direction={presentGuestSort.key === 'EntryDate' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('EntryDate')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Entrance', 'Wejście')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'exit'}
-                        direction={presentGuestSort.key === 'exit' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('exit')}
+                        active={presentGuestSort.key === 'ExitDate'}
+                        direction={presentGuestSort.key === 'ExitDate' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('ExitDate')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Exit', 'Wyjście')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'stay'}
-                        direction={presentGuestSort.key === 'stay' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('stay')}
+                        active={presentGuestSort.key === 'Duration'}
+                        direction={presentGuestSort.key === 'Duration' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('Duration')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.Stay', 'Pobyt')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={presentGuestSort.key === 'toWhom'}
-                        direction={presentGuestSort.key === 'toWhom' ? presentGuestSort.order : 'asc'}
-                        onClick={() => handlePresentGuestSort('toWhom')}
+                        active={presentGuestSort.key === 'DoKogo'}
+                        direction={presentGuestSort.key === 'DoKogo' ? presentGuestSort.order : 'asc'}
+                        onClick={() => handlePresentGuestSort('DoKogo')}
                       >
                         {t('AttendanceList.PresentGuestTable.Headers.ToWhom', 'Do kogo')}
                       </TableSortLabel>
@@ -629,7 +610,7 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                 <TableBody>
                   {displayedPresentGuests.map((guest, index) => (
                     <TableRow 
-                      key={`${guest.logicalNumber}-${index}`}
+                      key={guest.IdGuest || index}
                       sx={{
                         '&:hover': {
                           backgroundColor: 'primary.main',
@@ -641,17 +622,17 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                         }
                       }}
                     >
-                      <TableCell>{guest.firstName}</TableCell>
-                      <TableCell>{guest.lastName}</TableCell>
-                      <TableCell>{guest.company}</TableCell>
-                      <TableCell>{guest.logicalNumber}</TableCell>
-                      <TableCell>{guest.physicalNumber}</TableCell>
-                      <TableCell>{guest.type}</TableCell>
-                      <TableCell>{guest.attendance}</TableCell>
-                      <TableCell>{guest.entrance}</TableCell>
-                      <TableCell>{guest.exit}</TableCell>
-                      <TableCell>{guest.stay}</TableCell>
-                      <TableCell>{guest.toWhom}</TableCell>
+                      <TableCell>{guest.FirstName}</TableCell>
+                      <TableCell>{guest.LastName}</TableCell>
+                      <TableCell>{guest.Company || '-'}</TableCell>
+                      <TableCell>{guest.NumerLogiczny || '-'}</TableCell>
+                      <TableCell>{guest.NumerFizyczny || '-'}</TableCell>
+                      <TableCell>{guest.TypKarty || '-'}</TableCell>
+                      <TableCell>{guest.Obecnosc}</TableCell>
+                      <TableCell>{formatDate(guest.EntryDate) || '-'}</TableCell>
+                      <TableCell>{formatDate(guest.ExitDate) || '-'}</TableCell>
+                      <TableCell>{guest.Duration || '-'}</TableCell>
+                      <TableCell>{guest.DoKogo || guest.ContactPerson || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -681,45 +662,45 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                   <TableRow>
                     <TableCell>
                       <TableSortLabel
-                        active={vehicleSort.key === 'number'}
-                        direction={vehicleSort.key === 'number' ? vehicleSort.order : 'asc'}
-                        onClick={() => handleVehicleSort('number')}
+                        active={vehicleSort.key === 'VehicleNumber'}
+                        direction={vehicleSort.key === 'VehicleNumber' ? vehicleSort.order : 'asc'}
+                        onClick={() => handleVehicleSort('VehicleNumber')}
                       >
                         {t('AttendanceList.VehicleTable.Headers.Number', 'Numer')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={vehicleSort.key === 'type'}
-                        direction={vehicleSort.key === 'type' ? vehicleSort.order : 'asc'}
-                        onClick={() => handleVehicleSort('type')}
+                        active={vehicleSort.key === 'VehicleType'}
+                        direction={vehicleSort.key === 'VehicleType' ? vehicleSort.order : 'asc'}
+                        onClick={() => handleVehicleSort('VehicleType')}
                       >
                         {t('AttendanceList.VehicleTable.Headers.Type', 'Typ')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={vehicleSort.key === 'note'}
-                        direction={vehicleSort.key === 'note' ? vehicleSort.order : 'asc'}
-                        onClick={() => handleVehicleSort('note')}
+                        active={vehicleSort.key === 'VehicleNote'}
+                        direction={vehicleSort.key === 'VehicleNote' ? vehicleSort.order : 'asc'}
+                        onClick={() => handleVehicleSort('VehicleNote')}
                       >
                         {t('AttendanceList.VehicleTable.Headers.Note', 'Notatka')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={vehicleSort.key === 'entryDate'}
-                        direction={vehicleSort.key === 'entryDate' ? vehicleSort.order : 'asc'}
-                        onClick={() => handleVehicleSort('entryDate')}
+                        active={vehicleSort.key === 'LastDate'}
+                        direction={vehicleSort.key === 'LastDate' ? vehicleSort.order : 'asc'}
+                        onClick={() => handleVehicleSort('LastDate')}
                       >
                         {t('AttendanceList.VehicleTable.Headers.EntryDate', 'Data wjazdu')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={vehicleSort.key === 'driver'}
-                        direction={vehicleSort.key === 'driver' ? vehicleSort.order : 'asc'}
-                        onClick={() => handleVehicleSort('driver')}
+                        active={vehicleSort.key === 'Driver'}
+                        direction={vehicleSort.key === 'Driver' ? vehicleSort.order : 'asc'}
+                        onClick={() => handleVehicleSort('Driver')}
                       >
                         {t('AttendanceList.VehicleTable.Headers.Driver', 'Kierowca')}
                       </TableSortLabel>
@@ -729,7 +710,7 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                 <TableBody>
                   {displayedVehicles.map((vehicle, index) => (
                     <TableRow 
-                      key={`${vehicle.number}-${index}`}
+                      key={vehicle.VehicleNumber || index}
                       sx={{
                         '&:hover': {
                           backgroundColor: 'primary.main',
@@ -741,11 +722,11 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
                         }
                       }}
                     >
-                      <TableCell>{vehicle.number}</TableCell>
-                      <TableCell>{vehicle.type}</TableCell>
-                      <TableCell>{vehicle.note}</TableCell>
-                      <TableCell>{vehicle.entryDate}</TableCell>
-                      <TableCell>{vehicle.driver}</TableCell>
+                      <TableCell>{vehicle.VehicleNumber}</TableCell>
+                      <TableCell>{vehicle.VehicleType || '-'}</TableCell>
+                      <TableCell>{vehicle.VehicleNote || '-'}</TableCell>
+                      <TableCell>{formatDate(vehicle.LastDate) || '-'}</TableCell>
+                      <TableCell>{vehicle.Driver || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -787,44 +768,71 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
         {t('AttendanceList.Title', 'Lista obecności')}
       </Typography>
       
+      {/* Loading state */}
+      {isAnyLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+          <CircularProgress />
+          <Typography sx={{ ml: 2 }}>
+            {t('AttendanceList.Loading', 'Ładowanie danych...')}
+          </Typography>
+        </Box>
+      )}
+      
+      {/* Error state */}
+      {hasAnyError && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {t('AttendanceList.Error', 'Błąd podczas ładowania danych:')} 
+          {attendanceError?.message || guestsError?.message || guestsPresenceError?.message || vehiclesError?.message}
+        </Alert>
+      )}
+      
+      {/* Tab navigation */}
       <Box sx={{ mb: 3 }}>
         <Button 
           variant={activeTab === 'employees' ? 'contained' : 'outlined'}
           onClick={() => setActiveTab('employees')}
           sx={{ mr: 1 }}
         >
-          {t('AttendanceList.Tabs.Employees.Label', 'Pracownicy')} ( )
+          {t('AttendanceList.Tabs.Employees.Label', 'Pracownicy')} ({employees.length})
         </Button>
         <Button 
           variant={activeTab === 'guests' ? 'contained' : 'outlined'}
           onClick={() => setActiveTab('guests')}
           sx={{ mr: 1 }}
         >
-          {t('AttendanceList.Tabs.Guests.Label', 'Goście')} ( )
+          {t('AttendanceList.Tabs.Guests.Label', 'Goście')} ({guests.length})
         </Button>
         <Button 
           variant={activeTab === 'presentGuests' ? 'contained' : 'outlined'}
           onClick={() => setActiveTab('presentGuests')}
           sx={{ mr: 1 }}
         >
-          {t('AttendanceList.Tabs.PresentGuests.Label', 'Obecni goście')} ( )
+          {t('AttendanceList.Tabs.PresentGuests.Label', 'Obecni goście')} ({presentGuests.length})
         </Button>
         <Button 
           variant={activeTab === 'vehicles' ? 'contained' : 'outlined'}
           onClick={() => setActiveTab('vehicles')}
         >
-          {t('AttendanceList.Tabs.Vehicles.Label', 'Pojazdy')} ( )
+          {t('AttendanceList.Tabs.Vehicles.Label', 'Pojazdy')} ({vehicles.length})
         </Button>
         <Button 
           variant="outlined"
           sx={{ ml: 2 }}
+          onClick={handleRefreshAll}
+          disabled={isAnyLoading}
+        >
+          {t('AttendanceList.Refresh', 'ODŚWIEŻ')}
+        </Button>
+        <Button 
+          variant="outlined"
+          sx={{ ml: 1 }}
         >
           {t('AttendanceList.Print', 'DRUKUJ')}
         </Button>
       </Box>
 
       <Box>
-        {renderTabContent()}
+        {!isAnyLoading && !hasAnyError && renderTabContent()}
       </Box>
     </div>
   );
