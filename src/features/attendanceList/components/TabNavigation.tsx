@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Button } from '@mui/material';
+import { Refresh as RefreshIcon, Print as PrintIcon } from '@mui/icons-material';
 import { useAttendanceTranslations } from '../hooks/useAttendanceTranslations';
 import type { TabType } from '../hooks/useAttendanceData';
 
@@ -64,6 +65,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
           sx={{ mr: 1 }}
           onClick={onRefresh}
           disabled={isLoading}
+          startIcon={<RefreshIcon />}
         >
           {t('AttendanceList.Refresh', 'ODŚWIEŻ')}
         </Button>
@@ -71,6 +73,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
           variant="outlined"
           onClick={onPrint}
           disabled={isLoading}
+          startIcon={<PrintIcon />}
         >
           {t('AttendanceList.Print.Button', 'DRUKUJ')}
         </Button>

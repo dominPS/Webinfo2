@@ -817,5 +817,72 @@
   },
   "dateFormat": {
     "locale": "en-US"
+  },
+  "Vacations": {
+    "Title": "Vacations",
+    "Loading": "Loading data...",
+    "Error": "Error loading data:",
+    "Refresh": "REFRESH",
+    "Print": {
+      "Button": "PRINT",
+      "GeneratedOn": "Generated on:"
+    },
+    "Tabs": {
+      "LimitedVacations": {
+        "Label": "Limited Vacations Available"
+      },
+      "ApprovedPlan": {
+        "Label": "Approved Vacation Plan ({currentYear})"
+      },
+      "VacationHistory": {
+        "Label": "Vacation History"
+      },
+      "CancelledHistory": {
+        "Label": "Cancelled Vacation History"
+      }
+    },
+    "Tables": {
+      "NoData": "No data available",
+      "LimitedVacations": {
+        "Headers": {
+          "Code": "Vacation Code",
+          "ParentCode": "Parent Code",
+          "Limit": "Limit",
+          "Available": "Available",
+          "AdditionalInfo": "Additional Info"
+        }
+      },
+      "ApprovedPlan": {
+        "Headers": {
+          "Absence": "Absence",
+          "DateFrom": "Date From",
+          "DateTo": "Date To",
+          "VacationRequest": "Vacation Request"
+        }
+      },
+      "VacationHistory": {
+        "Headers": {
+          "VacationCode": "Vacation Code",
+          "Description": "Description",
+          "DateFrom": "Date From",
+          "DateTo": "Date To",
+          "VacationDays": "Vacation Days"
+        }
+      },
+      "CancelledHistory": {
+        "Headers": {
+          "VacationCode": "Vacation Code",
+          "Description": "Description",
+          "DateFrom": "Date From",
+          "DateTo": "Date To"
+        }
+      }
+    },
+    "Errors": {
+      "LimitedVacations": "Error loading limited vacations",
+      "ApprovedPlan": "Error loading approved vacation plan",
+      "VacationHistory": "Error loading vacation history",
+      "CancelledHistory": "Error loading cancelled vacation history"
+    }
   }
 }

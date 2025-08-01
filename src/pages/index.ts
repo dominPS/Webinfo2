@@ -34,7 +34,7 @@ export const CanteenPage = BasePage;
 export const VacationPlanPage = BasePage;
 export const WeekendWorkPage = BasePage;
 export const EmployeeRequestsPage = BasePage;
-export const VacationsPage = BasePage;
+export { default as VacationsPage } from './Vacations/VacationsPage';
 export const MonthlySummaryPage = BasePage;
 export const ExamsAndTrainingPage = BasePage;
 export const SettlementPage = BasePage;

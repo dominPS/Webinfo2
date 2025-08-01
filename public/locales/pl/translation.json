@@ -882,5 +882,72 @@
   "login_server": "Server: 192.168.1.21, Database: widemo, Version: 1.7.0.13082, Build for: Default",
   "dateFormat": {
     "locale": "pl-PL"
+  },
+  "Vacations": {
+    "Title": "Urlopy",
+    "Loading": "Ładowanie danych...",
+    "Error": "Błąd podczas ładowania danych:",
+    "Refresh": "ODŚWIEŻ",
+    "Print": {
+      "Button": "DRUKUJ",
+      "GeneratedOn": "Wygenerowano:"
+    },
+    "Tabs": {
+      "LimitedVacations": {
+        "Label": "Urlopy limitowane do wykorzystania"
+      },
+      "ApprovedPlan": {
+        "Label": "Zatwierdzony plan urlopowy ({currentYear})"
+      },
+      "VacationHistory": {
+        "Label": "Historia urlopów"
+      },
+      "CancelledHistory": {
+        "Label": "Historia anulowanych urlopów"
+      }
+    },
+    "Tables": {
+      "NoData": "Brak danych",
+      "LimitedVacations": {
+        "Headers": {
+          "Code": "Kod urlopu",
+          "ParentCode": "Kod nadrzędny",
+          "Limit": "Limit",
+          "Available": "Do wykorzystania",
+          "AdditionalInfo": "Dod. info."
+        }
+      },
+      "ApprovedPlan": {
+        "Headers": {
+          "Absence": "Absencja",
+          "DateFrom": "Data od",
+          "DateTo": "Data do",
+          "VacationRequest": "Wniosek urlopowy"
+        }
+      },
+      "VacationHistory": {
+        "Headers": {
+          "VacationCode": "Kod urlopu",
+          "Description": "Opis",
+          "DateFrom": "Data od",
+          "DateTo": "Data do",
+          "VacationDays": "Dni urlopu"
+        }
+      },
+      "CancelledHistory": {
+        "Headers": {
+          "VacationCode": "Kod urlopu",
+          "Description": "Opis",
+          "DateFrom": "Data od",
+          "DateTo": "Data do"
+        }
+      }
+    },
+    "Errors": {
+      "LimitedVacations": "Błąd podczas ładowania urlopów limitowanych",
+      "ApprovedPlan": "Błąd podczas ładowania zatwierdzonego planu urlopowego",
+      "VacationHistory": "Błąd podczas ładowania historii urlopów",
+      "CancelledHistory": "Błąd podczas ładowania historii anulowanych urlopów"
+    }
   }
 }
