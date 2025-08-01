@@ -4,6 +4,7 @@ export interface PrintOptions {
   title?: string;
   orientation?: 'portrait' | 'landscape';
   showDate?: boolean;
+  showTime?: boolean;
 }
 
 export const usePrint = () => {
@@ -14,7 +15,8 @@ export const usePrint = () => {
     const {
       title = 'Lista obecności',
       orientation = 'landscape',
-      showDate = true
+      showDate = true,
+      showTime = true
     } = options;
 
     const tableElement = document.getElementById(tableId);
@@ -95,8 +97,12 @@ export const usePrint = () => {
 
     const cleanTableHtml = createCleanTable(headers, rows);
 
-    // Current date
+    // Current date and time
     const currentDate = new Date().toLocaleDateString('pl-PL');
+    const currentTime = new Date().toLocaleTimeString('pl-PL', { 
+      hour: '2-digit', 
+      minute: '2-digit'
+    });
 
     // Create print HTML
     const printHtml = `
@@ -177,6 +183,7 @@ export const usePrint = () => {
           <div class="print-header">
             <h1>${title}</h1>
             ${showDate ? `<div class="print-date">Data wydruku: ${currentDate}</div>` : ''}
+            ${showTime ? `<div class="print-date">Godzina wydruku: ${currentTime}</div>` : ''}
           </div>
           
           ${cleanTableHtml}
@@ -203,7 +210,8 @@ export const usePrint = () => {
 
   const printCurrentView = useCallback((
     title: string = 'Lista obecności',
-    orientation: 'portrait' | 'landscape' = 'landscape'
+    orientation: 'portrait' | 'landscape' = 'landscape',
+    showTime: boolean = true
   ) => {
     // Find the main table in the current view
     const tables = document.querySelectorAll('table');
@@ -227,7 +235,7 @@ export const usePrint = () => {
     const tempId = 'temp-print-table';
     visibleTable.id = tempId;
     
-    printTable(tempId, { title, orientation });
+    printTable(tempId, { title, orientation, showTime });
     
     // Remove temporary ID
     visibleTable.removeAttribute('id');

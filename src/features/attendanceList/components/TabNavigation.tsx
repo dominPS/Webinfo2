@@ -28,50 +28,53 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
   const { t } = useAttendanceTranslations();
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Button 
-        variant={activeTab === 'employees' ? 'contained' : 'outlined'}
-        onClick={() => onTabChange('employees')}
-        sx={{ mr: 1 }}
-      >
-        {t('AttendanceList.Tabs.Employees.Label', 'Pracownicy')} ({counts.employees})
-      </Button>
-      <Button 
-        variant={activeTab === 'guests' ? 'contained' : 'outlined'}
-        onClick={() => onTabChange('guests')}
-        sx={{ mr: 1 }}
-      >
-        {t('AttendanceList.Tabs.Guests.Label', 'Goście')} ({counts.guests})
-      </Button>
-      <Button 
-        variant={activeTab === 'presentGuests' ? 'contained' : 'outlined'}
-        onClick={() => onTabChange('presentGuests')}
-        sx={{ mr: 1 }}
-      >
-        {t('AttendanceList.Tabs.PresentGuests.Label', 'Obecni goście')} ({counts.presentGuests})
-      </Button>
-      <Button 
-        variant={activeTab === 'vehicles' ? 'contained' : 'outlined'}
-        onClick={() => onTabChange('vehicles')}
-      >
-        {t('AttendanceList.Tabs.Vehicles.Label', 'Pojazdy')} ({counts.vehicles})
-      </Button>
-      <Button 
-        variant="outlined"
-        sx={{ ml: 2 }}
-        onClick={onRefresh}
-        disabled={isLoading}
-      >
-        {t('AttendanceList.Refresh', 'ODŚWIEŻ')}
-      </Button>
-      <Button 
-        variant="outlined"
-        sx={{ ml: 1 }}
-        onClick={onPrint}
-        disabled={isLoading}
-      >
-        {t('AttendanceList.Print.Button', 'DRUKUJ')}
-      </Button>
+    <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box>
+        <Button 
+          variant={activeTab === 'employees' ? 'contained' : 'outlined'}
+          onClick={() => onTabChange('employees')}
+          sx={{ mr: 1 }}
+        >
+          {t('AttendanceList.Tabs.Employees.Label', 'Pracownicy')} ({counts.employees})
+        </Button>
+        <Button 
+          variant={activeTab === 'guests' ? 'contained' : 'outlined'}
+          onClick={() => onTabChange('guests')}
+          sx={{ mr: 1 }}
+        >
+          {t('AttendanceList.Tabs.Guests.Label', 'Goście')} ({counts.guests})
+        </Button>
+        <Button 
+          variant={activeTab === 'presentGuests' ? 'contained' : 'outlined'}
+          onClick={() => onTabChange('presentGuests')}
+          sx={{ mr: 1 }}
+        >
+          {t('AttendanceList.Tabs.PresentGuests.Label', 'Obecni goście')} ({counts.presentGuests})
+        </Button>
+        <Button 
+          variant={activeTab === 'vehicles' ? 'contained' : 'outlined'}
+          onClick={() => onTabChange('vehicles')}
+        >
+          {t('AttendanceList.Tabs.Vehicles.Label', 'Pojazdy')} ({counts.vehicles})
+        </Button>
+      </Box>
+      <Box>
+        <Button 
+          variant="outlined"
+          sx={{ mr: 1 }}
+          onClick={onRefresh}
+          disabled={isLoading}
+        >
+          {t('AttendanceList.Refresh', 'ODŚWIEŻ')}
+        </Button>
+        <Button 
+          variant="outlined"
+          onClick={onPrint}
+          disabled={isLoading}
+        >
+          {t('AttendanceList.Print.Button', 'DRUKUJ')}
+        </Button>
+      </Box>
     </Box>
   );
 };
