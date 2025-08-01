@@ -45,11 +45,11 @@ const AttendanceListPage: React.FC<AttendanceListPageProps> = () => {
     }
   };
 
-  // API hooks for real data
-  const { data: attendanceData, error: attendanceError, isLoading: attendanceLoading, refetch: attendanceRefetch } = useAttendanceList();
-  const { data: guestsData, error: guestsError, isLoading: guestsLoading, refetch: guestsRefetch } = useAttendanceGuests();
-  const { data: guestsPresenceData, error: guestsPresenceError, isLoading: guestsPresenceLoading, refetch: guestsPresenceRefetch } = useAttendanceGuestsPresence();
-  const { data: vehiclesData, error: vehiclesError, isLoading: vehiclesLoading, refetch: vehiclesRefetch } = useAttendanceVehicles();
+  // API hooks for real data - LAZY LOADING: tylko aktywna zakładka ładuje dane
+  const { data: attendanceData, error: attendanceError, isLoading: attendanceLoading, refetch: attendanceRefetch } = useAttendanceList(undefined, activeTab === 'employees');
+  const { data: guestsData, error: guestsError, isLoading: guestsLoading, refetch: guestsRefetch } = useAttendanceGuests(activeTab === 'guests');
+  const { data: guestsPresenceData, error: guestsPresenceError, isLoading: guestsPresenceLoading, refetch: guestsPresenceRefetch } = useAttendanceGuestsPresence(activeTab === 'presentGuests');
+  const { data: vehiclesData, error: vehiclesError, isLoading: vehiclesLoading, refetch: vehiclesRefetch } = useAttendanceVehicles(activeTab === 'vehicles');
 
   // Refresh function for all data
   const handleRefreshAll = async () => {
