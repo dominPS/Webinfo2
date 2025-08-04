@@ -5,6 +5,7 @@ import { LoginLayout } from '@/layouts/auth-layout';
 import HomePage from '@/pages/Dashboard/DashboardPage';
 import { EmployeeDataPage } from '@/pages/EmployeeDataPage';
 import { AttendanceListPage } from '@/pages';
+import MobileAppsPage from '@/pages/MobileApps/MobileAppsPage';
 import NotFoundPage from '@/pages/NotFound';
 import LoginPage from '@/pages/Login/LoginPage';
 import PrivateRoute from '@/routes/PrivateRoute';
@@ -40,6 +41,10 @@ const AppRoutes = () => {
             {
               path: eventPath.attendancelist.path,
               element: <AttendanceListPage />,
+            },
+            {
+              path: eventPath.mobileapps.path,
+              element: <MobileAppsPage />,
             },
             {
               path: '*',

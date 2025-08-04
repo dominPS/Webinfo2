@@ -23,7 +23,7 @@ export {
 };
 
 // Placeholder pages 
-export const MobileAppsPage = BasePage;
+export { default as MobileAppsPage } from './MobileApps/MobileAppsPage';
 export const AssignmentsPage = BasePage;
 export const MapRegistrationsPage = BasePage;
 export { default as AttendanceListPage } from './AttendanceList/AttendanceListPage';

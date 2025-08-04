@@ -157,7 +157,8 @@
     "back": "Back",
     "backToDashboard": "Back",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "close": "Close"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -884,5 +885,17 @@
       "VacationHistory": "Error loading vacation history",
       "CancelledHistory": "Error loading cancelled vacation history"
     }
+  },
+  "mobileApps": {
+    "title": "Mobile Apps",
+    "showQRDownload": "Show QR Code (MobileInfo App Download Link)",
+    "showQRPersonalizedAndroid": "Show QR Code (Personalized App Activation) (Android)",
+    "showQRPersonalizedIOS": "Show QR Code (Personalized App Activation) (iOS)",
+    "showQRNonPersonalized": "Show QR Code (Non-Personalized App Activation)",
+    "downloadApp": "MobileInfo App Download Link",
+    "activatePersonalizedAndroid": "Personalized App Activation (Android)",
+    "activatePersonalizedIOS": "Personalized App Activation (iOS)",
+    "activateNonPersonalized": "Non-Personalized App Activation",
+    "mockQRCode": "Mock QR Code - will be replaced with real code"
   }
 }

@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'mobile-apps',
-        element: <MobileAppsPage translationKey="mobileApps" />, 
+        element: <MobileAppsPage />, 
       },
       {
         path: 'assignments',
@@ -86,15 +86,15 @@ export const router = createBrowserRouter([
       },
       {
         path: 'map-registrations',
-        element: <MapRegistrationsPage translationKey="mapRegistrations" />, 
+        element: <MapRegistrationsPage translationKey="map-registrations" />, 
       },
       {
         path: 'attendance-list',
-        element: <AttendanceListPage translationKey="attendanceList" />, 
+        element: <AttendanceListPage />, 
       },
       {
         path: 'schedule-attendance',
-        element: <ScheduleAttendancePage translationKey="scheduleAttendance" />, 
+        element: <ScheduleAttendancePage translationKey="schedule-attendance" />, 
       },
       {
         path: 'employee-data',
@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'reserve-vehicle',
-        element: <ReserveVehiclePage translationKey="reserveVehicle" />, 
+        element: <ReserveVehiclePage translationKey="reserve-vehicle" />, 
       },
       {
         path: 'canteen',
@@ -110,27 +110,27 @@ export const router = createBrowserRouter([
       },
       {
         path: 'vacation-plan',
-        element: <VacationPlanPage translationKey="vacationPlan" />, 
+        element: <VacationPlanPage translationKey="vacation-plan" />, 
       },
       {
         path: 'weekend-work',
-        element: <WeekendWorkPage translationKey="weekendWork" />, 
+        element: <WeekendWorkPage translationKey="weekend-work" />, 
       },
       {
         path: 'employee-requests',
-        element: <EmployeeRequestsPage translationKey="employeeRequests" />, 
+        element: <EmployeeRequestsPage translationKey="employee-requests" />, 
       },
       {
         path: 'vacations',
-        element: <VacationsPage translationKey="vacations" />, 
+        element: <VacationsPage />, 
       },
       {
         path: 'monthly-summary',
-        element: <MonthlySummaryPage translationKey="monthlySummary" />, 
+        element: <MonthlySummaryPage translationKey="monthly-summary" />, 
       },
       {
         path: 'exams-and-training',
-        element: <ExamsAndTrainingPage translationKey="examsAndTraining" />, 
+        element: <ExamsAndTrainingPage translationKey="exams-and-training" />, 
       },
       {
         path: 'settlement',
@@ -138,11 +138,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'absence-plan',
-        element: <AbsencePlanPage translationKey="absencePlan" />, 
+        element: <AbsencePlanPage translationKey="absence-plan" />, 
       },
       {
         path: 'monthly-absence-plan',
-        element: <MonthlyAbsencePlanPage translationKey="monthlyAbsencePlan" />, 
+        element: <MonthlyAbsencePlanPage translationKey="monthly-absence-plan" />, 
       },
       {
         path: 'schedule',
@@ -150,7 +150,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'projects-activities',
-        element: <ProjectsActivitiesPage translationKey="projectsActivities" />, 
+        element: <ProjectsActivitiesPage translationKey="projects-activities" />, 
       },
       {
         path: 'e-teczka',

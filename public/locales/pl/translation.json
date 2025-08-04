@@ -153,7 +153,8 @@
     "back": "Powrót",
     "backToDashboard": "Powrót",
     "previous": "Poprzedni",
-    "next": "Następny"
+    "next": "Następny",
+    "close": "Zamknij"
   },
   "homepage": {
     "title": "WebInfo®",
@@ -949,5 +950,17 @@
       "VacationHistory": "Błąd podczas ładowania historii urlopów",
       "CancelledHistory": "Błąd podczas ładowania historii anulowanych urlopów"
     }
+  },
+  "mobileApps": {
+    "title": "Aplikacje mobilne",
+    "showQRDownload": "Pokaż kod QR (Link do pobrania aplikacji MobileInfo)",
+    "showQRPersonalizedAndroid": "Pokaż kod QR (Aktywacja personalizowanej aplikacji) (Android)",
+    "showQRPersonalizedIOS": "Pokaż kod QR (Aktywacja personalizowanej aplikacji) (IOS)",
+    "showQRNonPersonalized": "Pokaż kod QR (Aktywacja niespersonalizowanej aplikacji)",
+    "downloadApp": "Link do pobrania aplikacji MobileInfo",
+    "activatePersonalizedAndroid": "Aktywacja personalizowanej aplikacji (Android)",
+    "activatePersonalizedIOS": "Aktywacja personalizowanej aplikacji (IOS)",
+    "activateNonPersonalized": "Aktywacja niespersonalizowanej aplikacji",
+    "mockQRCode": "Mock QR Code - będzie zastąpiony prawdziwym kodem"
   }
 }

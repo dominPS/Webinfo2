@@ -31,6 +31,10 @@ export const eventPath = {
     path: '/mapregistration',
     getHref: () => '/mapregistration',
   },
+  mobileapps: {
+    path: '/mobile-apps',
+    getHref: () => '/mobile-apps',
+  },
    attendancelist: {
      path: '/AttendanceList/AttendanceListJson',
      getHref: (redirectTo?: string | null | undefined) =>
