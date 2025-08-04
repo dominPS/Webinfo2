@@ -71,23 +71,10 @@ export const useVacationData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Map status numbers to readable strings
-  const mapStatus = (status: string | number | undefined): string => {
-    if (typeof status === 'string') return status;
-    
-    switch (status) {
-      case 0: return t('Vacations.Status.Planned', 'Zaplanowany');
-      case 1: return t('Vacations.Status.Submitted', 'Zgłoszony');
-      case 2: return t('Vacations.Status.Accepted', 'Zaakceptowany');
-      case 3: return t('Vacations.Status.Rejected', 'Odrzucony');
-      default: return t('Vacations.Status.Unknown', 'Nieznany');
-    }
-  };
-
-  // Transform API data to component format with safe access
+  // Transform API data to component format
   const transformedData: VacationData = {
-    limitedVacations: apiData?.VacancyInfo?.map((info, index) => ({
-      id: info.Code || `limited-${index}`,
+    limitedVacations: apiData?.VacancyInfo?.map(info => ({
+      id: info.Code || '',
       code: info.Code || '',
       parentCode: info.Parent || '',
       limit: info.Limit || 0,
@@ -95,16 +82,16 @@ export const useVacationData = () => {
       additionalInfo: `${t('Vacations.Used', 'Wykorzystane')}: ${info.Used || 0}`
     })) || [],
     
-    approvedPlan: apiData?.VacancyPlan?.Plans?.map((plan, index) => ({
-      id: plan.ID?.toString() || `plan-${index}`,
+    approvedPlan: apiData?.VacancyPlan?.Plans?.map(plan => ({
+      id: plan.ID?.toString() || '',
       absence: t('Vacations.VacationPlan', 'Plan urlopowy'),
       dateFrom: plan.From || '',
       dateTo: plan.To || '',
-      vacationRequest: mapStatus(plan.Status)
+      vacationRequest: (plan.Status || t('Vacations.Planned', 'Zaplanowany')).toString()
     })) || [],
     
-    vacationHistory: apiData?.VacancyHistory?.Vacancies?.map((vacation, index) => ({
-      id: vacation.ID?.toString() || `history-${index}`,
+    vacationHistory: apiData?.VacancyHistory?.Vacancies?.map(vacation => ({
+      id: vacation.ID?.toString() || '',
       vacationCode: vacation.AbsenceName || '',
       description: vacation.Comment || '',
       dateFrom: vacation.DateFrom || '',
@@ -112,8 +99,8 @@ export const useVacationData = () => {
       vacationDays: vacation.Days || 0
     })) || [],
     
-    cancelledHistory: apiData?.VacanciesRevoked?.map((vacation, index) => ({
-      id: vacation.ID?.toString() || `cancelled-${index}`,
+    cancelledHistory: apiData?.VacanciesRevoked?.map(vacation => ({
+      id: vacation.ID?.toString() || '',
       vacationCode: vacation.AbsenceName || '',
       description: vacation.Comment || '',
       dateFrom: vacation.DateFrom || '',
@@ -127,39 +114,10 @@ export const useVacationData = () => {
       setLoading(true);
       setError(null);
       const response = await vacationService.getVacationData();
-      console.log('Vacation data received:', response);
       setApiData(response);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : t('Vacations.Errors.LoadingData', 'Failed to fetch vacation data');
-      setError(errorMessage);
+      setError(err instanceof Error ? err.message : t('Vacations.Errors.LoadingData', 'Failed to fetch vacation data'));
       console.error('Error fetching vacation data:', err);
-      
-      // Set mock data in case of error for development
-      setApiData({
-        VacancyInfo: [
-          {
-            Code: 'WYP',
-            Name: 'Urlop wypoczynkowy',
-            Used: 10,
-            Limit: 26,
-            Left: 16
-          }
-        ],
-        VacancyHistory: {
-          Vacancies: [
-            {
-              ID: 1,
-              DateFrom: '2024-07-01',
-              DateTo: '2024-07-05',
-              Days: 5,
-              AbsenceName: 'Urlop wypoczynkowy',
-              Status: 'Zaakceptowany',
-              Comment: 'Urlop letni'
-            }
-          ]
-        },
-        VacanciesRevoked: []
-      });
     } finally {
       setLoading(false);
     }

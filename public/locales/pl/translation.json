@@ -948,8 +948,18 @@
       "LimitedVacations": "Błąd podczas ładowania urlopów limitowanych",
       "ApprovedPlan": "Błąd podczas ładowania zatwierdzonego planu urlopowego",
       "VacationHistory": "Błąd podczas ładowania historii urlopów",
-      "CancelledHistory": "Błąd podczas ładowania historii anulowanych urlopów"
-    }
+      "CancelledHistory": "Błąd podczas ładowania historii anulowanych urlopów",
+      "LoadingData": "Błąd podczas ładowania danych urlopowych"
+    },
+    "Status": {
+      "Planned": "Zaplanowany",
+      "Submitted": "Zgłoszony",
+      "Accepted": "Zaakceptowany",
+      "Rejected": "Odrzucony",
+      "Unknown": "Nieznany"
+    },
+    "Used": "Wykorzystane",
+    "VacationPlan": "Plan urlopowy"
   },
   "mobileApps": {
     "title": "Aplikacje mobilne",

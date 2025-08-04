@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import IDPFlow from './components/IDPFlow';
 import AnnualReviewHistory from './components/AnnualReviewHistory';
@@ -46,63 +47,6 @@ const ControlsGrid = styled.div`
   margin: 0 auto;
 `;
 
-const ControlButton = styled.button`
-  padding: 18px;
-  border: 2px solid ${props => props.theme.colors.primary};
-  border-radius: 10px;
-  background-color: white;
-  color: ${props => props.theme.colors.primary};
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${props => props.theme.colors.primary};
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}33;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const BackButton = styled.button`
-  margin-bottom: 12px;
-  padding: 5px 10px;
-  background-color: #126678;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  align-self: flex-start;
-  
-  &:hover {
-    background-color: #0f5459;
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
 const ContentWrapper = styled.div`
   flex: 1;
   padding-bottom: 80px;
@@ -146,9 +90,13 @@ const WorkerEvaluationPage: React.FC = () => {
     return (
       <PageContainer>
         <ContentWrapper>
-          <BackButton onClick={handleBackToDashboard}>
+          <Button 
+            variant="contained"
+            onClick={handleBackToDashboard}
+            sx={{ mb: 1.5, alignSelf: 'flex-start' }}
+          >
             ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-          </BackButton>
+          </Button>
           <IDPFlow />
         </ContentWrapper>
       </PageContainer>
@@ -160,9 +108,13 @@ const WorkerEvaluationPage: React.FC = () => {
     return (
       <PageContainer>
         <ContentWrapper>
-          <BackButton onClick={handleBackToDashboard}>
+          <Button 
+            variant="contained"
+            onClick={handleBackToDashboard}
+            sx={{ mb: 1.5, alignSelf: 'flex-start' }}
+          >
             ← {t('common.backToDashboard', 'Powrót do Dashboard')}
-          </BackButton>
+          </Button>
           <AnnualReviewHistory />
         </ContentWrapper>
       </PageContainer>
@@ -191,21 +143,33 @@ const WorkerEvaluationPage: React.FC = () => {
         </PageHeader>
 
         <ControlsGrid>
-          <ControlButton onClick={() => handleControlClick('whiteValues')}>
+          <Button 
+            variant="outlined"
+            onClick={() => handleControlClick('whiteValues')}
+          >
             {t('evaluation.worker.controls.whiteValues', 'Company Values')}
-          </ControlButton>
+          </Button>
           
-          <ControlButton onClick={() => handleControlClick('selfAssessment')}>
+          <Button 
+            variant="outlined"
+            onClick={() => handleControlClick('selfAssessment')}
+          >
             {t('evaluation.worker.controls.selfAssessment', 'Self-Assessment')}
-          </ControlButton>
+          </Button>
           
-          <ControlButton onClick={() => handleControlClick('idp')}>
+          <Button 
+            variant="outlined"
+            onClick={() => handleControlClick('idp')}
+          >
             {t('evaluation.worker.controls.idp', 'IDP (Individual Development Plan)')}
-          </ControlButton>
+          </Button>
           
-          <ControlButton onClick={() => handleControlClick('annualReview')}>
+          <Button 
+            variant="outlined"
+            onClick={() => handleControlClick('annualReview')}
+          >
             {t('evaluation.worker.controls.annualReview', 'Annual Review')}
-          </ControlButton>
+          </Button>
         </ControlsGrid>
       </ContentWrapper>
 

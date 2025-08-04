@@ -883,8 +883,18 @@
       "LimitedVacations": "Error loading limited vacations",
       "ApprovedPlan": "Error loading approved vacation plan",
       "VacationHistory": "Error loading vacation history",
-      "CancelledHistory": "Error loading cancelled vacation history"
-    }
+      "CancelledHistory": "Error loading cancelled vacation history",
+      "LoadingData": "Error loading vacation data"
+    },
+    "Status": {
+      "Planned": "Planned",
+      "Submitted": "Submitted",
+      "Accepted": "Accepted",
+      "Rejected": "Rejected",
+      "Unknown": "Unknown"
+    },
+    "Used": "Used",
+    "VacationPlan": "Vacation Plan"
   },
   "mobileApps": {
     "title": "Mobile Apps",
