@@ -973,5 +973,16 @@
     "activatePersonalizedIOS": "Aktywacja personalizowanej aplikacji (IOS)",
     "activateNonPersonalized": "Aktywacja niespersonalizowanej aplikacji",
     "mockQRCode": "Mock QR Code - będzie zastąpiony prawdziwym kodem"
+  },
+  "Worker": {
+    "EmailInfoPart1": "Jeśli chcesz usprawnić komunikację z działem HR i przyspieszyć formę otrzymywania informacji dotyczących swojego zatrudnienia możesz nam w pełni dobrowolnie podać swój prywatny adres poczty elektronicznej.",
+    "EmailInfoPart2": "Adres poczty elektronicznej będzie przetwarzany wyłącznie w celach, na które wyrazisz zgodę, a wysyłka materiałów dotyczących zatrudnienia będzie trwać do czasu jej cofnięcia.",
+    "EmailInfoPart3": "Zgoda może zostać cofnięta w każdym czasie bez podawania przyczyny. Cofnięcie zgody nie ma wpływu na przetwarzan ie danych osobowych przed jej cofnięciem.",
+    "EmailInfoPart4": "Pamiętaj - podanie danych jest w 100% dobrowolne, a ich niepodanie spowoduje jedynie brak zmiany dotychczasowej formy kontaktu z działem HR w celu uzyskania informacji dotyczących zatrudnienia.",
+    "ConsentOnDemand": "Zgoda na otrzymywanie powiadomień na żądanie",
+    "ConsentMailing": "Zgoda na otrzymywanie wiadomości systemowych",
+    "ConsentMailingPit": "Zgoda na otrzymywanie informacji PIT",
+    "ConsentOveral": "Zgoda na przetwarzanie danych osobowych",
+    "ConsentSms": "Zgoda na otrzymywanie wiadomości SMS"
   }
 }

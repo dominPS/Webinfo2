@@ -40,6 +40,17 @@
     "en": "English",
     "pl": "Polish"
   },
+  "Worker": {
+    "EmailInfoPart1": "If you want to improve communication with the HR department and speed up the way you receive information regarding your employment, you can voluntarily provide us with your private email address.",
+    "EmailInfoPart2": "The email address will be processed solely for the purposes you consent to, and employment-related materials will be sent until that consent is withdrawn.",
+    "EmailInfoPart3": "Consent may be withdrawn at any time without providing a reason. Withdrawal of consent does not affect the legality of data processing before the withdrawal.",
+    "EmailInfoPart4": "Please note – providing your data is 100% voluntary, and not providing it will simply result in no change to the current method of communication with the HR department regarding employment information.",
+    "ConsentOnDemand": "Consent to receive on-demand notifications",
+    "ConsentMailing": "Consent to receive system messages",
+    "ConsentMailingPit": "Consent to receive PIT information",
+    "ConsentOveral": "Consent to personal data processing",
+    "ConsentSms": "Consent to receive SMS messages"
+  },
   
   "AttendanceList": {
     "Title": "Attendance List",
