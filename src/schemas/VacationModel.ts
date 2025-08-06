@@ -18,10 +18,18 @@ export const VacancySchema = z.object({
   DateFrom: z.string().optional(), // Date as ISO string
   DateTo: z.string().optional(), // Date as ISO string
   Days: z.number().optional(),
+  VacTimeView: z.union([z.string(), z.number()]).optional(), // Can be string or number from API
   AbsenceName: z.string().optional(),
-  Status: z.union([z.string(), z.number()]).optional(), // Can be string or number
+  AbsenceCode: z.string().optional(), // Alternative field name
+  Code: z.string().optional(), // Alternative field name
+  Name: z.string().optional(), // Alternative field name
+  Description: z.string().optional(), // Alternative field name
   Comment: z.string().nullable().optional(),
-});
+  Reason: z.string().optional(), // Additional field for description
+  Note: z.string().optional(), // Additional field for description
+  Details: z.string().optional(), // Additional field for description
+  Status: z.union([z.string(), z.number()]).optional(), // Can be string or number
+}).passthrough(); // Allow additional fields from API
 
 // Range schema for vacation plans
 export const RangeSchema = z.object({

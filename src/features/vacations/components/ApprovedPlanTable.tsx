@@ -31,10 +31,10 @@ export const ApprovedPlanTable: React.FC<ApprovedPlanTableProps> = ({ vacations 
           ) : (
             vacations.map((vacation) => (
               <TableRow key={vacation.id}>
-                <TableCell>{vacation.absence}</TableCell>
-                <TableCell>{vacation.dateFrom}</TableCell>
-                <TableCell>{vacation.dateTo}</TableCell>
-                <TableCell>{vacation.vacationRequest}</TableCell>
+                <TableCell align="center">{vacation.absence}</TableCell>
+                <TableCell align="center">{vacation.dateFrom}</TableCell>
+                <TableCell align="center">{vacation.dateTo}</TableCell>
+                <TableCell align="center">{vacation.vacationRequest}</TableCell>
               </TableRow>
             ))
           )}

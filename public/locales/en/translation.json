@@ -875,7 +875,8 @@
           "VacationCode": "Vacation Code",
           "Description": "Description",
           "DateFrom": "Date From",
-          "DateTo": "Date To"
+          "DateTo": "Date To",
+          "VacationDays": "Vacation Days"
         }
       }
     },

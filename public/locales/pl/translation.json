@@ -940,7 +940,8 @@
           "VacationCode": "Kod urlopu",
           "Description": "Opis",
           "DateFrom": "Data od",
-          "DateTo": "Data do"
+          "DateTo": "Data do",
+          "VacationDays": "Dni urlopu"
         }
       }
     },

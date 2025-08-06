@@ -32,11 +32,11 @@ export const LimitedVacationsTable: React.FC<LimitedVacationsTableProps> = ({ va
           ) : (
             vacations.map((vacation) => (
               <TableRow key={vacation.id}>
-                <TableCell>{vacation.code}</TableCell>
-                <TableCell>{vacation.parentCode}</TableCell>
-                <TableCell>{vacation.limit}</TableCell>
-                <TableCell>{vacation.available}</TableCell>
-                <TableCell>{vacation.additionalInfo}</TableCell>
+                <TableCell align="center">{vacation.code}</TableCell>
+                <TableCell align="center">{vacation.parentCode}</TableCell>
+                <TableCell align="center">{vacation.limit}</TableCell>
+                <TableCell align="center">{vacation.available}</TableCell>
+                <TableCell align="center">{vacation.additionalInfo}</TableCell>
               </TableRow>
             ))
           )}

@@ -32,11 +32,11 @@ export const VacationHistoryTable: React.FC<VacationHistoryTableProps> = ({ vaca
           ) : (
             vacations.map((vacation) => (
               <TableRow key={vacation.id}>
-                <TableCell>{vacation.vacationCode}</TableCell>
-                <TableCell>{vacation.description}</TableCell>
-                <TableCell>{vacation.dateFrom}</TableCell>
-                <TableCell>{vacation.dateTo}</TableCell>
-                <TableCell>{vacation.vacationDays}</TableCell>
+                <TableCell align="center">{vacation.vacationCode}</TableCell>
+                <TableCell align="center">{vacation.description}</TableCell>
+                <TableCell align="center">{vacation.dateFrom}</TableCell>
+                <TableCell align="center">{vacation.dateTo}</TableCell>
+                <TableCell align="center">{vacation.vacationDays}</TableCell>
               </TableRow>
             ))
           )}
