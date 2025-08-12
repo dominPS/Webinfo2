@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
 import {
     Box,
-    Table,
-    TableBody,
-    TableRow,
-    TableCell,
     Typography,
     TextField,
     FormControlLabel,
     Checkbox,
     Button,
     FormGroup,
-    Alert,
     CircularProgress,
     useTheme
 } from '@mui/material';
 import {
     Email as EmailIcon,
     Phone as PhoneIcon,
-    Save as SaveIcon,
-    Info as InfoIcon
+    Save as SaveIcon
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import type { WorkerModel } from '../../schemas/WorkerModel';
@@ -71,7 +65,7 @@ export const EmailConsentComponent: React.FC<EmailConsentComponentProps> = ({
         try {
             await onSave(formData);
         } catch (error) {
-            console.error('B��d podczas zapisywania zg�d email:', error);
+            console.error('B��d podczas zapisywania zg�d email:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -92,178 +86,145 @@ export const EmailConsentComponent: React.FC<EmailConsentComponentProps> = ({
     return (
         <Box
             sx={{
-                width: '85%', // ZMNIEJSZONA SZEROKO�� O 15% (mniej drastycznie ni� 30%)
-                maxWidth: '500px', // Wi�ksza maksymalna szeroko�� dla lepszej czytelno�ci
-                margin: '0 auto' // Centrowanie komponentu
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
             }}
         >
-            <Table
-                size="small"
-                sx={{
-                    '& .MuiTableCell-root': {
-                        fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
+            {/* Górna sekcja - Email i Telefon obok siebie */}
+            <Box sx={{ display: 'flex', gap: 2, height: 'auto' }}>
+                {/* Lewa strona - Email */}
+                <Box sx={{ flex: 1 }}>
+                    <Typography variant="subtitle2" sx={{ 
+                        fontWeight: 600, 
+                        mb: 1, 
                         fontSize: '10pt',
-                        fontWeight: 300,
-                        letterSpacing: '0.02em',
-                        lineHeight: '12pt',
-                        padding: '8px 12px',
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                        color: theme.palette.text.primary
-                    }
-                }}
-            >
-                <TableBody>
-                    {/* Email Field */}
-                    <TableRow>
-                        <TableCell
-                            component="th"
-                            sx={{
-                                fontWeight: 600,
-                                backgroundColor: theme.palette.mode === 'dark'
-                                    ? theme.palette.grey[800]
-                                    : theme.palette.grey[50],
-                                width: '30%'
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <EmailIcon color="primary" fontSize="small" />
-                                {t('Worker.Email', 'Email')}:
-                            </Box>
-                        </TableCell>
-                        <TableCell>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                size="small"
-                                value={formData.email}
-                                onChange={(e) => handleInputChange('email', e.target.value)}
-                                placeholder={t('Worker.EmailPlaceholder', 'Wprowad� adres email')}
-                                type="email"
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        fontSize: '10pt',
-                                        fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
-                                        height: '32px'
-                                    }
-                                }}
-                            />
-                        </TableCell>
-                    </TableRow>
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 0.5 
+                    }}>
+                        <EmailIcon color="primary" fontSize="small" />
+                        {t('Worker.Email', 'Email')}
+                    </Typography>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        placeholder={t('Worker.EmailPlaceholder', 'Wprowadź adres email')}
+                        type="email"
+                        sx={{
+                            mb: 2,
+                            '& .MuiOutlinedInput-root': {
+                                fontSize: '9pt',
+                                fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
+                                height: '32px'
+                            }
+                        }}
+                    />
+                    <Typography variant="body2" sx={{ 
+                        fontSize: '8pt', 
+                        lineHeight: 1.3,
+                        color: theme.palette.text.secondary,
+                        textAlign: 'left'
+                    }}>
+                        Jeśli chcesz usprawnić komunikację z działem HR i przyspieszyć formę otrzymywania informacji dotyczących swojego zatrudnienia możesz nam w pełni dobrowolnie podać swój prywatny adres poczty elektronicznej.
+                        <br /><br />
+                        Adres poczty elektronicznej będzie przetwarzany wyłącznie w celach, na które wyrazisz zgodę, a wysyłka materiałów dotyczących zatrudnienia będzie trwać do czasu jej cofnięcia.
+                        <br /><br />
+                        Zgoda może zostać cofnięta w każdym czasie bez podawania przyczyny. Cofnięcie zgody nie ma wpływu na przetwarzanie danych osobowych przed jej cofnięciem.
+                        <br /><br />
+                        Pamiętaj - podanie danych jest w 100% dobrowolne, a ich niepodanie spowoduje jedynie brak zmiany dotychczasowej formy kontaktu z działem HR w celu uzyskania informacji dotyczących zatrudnienia.
+                    </Typography>
+                </Box>
 
-                    {/* Phone Field */}
-                    <TableRow>
-                        <TableCell
-                            component="th"
-                            sx={{
-                                fontWeight: 600,
-                                backgroundColor: theme.palette.mode === 'dark'
-                                    ? theme.palette.grey[800]
-                                    : theme.palette.grey[50]
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <PhoneIcon color="primary" fontSize="small" />
-                                {t('Worker.Phone', 'Telefon')}:
-                            </Box>
-                        </TableCell>
-                        <TableCell>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                size="small"
-                                value={formData.phone}
-                                onChange={(e) => handleInputChange('phone', e.target.value)}
-                                placeholder={t('Worker.PhonePlaceholder', 'Wprowad� numer telefonu')}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        fontSize: '10pt',
-                                        fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
-                                        height: '32px'
-                                    }
-                                }}
-                            />
-                        </TableCell>
-                    </TableRow>
-
-                    {/* Consent Information and Checkboxes */}
-                    <TableRow>
-                        <TableCell colSpan={2} sx={{ pt: 2 }}>
-                            <Alert
-                                severity="info"
-                                icon={<InfoIcon />}
-                                sx={{
-                                    mb: 2,
-                                    '& .MuiAlert-message': {
-                                        fontSize: '9pt',
-                                        lineHeight: 1.3
-                                    }
-                                }}
-                            >
-                                <Typography variant="body2" sx={{ mb: 0.5, fontSize: '9pt' }}>
-                                    {t('Worker.EmailInfoPart1')}
-                                </Typography>
-                                <Typography variant="body2" sx={{ mb: 0.5, fontSize: '9pt' }}>
-                                    {t('Worker.EmailInfoPart2')}
-                                </Typography>
-                                <Typography variant="body2" sx={{ mb: 0.5, fontSize: '9pt' }}>
-                                    {t('Worker.EmailInfoPart3')}
-                                </Typography>
-                                <Typography variant="body2" sx={{ fontSize: '9pt' }}>
-                                    {t('Worker.EmailInfoPart4')}
-                                </Typography>
-                            </Alert>
-
-                            <FormGroup sx={{ mb: 2 }}>
-                                {[
-                                    { key: 'consent_OnDemand', label: t('Worker.ConsentOnDemand') },
-                                    { key: 'consent_Mailing', label: t('Worker.ConsentMailing') },
-                                    { key: 'consent_MailingPit', label: t('Worker.ConsentMailingPit') },
-                                    { key: 'consent_MailingOveral', label: t('Worker.ConsentOveral') },
-                                    { key: 'consent_Sms', label: t('Worker.ConsentSms') }
-                                ].map((consent) => (
-                                    <FormControlLabel
-                                        key={consent.key}
-                                        control={
-                                            <Checkbox
-                                                checked={formData[consent.key as keyof EmailConsentFormData] as boolean}
-                                                onChange={(e) => handleInputChange(consent.key as keyof EmailConsentFormData, e.target.checked)}
-                                                color="primary"
-                                                size="small"
-                                            />
-                                        }
-                                        label={
-                                            <Typography variant="body2" sx={{ fontSize: '10pt' }}>
-                                                {consent.label}
-                                            </Typography>
-                                        }
-                                        sx={{ mb: 0.5 }}
+                {/* Prawa strona - Telefon */}
+                <Box sx={{ flex: 1 }}>
+                    <Typography variant="subtitle2" sx={{ 
+                        fontWeight: 600, 
+                        mb: 1, 
+                        fontSize: '10pt',
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 0.5 
+                    }}>
+                        <PhoneIcon color="primary" fontSize="small" />
+                        {t('Worker.Phone', 'Telefon')}
+                    </Typography>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder={t('Worker.PhonePlaceholder', 'Wprowadź numer telefonu')}
+                        sx={{
+                            mb: 2,
+                            '& .MuiOutlinedInput-root': {
+                                fontSize: '9pt',
+                                fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
+                                height: '32px'
+                            }
+                        }}
+                    />
+                    
+                    {/* Zgody na przetwarzanie danych */}
+                    <Typography variant="subtitle2" sx={{ 
+                        fontWeight: 600, 
+                        mb: 1.5, 
+                        fontSize: '10pt'
+                    }}>
+                        Zgody na przetwarzanie danych
+                    </Typography>
+                    
+                    <FormGroup sx={{ mb: 2 }}>
+                        {[
+                            { key: 'consent_OnDemand', label: t('Worker.ConsentOnDemand') },
+                            { key: 'consent_Mailing', label: t('Worker.ConsentMailing') },
+                            { key: 'consent_MailingPit', label: t('Worker.ConsentMailingPit') },
+                            { key: 'consent_MailingOveral', label: t('Worker.ConsentOveral') },
+                            { key: 'consent_Sms', label: t('Worker.ConsentSms') }
+                        ].map((consent) => (
+                            <FormControlLabel
+                                key={consent.key}
+                                control={
+                                    <Checkbox
+                                        checked={formData[consent.key as keyof EmailConsentFormData] as boolean}
+                                        onChange={(e) => handleInputChange(consent.key as keyof EmailConsentFormData, e.target.checked)}
+                                        color="primary"
+                                        size="small"
+                                        sx={{ padding: '4px' }}
                                     />
-                                ))}
-                            </FormGroup>
+                                }
+                                label={
+                                    <Typography variant="body2" sx={{ fontSize: '9pt', lineHeight: 1.3 }}>
+                                        {consent.label}
+                                    </Typography>
+                                }
+                                sx={{ mb: 0.5, marginLeft: 0 }}
+                            />
+                        ))}
+                    </FormGroup>
+                </Box>
+            </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Button
-                                    variant="contained"
-                                    size="small"
-                                    startIcon={isSubmitting ? <CircularProgress size={12} /> : <SaveIcon />}
-                                    onClick={handleSubmit}
-                                    disabled={isSubmitting || !isFormChanged()}
-                                    sx={{
-                                        fontFamily: "'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
-                                        fontWeight: 400,
-                                        fontSize: '10pt'
-                                    }}
-                                >
-                                    {isSubmitting
-                                        ? t('Common.Saving', 'Zapisywanie...')
-                                        : t('Common.Save', 'Zapisz zmiany')
-                                    }
-                                </Button>
-                            </Box>
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
+            {/* Dolna sekcja - Przycisk zatwierdzania */}
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 'auto' }}>
+                <Button
+                    variant="contained"
+                    startIcon={<SaveIcon />}
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || !isFormChanged()}
+                >
+                    {isSubmitting
+                        ? t('Common.Saving', 'Zapisywanie...')
+                        : t('Common.Save', 'Zatwierdź zmiany')
+                    }
+                </Button>
+            </Box>
         </Box>
     );
 };

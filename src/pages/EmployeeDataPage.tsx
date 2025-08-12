@@ -252,73 +252,112 @@ export const EmployeeDataPage: React.FC = () => {
                 </Box>
             </Paper>
             <Box key={refreshKey}>
-                {/* Render EmailConsentComponent and WorkerInfoComponent side by side if both are visible and adjacent */}
+                {/* Render three worker components in one row */}
                 {(() => {
+                    const personalInfoComponent = visibleComponents.find(c => c.type === 'personalInfo');
+                    const emailConsentComponent = visibleComponents.find(c => c.type === 'emailConsent');
+                    const timeRegistrationComponent = visibleComponents.find(c => c.type === 'timeRegistration');
+                    
+                    // If we have all three main components, render them in one row
+                    if (personalInfoComponent && emailConsentComponent && timeRegistrationComponent) {
+                        return (
+                            <Box key={`worker-components-row-${refreshKey}`} display="flex" gap={1.5} alignItems="stretch" mb={2.5} sx={{ maxWidth: '100%' }}>
+                                {/* Informacje osobowe - 30% width */}
+                                <Box flex="0 0 30%" display="flex" flexDirection="column">
+                                    <Card sx={{ 
+                                        height: '524px', 
+                                        borderRadius: '18px',
+                                        '& .MuiCardContent-root': {
+                                            padding: '24px',
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }
+                                    }}>
+                                        <CardContent>
+                                            <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', fontSize: '1rem' }}>
+                                                <Box component="span" mr={1} display="flex" alignItems="center">
+                                                    {personalInfoComponent.icon}
+                                                </Box>
+                                                {t(personalInfoComponent.title, personalInfoComponent.title)}
+                                            </Typography>
+                                            <Box sx={{ flex: 1, overflow: 'auto' }}>
+                                                <WorkerInfoComponent data={data} />
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+
+                                {/* Zgody email i kontakt - 40% width */}
+                                <Box flex="0 0 40%" display="flex" flexDirection="column">
+                                    <Card sx={{ 
+                                        height: '524px', 
+                                        borderRadius: '18px',
+                                        '& .MuiCardContent-root': {
+                                            padding: '24px',
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }
+                                    }}>
+                                        <CardContent>
+                                            <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', fontSize: '1rem' }}>
+                                                <Box component="span" mr={1} display="flex" alignItems="center">
+                                                    {emailConsentComponent.icon}
+                                                </Box>
+                                                {t(emailConsentComponent.title, emailConsentComponent.title)}
+                                            </Typography>
+                                            <Box sx={{ flex: 1, overflow: 'auto' }}>
+                                                <EmailConsentComponent data={data} onSave={handleEmailConsentSave} />
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+
+                                {/* Rejestracja czasu pracy - 30% width */}
+                                <Box flex="0 0 30%" display="flex" flexDirection="column">
+                                    <Card sx={{ 
+                                        height: '524px', 
+                                        borderRadius: '18px',
+                                        '& .MuiCardContent-root': {
+                                            padding: '24px',
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }
+                                    }}>
+                                        <CardContent>
+                                            <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', fontSize: '1rem' }}>
+                                                <Box component="span" mr={1} display="flex" alignItems="center">
+                                                    {timeRegistrationComponent.icon}
+                                                </Box>
+                                                {t(timeRegistrationComponent.title, timeRegistrationComponent.title)}
+                                            </Typography>
+                                            <Box sx={{ flex: 1, overflow: 'auto' }}>
+                                                <BeginEndPartial data={data} onRegistration={handleRegistration} />
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            </Box>
+                        );
+                    }
+                    
+                    // Fallback for other components or missing components
                     const items = [];
                     let i = 0;
                     while (i < visibleComponents.length) {
                         const curr = visibleComponents[i];
-                        const next = visibleComponents[i + 1];
-                        if (
-                            curr.type === 'emailConsent' &&
-                            next && next.type === 'personalInfo'
-                        ) {
-                            // Render both side by side with equal height
-                            items.push(
-                                <Box key={`emailConsent-personalInfo-${refreshKey}`} display="flex" gap={2} alignItems="stretch" mb={2.5}>
-                                    <Box flex={1} display="flex" flexDirection="column">
-                                        <Card sx={{ height: '100%' }}>
-                                            <CardContent sx={{ height: '100%' }}>
-                                                <Typography>
-                                                    <Box component="span" display="inline-flex" alignItems="center">
-                                                        <Box component="span" mr={1} display="flex" alignItems="center">
-                                                            {curr.icon}
-                                                        </Box>
-                                                        {t(curr.title, curr.title)}
-                                                    </Box>
-                                                </Typography>
-                                                <EmailConsentComponent data={data} onSave={handleEmailConsentSave} />
-                                            </CardContent>
-                                        </Card>
-                                    </Box>
-                                    <Box flex={1} display="flex" flexDirection="column">
-                                        <Card sx={{ height: '100%' }}>
-                                            <CardContent sx={{ height: '100%' }}>
-                                                <Typography>
-                                                    <Box component="span" display="inline-flex" alignItems="center">
-                                                        <Box component="span" mr={1} display="flex" alignItems="center">
-                                                            {next.icon}
-                                                        </Box>
-                                                        {t(next.title, next.title)}
-                                                    </Box>
-                                                </Typography>
-                                                <WorkerInfoComponent data={data} />
-                                            </CardContent>
-                                        </Card>
-                                    </Box>
-                                </Box>
-                            );
-                            i += 2;
+                        
+                        // Skip the three main components if they were already rendered above
+                        if (personalInfoComponent && emailConsentComponent && timeRegistrationComponent &&
+                            (curr.type === 'personalInfo' || curr.type === 'emailConsent' || curr.type === 'timeRegistration')) {
+                            i++;
                             continue;
                         }
-                        // Render single component as before
+                        
                         let content;
                         switch (curr.type) {
-                            case 'emailConsent':
-                                content = (
-                                    <EmailConsentComponent data={data} onSave={handleEmailConsentSave} />
-                                );
-                                break;
-                            case 'personalInfo':
-                                content = (
-                                    <WorkerInfoComponent data={data} />
-                                );
-                                break;
-                            case 'timeRegistration':
-                                content = (
-                                    <BeginEndPartial data={data} onRegistration={handleRegistration} />
-                                );
-                                break;
                             case 'zoneChange':
                                 content = (
                                     <ZoneChangeComponent data={data} onZoneChange={handleZoneChange} />
@@ -332,23 +371,24 @@ export const EmployeeDataPage: React.FC = () => {
                             default:
                                 content = null;
                         }
-                        items.push(
-                            <Box key={`${curr.type}-${refreshKey}`}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography>
-                                            <Box component="span" display="inline-flex" alignItems="center">
+                        
+                        if (content) {
+                            items.push(
+                                <Box key={`${curr.type}-${refreshKey}`} mb={2.5}>
+                                    <Card sx={{ borderRadius: '18px' }}>
+                                        <CardContent sx={{ padding: '30px' }}>
+                                            <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
                                                 <Box component="span" mr={1} display="flex" alignItems="center">
                                                     {curr.icon}
                                                 </Box>
                                                 {t(curr.title, curr.title)}
-                                            </Box>
-                                        </Typography>
-                                        {content}
-                                    </CardContent>
-                                </Card>
-                            </Box>
-                        );
+                                            </Typography>
+                                            {content}
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            );
+                        }
                         i++;
                     }
                     return items;

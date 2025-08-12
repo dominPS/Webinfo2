@@ -17,8 +17,6 @@ import {
     IconButton
 } from '@mui/material';
 import {
-    DarkMode as DarkModeIcon,
-    LightMode as LightModeIcon,
     Warning as WarningIcon,
     Schedule as ScheduleIcon,
     WorkOff as WorkOffIcon,
@@ -163,36 +161,11 @@ export const BeginEndPartial: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation();
     const theme = useTheme();
-    const [isDarkMode, setIsDarkMode] = React.useState(
-        localStorage.getItem('theme-mode') === 'dark' ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
-
-    React.useEffect(() => {
-        localStorage.setItem('theme-mode', isDarkMode ? 'dark' : 'light');
-    }, [isDarkMode]);
 
     const handleRegistration = (mode: string, scheduleDate: string) => {
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         const params = `id=${scheduleDate};mode=${mode};gen=${timestamp}`;
         onRegistration?.(params);
-    };
-
-    const toggleDarkMode = () => {
-        setIsDarkMode(prev => !prev);
-    };
-
-    const getHeaderBackgroundColor = (mode: string): string => {
-        const isLight = !isDarkMode;
-        const backgrounds: Record<string, string> = {
-            'bg-header-n': isLight ? theme.palette.grey[100] : theme.palette.grey[800],
-            'bg-header-r': isLight ? theme.palette.grey[300] : theme.palette.grey[700],
-            'bg-header-nn': isLight ? theme.palette.grey[50] : theme.palette.grey[900],
-            'n': isLight ? theme.palette.grey[100] : theme.palette.grey[800],
-            'r': isLight ? theme.palette.grey[300] : theme.palette.grey[700],
-            'nn': isLight ? theme.palette.grey[50] : theme.palette.grey[900]
-        };
-        return backgrounds[mode] || (isLight ? theme.palette.grey[100] : theme.palette.grey[800]);
     };
 
     const getDayTypeColor = (dayType: string) => {
@@ -484,6 +457,141 @@ export const BeginEndPartial: React.FC<Props> = ({
         return null;
     };
 
+    const renderScheduleRowsAsCards = () => {
+        const schedules = data.WorkerRegModel?.Schedule;
+
+        if (!schedules?.length) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={2} align="center">
+                        <Alert severity="info" sx={{ fontSize: '0.875rem' }}>
+                            {t('Worker.NeedScheduleToStartWork')}
+                        </Alert>
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
+        // Helper to map DayType number to string
+        const mapDayType = (dayType: any): "Working" | "DayOff" | "SundayOrHoliday" => {
+            if (typeof dayType === 'string') return dayType as any;
+            switch (dayType) {
+                case 0:
+                case 'Working':
+                    return "Working";
+                case 1:
+                case 'DayOff':
+                    return "DayOff";
+                case 2:
+                case 'SundayOrHoliday':
+                    return "SundayOrHoliday";
+                default:
+                    return "Working";
+            }
+        };
+
+        return schedules.map((schedule, idx) => {
+            // Map DayType and Date to expected types
+            let safeDate = '';
+            if (typeof schedule.Date === 'string') {
+                const d = new Date(schedule.Date);
+                safeDate = isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10);
+            } else if (schedule.Date instanceof Date) {
+                safeDate = isNaN(schedule.Date.getTime()) ? '' : schedule.Date.toISOString().slice(0, 10);
+            } else {
+                safeDate = '';
+            }
+            
+            const mappedSchedule: ScheduleItem = {
+                ...schedule,
+                DayType: mapDayType(schedule.DayType),
+                Date: safeDate,
+                ScheduleText: schedule.ScheduleText || '',
+                ScheduleAllowedTo: schedule.ScheduleAllowedTo || '',
+                DayTypeAbsenceShort: schedule.DayTypeAbsenceShort || '',
+                AbsenceCode: schedule.AbsenceCode || undefined,
+                IsWorking: Boolean(schedule.IsWorking),
+                IsAllowedTime: Boolean(schedule.IsAllowedTime)
+            };
+
+            return (
+                <React.Fragment key={idx}>
+                    {/* Grafik row */}
+                    <TableRow>
+                        <TableCell component="th" sx={{
+                            fontWeight: 600,
+                            backgroundColor: theme.palette.mode === 'dark'
+                                ? theme.palette.grey[800]
+                                : theme.palette.grey[50],
+                            width: '35%'
+                        }}>
+                            {t('Columns.Col_Schedule')}
+                        </TableCell>
+                        <TableCell>
+                            {mappedSchedule.ScheduleText}
+                        </TableCell>
+                    </TableRow>
+                    
+                    {/* Status row */}
+                    <TableRow>
+                        <TableCell component="th" sx={{
+                            fontWeight: 600,
+                            backgroundColor: theme.palette.mode === 'dark'
+                                ? theme.palette.grey[800]
+                                : theme.palette.grey[50]
+                        }}>
+                            {t('Columns.Col_Status')}
+                        </TableCell>
+                        <TableCell>
+                            {renderAllowedWorkingTime(mappedSchedule)}
+                        </TableCell>
+                    </TableRow>
+                    
+                    {/* Typ dnia row */}
+                    <TableRow>
+                        <TableCell component="th" sx={{
+                            fontWeight: 600,
+                            backgroundColor: theme.palette.mode === 'dark'
+                                ? theme.palette.grey[800]
+                                : theme.palette.grey[50]
+                        }}>
+                            {t('Columns.Col_DayType')}
+                        </TableCell>
+                        <TableCell>
+                            {renderStatus(mappedSchedule)}
+                        </TableCell>
+                    </TableRow>
+                    
+                    {/* Action button row */}
+                    <TableRow>
+                        <TableCell component="th" sx={{
+                            fontWeight: 600,
+                            backgroundColor: theme.palette.mode === 'dark'
+                                ? theme.palette.grey[800]
+                                : theme.palette.grey[50]
+                        }}>
+                            Akcje
+                        </TableCell>
+                        <TableCell>
+                            {renderActionButton(mappedSchedule)}
+                        </TableCell>
+                    </TableRow>
+                    
+                    {/* Separator row between records */}
+                    {idx < schedules.length - 1 && (
+                        <TableRow>
+                            <TableCell colSpan={2} sx={{ 
+                                height: '8px',
+                                borderBottom: `2px solid ${theme.palette.divider}`,
+                                padding: 0
+                            }} />
+                        </TableRow>
+                    )}
+                </React.Fragment>
+            );
+        });
+    };
+
     const renderScheduleRows = () => {
         const schedules = data.WorkerRegModel?.Schedule;
 
@@ -618,19 +726,6 @@ export const BeginEndPartial: React.FC<Props> = ({
 
     return (
         <Box id="beginEndPartial">
-            {/* Dark Mode Toggle */}
-            <Box>
-                <Tooltip title={`Przełącz na tryb ${isDarkMode ? 'jasny' : 'ciemny'}`}>
-                    <IconButton
-                        onClick={toggleDarkMode}
-                        color="primary"
-                        size="small"
-                    >
-                        {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
-                    </IconButton>
-                </Tooltip>
-            </Box>
-
             {/* Message display */}
             {data.WorkerRegModel?.Message && (
                 <Alert severity="info">
@@ -655,26 +750,22 @@ export const BeginEndPartial: React.FC<Props> = ({
                 </Box>
             )}
 
-            {/* Table with default MUI styling */}
+            {/* Table with row-based layout */}
             <Paper>
-                <Table>
+                <Table size="small" sx={{ 
+                    '& .MuiTableCell-root': {
+                        fontFamily: "'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif",
+                        fontSize: '9pt',
+                        fontWeight: 300,
+                        letterSpacing: '0.02em',
+                        lineHeight: '11pt',
+                        padding: '6px 8px',
+                        borderBottom: `1px solid ${theme.palette.divider}`,
+                        color: theme.palette.text.primary
+                    }
+                }}>
                     <TableBody>
-                        {/* Header row */}
-                        <TableRow>
-                            <TableCell component="th">
-                                {t('Columns.Col_Schedule')}
-                            </TableCell>
-                            <TableCell component="th">
-                                {t('Columns.Col_Status')}
-                            </TableCell>
-                            <TableCell component="th">
-                                {t('Columns.Col_DayType')}
-                            </TableCell>
-                            <TableCell component="th" />
-                        </TableRow>
-
-                        {/* Schedule rows */}
-                        {renderScheduleRows()}
+                        {renderScheduleRowsAsCards()}
                     </TableBody>
                 </Table>
             </Paper>

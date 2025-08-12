@@ -49,7 +49,13 @@
     "ConsentMailing": "Consent to receive system messages",
     "ConsentMailingPit": "Consent to receive PIT information",
     "ConsentOveral": "Consent to personal data processing",
-    "ConsentSms": "Consent to receive SMS messages"
+    "ConsentSms": "Consent to receive SMS messages",
+    "NoAllowedWorkingTime": "No allowed working time"
+  },
+  "Columns": {
+    "Col_Schedule": "Schedule",
+    "Col_Status": "Status",
+    "Col_DayType": "Day Type"
   },
   
   "AttendanceList": {

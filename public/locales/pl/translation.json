@@ -983,6 +983,12 @@
     "ConsentMailing": "Zgoda na otrzymywanie wiadomości systemowych",
     "ConsentMailingPit": "Zgoda na otrzymywanie informacji PIT",
     "ConsentOveral": "Zgoda na przetwarzanie danych osobowych",
-    "ConsentSms": "Zgoda na otrzymywanie wiadomości SMS"
+    "ConsentSms": "Zgoda na otrzymywanie wiadomości SMS",
+    "NoAllowedWorkingTime": "Brak dozwolonego czasu pracy"
+  },
+  "Columns": {
+    "Col_Schedule": "Grafik",
+    "Col_Status": "Status", 
+    "Col_DayType": "Typ dnia"
   }
 }
