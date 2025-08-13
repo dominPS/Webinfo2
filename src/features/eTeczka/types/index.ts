@@ -1,5 +1,5 @@
 // Upload workflow types
-export type UploadStep = 'employee' | 'upload' | 'split' | 'category' | 'preview';
+export type UploadStep = 'employee' | 'upload' | 'split' | 'category' | 'preview' | 'signing';
 
 export interface UploadedFile {
   id: string;
@@ -24,6 +24,7 @@ export interface DocumentRange {
   confirmedCategory?: string;
   documentType?: string;
   section?: 'A' | 'B' | 'C' | 'D' | 'E';
+  documentIndex?: string; // np. A1, A2, B1, B2, itd.
   date?: string;
   retentionPeriod?: string;
   notes?: string;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import type { DocumentRange } from '../../types';
@@ -8,127 +8,258 @@ interface CategoryAssignmentProps {
   onRangesChange: (ranges: DocumentRange[]) => void;
 }
 
-const Container = styled.div`
+const DocumentList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 `;
 
-const DocumentCard = styled.div`
+const DocumentItem = styled.div`
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
   padding: 20px;
   background-color: ${props => props.theme.colors.surface};
 `;
 
-const DocumentHeader = styled.div`
-  display: flex;
-  justify-content: between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-  gap: 16px;
-`;
-
-const DocumentInfo = styled.div`
-  flex: 1;
-`;
-
-const DocumentTitle = styled.h3`
-  font-size: 16px;
+const DocumentIndex = styled.div`
+  padding: 4px 12px;
+  background-color: #126678;
+  color: white;
+  border-radius: 16px;
+  font-size: 12px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
-  margin: 0 0 8px 0;
 `;
 
 const DocumentDetails = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 100px;
+  gap: 16px;
+  align-items: center;
   font-size: 14px;
   color: ${props => props.theme.colors.text.secondary};
 `;
 
-const CategorySection = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 16px;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const Label = styled.label`
-  font-size: 14px;
+const DocumentTitleCell = styled.div`
   font-weight: 500;
   color: ${props => props.theme.colors.text.primary};
 `;
 
-const Select = styled.select`
-  padding: 10px 12px;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 5px;
-  font-size: 14px;
-  font-family: ${props => props.theme.fonts.primary};
-  background-color: white;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
-  }
+const PagesCell = styled.div`
+  text-align: center;
+  color: ${props => props.theme.colors.text.secondary};
 `;
 
-const SuggestionBadge = styled.div`
-  display: inline-block;
-  padding: 4px 8px;
-  background-color: #fef3c7;
-  color: #92400e;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 8px;
+const IndexCell = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
 `;
 
-const AcceptSuggestionButton = styled.button`
-  padding: 4px 8px;
-  background-color: #10b981;
+const PreviewCell = styled.div`
+  text-align: center;
+`;
+
+const PreviewButton = styled.button`
+  padding: 6px 12px;
+  background-color: #126678;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 12px;
   cursor: pointer;
-  margin-left: 8px;
   
   &:hover {
-    background-color: #059669;
+    background-color: #0f5a6b;
+  }
+  
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
   }
 `;
 
-const ProgressIndicator = styled.div`
-  margin-bottom: 20px;
+const SectionBadge = styled.div<{ section: string }>`
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: ${props => {
+    switch (props.section) {
+      case 'A': return '#fef3c7';
+      case 'B': return '#d1fae5'; 
+      case 'C': return '#fecaca';
+      case 'D': return '#fed7d7';
+      case 'E': return '#e0e7ff';
+      default: return '#f3f4f6';
+    }
+  }};
+  color: ${props => {
+    switch (props.section) {
+      case 'A': return '#92400e';
+      case 'B': return '#065f46';
+      case 'C': return '#991b1b';
+      case 'D': return '#991b1b';
+      case 'E': return '#3730a3';
+      default: return '#374151';
+    }
+  }};
+`;
+
+const SummaryStats = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+`;
+
+const StatItem = styled.div`
   text-align: center;
 `;
 
-const ProgressText = styled.div`
-  font-size: 14px;
+const StatNumber = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+  color: #126678;
+`;
+
+const StatLabel = styled.div`
+  font-size: 12px;
   color: ${props => props.theme.colors.text.secondary};
-  margin-bottom: 8px;
+  margin-top: 4px;
 `;
 
-const ProgressBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background-color: ${props => props.theme.colors.border};
+// Modal styles
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ModalHeader = styled.div`
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ModalTitle = styled.h3`
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
   border-radius: 4px;
-  overflow: hidden;
+  
+  &:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+  }
 `;
 
-const ProgressFill = styled.div<{ progress: number }>`
-  height: 100%;
-  background-color: #126678;
-  width: ${props => props.progress}%;
-  transition: width 0.3s ease;
+const ModalBody = styled.div`
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+`;
+
+const ModalFooter = styled.div`
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+`;
+
+const DocumentPreviewArea = styled.div`
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  background-color: #f9fafb;
+  margin-bottom: 20px;
+`;
+
+const DocumentInfo = styled.div`
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const InfoLabel = styled.span`
+  font-weight: 500;
+  color: #374151;
+`;
+
+const InfoValue = styled.span`
+  color: #6b7280;
+`;
+
+const ModalButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  ${props => props.variant === 'primary' ? `
+    background-color: #126678;
+    color: white;
+    border: 1px solid #126678;
+    
+    &:hover {
+      background-color: #0f5a6b;
+    }
+  ` : `
+    background-color: white;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    
+    &:hover {
+      background-color: #f9fafb;
+    }
+  `}
 `;
 
 export const CategoryAssignment: React.FC<CategoryAssignmentProps> = ({
@@ -136,149 +267,128 @@ export const CategoryAssignment: React.FC<CategoryAssignmentProps> = ({
   onRangesChange
 }) => {
   const { t } = useTranslation();
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean;
+    document: DocumentRange | null;
+  }>({
+    isOpen: false,
+    document: null
+  });
 
-  // Predefiniowane kategorie dokumentów
-  const documentTypes = [
-    { value: '', label: t('eTeczka.upload.selectType', 'Wybierz typ dokumentu...') },
-    { value: 'contract', label: t('eTeczka.upload.types.contract', 'Umowa o pracę') },
-    { value: 'agreement', label: t('eTeczka.upload.types.agreement', 'Porozumienie') },
-    { value: 'rodo', label: t('eTeczka.upload.types.rodo', 'Oświadczenie RODO') },
-    { value: 'medical', label: t('eTeczka.upload.types.medical', 'Badania lekarskie') },
-    { value: 'certificate', label: t('eTeczka.upload.types.certificate', 'Certyfikaty') },
-    { value: 'training', label: t('eTeczka.upload.types.training', 'Szkolenia') },
-    { value: 'evaluation', label: t('eTeczka.upload.types.evaluation', 'Oceny pracownika') },
-    { value: 'disciplinary', label: t('eTeczka.upload.types.disciplinary', 'Procedury dyscyplinarne') },
-    { value: 'leave', label: t('eTeczka.upload.types.leave', 'Wnioski urlopowe') },
-    { value: 'other', label: t('eTeczka.upload.types.other', 'Inne') }
-  ];
+  const handlePreviewDocument = (range: DocumentRange) => {
+    setPreviewModal({
+      isOpen: true,
+      document: range
+    });
+  };
 
-  // Części akt osobowych zgodnie z polskim prawem
-  const sections = [
-    { value: '', label: t('eTeczka.upload.selectSection', 'Wybierz część akt...') },
-    { value: 'A', label: t('eTeczka.upload.sections.A', 'Część A - Dokumenty związane z zatrudnieniem') },
-    { value: 'B', label: t('eTeczka.upload.sections.B', 'Część B - Dokumenty z okresu zatrudnienia') },
-    { value: 'C', label: t('eTeczka.upload.sections.C', 'Część C - Dokumenty po rozwiązaniu stosunku pracy') },
-    { value: 'D', label: t('eTeczka.upload.sections.D', 'Część D - Dokumenty ubezpieczeniowe') },
-    { value: 'E', label: t('eTeczka.upload.sections.E', 'Część E - Dokumenty osobowe') }
-  ];
+  const closePreviewModal = () => {
+    setPreviewModal({
+      isOpen: false,
+      document: null
+    });
+  };
 
-  const updateRange = (rangeId: string, updates: Partial<DocumentRange>) => {
-    const updatedRanges = documentRanges.map(range =>
-      range.id === rangeId ? { ...range, ...updates } : range
+  // Automatyczne przypisywanie indeksów dla każdej sekcji
+  useEffect(() => {
+    const rangesWithIndexes = documentRanges.map((range, index) => {
+      if (!range.documentIndex && range.section) {
+        // Zlicz dokumenty w tej samej sekcji przed tym dokumentem
+        const sameSeccionCount = documentRanges
+          .slice(0, index)
+          .filter(r => r.section === range.section).length;
+        
+        return {
+          ...range,
+          documentIndex: `${range.section}${sameSeccionCount + 1}`
+        };
+      }
+      return range;
+    });
+
+    // Sprawdź czy są zmiany i zaktualizuj
+    const hasChanges = rangesWithIndexes.some((range, index) => 
+      range.documentIndex !== documentRanges[index].documentIndex
     );
-    onRangesChange(updatedRanges);
-  };
 
-  const acceptSuggestion = (rangeId: string, suggestion: string) => {
-    updateRange(rangeId, { confirmedCategory: suggestion });
-    
-    // Auto-mapowanie kategorii na typy dokumentów
-    let documentType = '';
-    if (suggestion.toLowerCase().includes('umowa')) {
-      documentType = 'contract';
-    } else if (suggestion.toLowerCase().includes('rodo')) {
-      documentType = 'rodo';
-    } else if (suggestion.toLowerCase().includes('badani') || suggestion.toLowerCase().includes('lekarz')) {
-      documentType = 'medical';
-    } else if (suggestion.toLowerCase().includes('certyfikat')) {
-      documentType = 'certificate';
+    if (hasChanges) {
+      onRangesChange(rangesWithIndexes);
     }
-    
-    if (documentType) {
-      updateRange(rangeId, { documentType });
-    }
+  }, [documentRanges, onRangesChange]);
+
+  // Statystyki dokumentów w każdej sekcji
+  const getSectionStats = () => {
+    const stats = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    documentRanges.forEach(range => {
+      if (range.section) {
+        stats[range.section as keyof typeof stats]++;
+      }
+    });
+    return stats;
   };
 
-  const getCompletedCount = () => {
-    return documentRanges.filter(range => range.confirmedCategory && range.section).length;
-  };
-
-  const getProgress = () => {
-    if (documentRanges.length === 0) return 0;
-    return (getCompletedCount() / documentRanges.length) * 100;
-  };
+  const stats = getSectionStats();
+  const totalDocuments = documentRanges.length;
 
   return (
-    <Container>
-      <h3>{t('eTeczka.upload.assignCategories', 'Przypisz kategorie dokumentów')}</h3>
-      
-      <ProgressIndicator>
-        <ProgressText>
-          {t('eTeczka.upload.progress', 'Postęp:')} {getCompletedCount()} / {documentRanges.length} {t('eTeczka.upload.completed', 'ukończone')}
-        </ProgressText>
-        <ProgressBar>
-          <ProgressFill progress={getProgress()} />
-        </ProgressBar>
-      </ProgressIndicator>
+    <div>
+      <h3>{t('eTeczka.upload.documentsReview', 'Przegląd dokumentów')}</h3>
+      <p style={{ color: '#757575', fontSize: '14px', margin: '0 0 20px 0' }}>
+        {t('eTeczka.upload.documentsReviewDescription', 'Sprawdź poprawność przypisania dokumentów do części akt osobowych. Następnym krokiem będzie podpisanie dokumentów podpisem kwalifikowanym.')}
+      </p>
 
-      {documentRanges.map(range => (
-        <DocumentCard key={range.id}>
-          <DocumentHeader>
-            <DocumentInfo>
-              <DocumentTitle>{range.title}</DocumentTitle>
-              <DocumentDetails>
-                {t('eTeczka.upload.pages', 'Strony')} {range.startPage}-{range.endPage}
-              </DocumentDetails>
+      {/* Statystyki */}
+      <SummaryStats>
+        <StatItem>
+          <StatNumber>{stats.A}</StatNumber>
+          <StatLabel>{t('eTeczka.upload.sectionA', 'Część A')}</StatLabel>
+        </StatItem>
+        <StatItem>
+          <StatNumber>{stats.B}</StatNumber>
+          <StatLabel>{t('eTeczka.upload.sectionB', 'Część B')}</StatLabel>
+        </StatItem>
+        <StatItem>
+          <StatNumber>{stats.C}</StatNumber>
+          <StatLabel>{t('eTeczka.upload.sectionC', 'Część C')}</StatLabel>
+        </StatItem>
+        <StatItem>
+          <StatNumber>{stats.D}</StatNumber>
+          <StatLabel>{t('eTeczka.upload.sectionD', 'Część D')}</StatLabel>
+        </StatItem>
+        <StatItem>
+          <StatNumber>{stats.E}</StatNumber>
+          <StatLabel>{t('eTeczka.upload.sectionE', 'Część E')}</StatLabel>
+        </StatItem>
+      </SummaryStats>
+
+      {/* Lista dokumentów */}
+      <DocumentList>
+        {documentRanges.map(range => (
+          <DocumentItem key={range.id}>
+            <DocumentDetails>
+              <DocumentTitleCell>
+                {range.title}
+              </DocumentTitleCell>
               
-              {range.suggestedCategory && !range.confirmedCategory && (
-                <SuggestionBadge>
-                  💡 {t('eTeczka.upload.suggestion', 'Sugestia:')} {range.suggestedCategory}
-                  <AcceptSuggestionButton
-                    onClick={() => acceptSuggestion(range.id, range.suggestedCategory!)}
-                  >
-                    {t('eTeczka.upload.accept', 'Akceptuj')}
-                  </AcceptSuggestionButton>
-                </SuggestionBadge>
-              )}
-            </DocumentInfo>
-          </DocumentHeader>
-
-          <CategorySection>
-            <FormGroup>
-              <Label>{t('eTeczka.upload.documentType', 'Typ dokumentu:')}</Label>
-              <Select
-                value={range.documentType || ''}
-                onChange={(e) => updateRange(range.id, { documentType: e.target.value })}
-              >
-                {documentTypes.map(type => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </Select>
-            </FormGroup>
-
-            <FormGroup>
-              <Label>{t('eTeczka.upload.section', 'Część akt osobowych:')}</Label>
-              <Select
-                value={range.section || ''}
-                onChange={(e) => updateRange(range.id, { 
-                  section: e.target.value as 'A' | 'B' | 'C' | 'D' | 'E' 
-                })}
-              >
-                {sections.map(section => (
-                  <option key={section.value} value={section.value}>
-                    {section.label}
-                  </option>
-                ))}
-              </Select>
-            </FormGroup>
-          </CategorySection>
-
-          {range.confirmedCategory && (
-            <div style={{ 
-              marginTop: '12px', 
-              padding: '8px 12px', 
-              backgroundColor: '#d1fae5', 
-              borderRadius: '4px',
-              fontSize: '14px',
-              color: '#065f46'
-            }}>
-              ✅ {t('eTeczka.upload.categorized', 'Skategoryzowano jako:')} {range.confirmedCategory}
-            </div>
-          )}
-        </DocumentCard>
-      ))}
+              <PagesCell>
+                {range.endPage - range.startPage + 1} {t('eTeczka.upload.pagesCount', 'str.')}
+              </PagesCell>
+              
+              <IndexCell>
+                {range.documentIndex && (
+                  <DocumentIndex>{range.documentIndex}</DocumentIndex>
+                )}
+              </IndexCell>
+              
+              <PreviewCell>
+                <PreviewButton onClick={() => handlePreviewDocument(range)}>
+                  {t('eTeczka.upload.preview', 'Podgląd')}
+                </PreviewButton>
+              </PreviewCell>
+            </DocumentDetails>
+          </DocumentItem>
+        ))}
+      </DocumentList>
 
       {documentRanges.length === 0 && (
         <div style={{ 
@@ -288,9 +398,80 @@ export const CategoryAssignment: React.FC<CategoryAssignmentProps> = ({
           border: '1px dashed #d1d5db',
           borderRadius: '8px'
         }}>
-          {t('eTeczka.upload.noDocuments', 'Brak dokumentów do kategoryzacji. Wróć do poprzedniego kroku aby utworzyć zakresy dokumentów.')}
+          {t('eTeczka.upload.noDocuments', 'Brak dokumentów do wyświetlenia. Wróć do poprzedniego kroku aby utworzyć zakresy dokumentów.')}
         </div>
       )}
-    </Container>
+
+      {/* Modal podglądu dokumentu */}
+      {previewModal.isOpen && previewModal.document && (
+        <ModalOverlay onClick={closePreviewModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <ModalTitle>
+                {t('eTeczka.upload.documentPreview', 'Podgląd dokumentu')}
+              </ModalTitle>
+              <CloseButton onClick={closePreviewModal}>
+                ×
+              </CloseButton>
+            </ModalHeader>
+            
+            <ModalBody>
+              <DocumentInfo>
+                <InfoRow>
+                  <InfoLabel>{t('eTeczka.upload.documentTitle', 'Tytuł dokumentu')}:</InfoLabel>
+                  <InfoValue>{previewModal.document.title}</InfoValue>
+                </InfoRow>
+                <InfoRow>
+                  <InfoLabel>{t('eTeczka.upload.pagesCount', 'Liczba stron')}:</InfoLabel>
+                  <InfoValue>
+                    {previewModal.document.endPage - previewModal.document.startPage + 1} {t('eTeczka.upload.pagesCount', 'str.')}
+                  </InfoValue>
+                </InfoRow>
+                <InfoRow>
+                  <InfoLabel>{t('eTeczka.upload.creationDate', 'Data utworzenia')}:</InfoLabel>
+                  <InfoValue>
+                    {new Date().toLocaleDateString('pl-PL')}
+                  </InfoValue>
+                </InfoRow>
+                <InfoRow>
+                  <InfoLabel>{t('eTeczka.upload.documentSection', 'Sekcja')}:</InfoLabel>
+                  <InfoValue>
+                    {previewModal.document.section && (
+                      <SectionBadge section={previewModal.document.section}>
+                        {t(`eTeczka.upload.section${previewModal.document.section}`, `Część ${previewModal.document.section}`)}
+                      </SectionBadge>
+                    )}
+                  </InfoValue>
+                </InfoRow>
+                <InfoRow>
+                  <InfoLabel>{t('eTeczka.upload.documentIndex', 'Indeks dokumentu')}:</InfoLabel>
+                  <InfoValue>
+                    <DocumentIndex>{previewModal.document.documentIndex}</DocumentIndex>
+                  </InfoValue>
+                </InfoRow>
+              </DocumentInfo>
+
+              <DocumentPreviewArea>
+                <div style={{ fontSize: '48px', color: '#d1d5db', marginBottom: '16px' }}>
+                  📄
+                </div>
+                <h4 style={{ margin: '0 0 8px 0', color: '#374151' }}>
+                  {t('eTeczka.upload.previewNotAvailable', 'Podgląd niedostępny')}
+                </h4>
+                <p style={{ margin: '0', color: '#6b7280', fontSize: '14px' }}>
+                  {t('eTeczka.upload.previewWillBeImplemented', 'Funkcja podglądu PDF zostanie wkrótce zaimplementowana')}
+                </p>
+              </DocumentPreviewArea>
+            </ModalBody>
+
+            <ModalFooter>
+              <ModalButton variant="secondary" onClick={closePreviewModal}>
+                {t('eTeczka.upload.close', 'Zamknij')}
+              </ModalButton>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
   );
 };

@@ -8,6 +8,7 @@ import { FileUpload } from './FileUpload';
 import { DocumentSplitter } from './DocumentSplitter';
 import { CategoryAssignment } from './CategoryAssignment';
 import { FinalPreview } from './FinalPreview';
+import { DocumentSigning } from './DocumentSigning';
 
 const Header = styled.div`
   margin-bottom: 32px;
@@ -68,11 +69,12 @@ export const UploadWorkflow: React.FC = () => {
   const [documentRanges, setDocumentRanges] = useState<DocumentRange[]>([]);
 
   const steps = [
-    { key: 'employee', label: t('eTeczka.upload.selectEmployee', 'Wybór pracownika') },
-    { key: 'upload', label: t('eTeczka.upload.uploadFiles', 'Upload plików') },
-    { key: 'split', label: t('eTeczka.upload.splitDocuments', 'Podział dokumentów') },
-    { key: 'category', label: t('eTeczka.upload.assignCategories', 'Przypisanie kategorii') },
-    { key: 'preview', label: t('eTeczka.upload.preview', 'Podgląd') },
+    { key: 'employee', label: t('eTeczka.upload.steps.employee', 'Wybierz pracownika') },
+    { key: 'upload', label: t('eTeczka.upload.steps.upload', 'Wgraj pliki') },
+    { key: 'split', label: t('eTeczka.upload.steps.split', 'Podziel dokumenty na zakresy stron') },
+    { key: 'category', label: t('eTeczka.upload.steps.category', 'Przypisz dokumenty do kategorii') },
+    { key: 'preview', label: t('eTeczka.upload.steps.preview', 'Podsumowanie i podgląd') },
+    { key: 'signing', label: t('eTeczka.upload.steps.signing', 'Podpisz dokumenty') },
   ];
 
   const getCurrentStepIndex = () => steps.findIndex(step => step.key === currentStep);
@@ -86,8 +88,10 @@ export const UploadWorkflow: React.FC = () => {
       case 'split':
         return documentRanges.length > 0;
       case 'category':
-        return documentRanges.every(range => range.confirmedCategory);
+        return documentRanges.every(range => range.section);
       case 'preview':
+        return true;
+      case 'signing':
         return true;
       default:
         return false;
@@ -147,6 +151,18 @@ export const UploadWorkflow: React.FC = () => {
             uploadedFiles={uploadedFiles}
           />
         );
+      case 'signing':
+        return (
+          <DocumentSigning
+            documentRanges={documentRanges}
+            employeeName={selectedEmployee?.name || ''}
+            onSign={(signatureData) => {
+              console.log('Dokumenty podpisane:', signatureData);
+              // Tutaj można dodać logikę zapisywania podpisanych dokumentów
+            }}
+            onBack={handlePrevious}
+          />
+        );
       default:
         return <div>Nieznany krok</div>;
     }
@@ -177,24 +193,28 @@ export const UploadWorkflow: React.FC = () => {
       </ContentArea>
 
       <NavigationButtons>
-        <Button
-          variant="ghost"
-          onClick={handlePrevious}
-          disabled={getCurrentStepIndex() === 0}
-        >
-          {t('eTeczka.upload.previous', 'Poprzedni')}
-        </Button>
+        {currentStep !== 'signing' && (
+          <Button
+            variant="ghost"
+            onClick={handlePrevious}
+            disabled={getCurrentStepIndex() === 0}
+          >
+            {t('eTeczka.upload.previous', 'Poprzedni')}
+          </Button>
+        )}
 
-        <Button
-          variant="primary"
-          onClick={currentStep === 'preview' ? () => console.log('Zapisywanie...') : handleNext}
-          disabled={!canProceedToNext()}
-        >
-          {currentStep === 'preview'
-            ? t('eTeczka.upload.save', 'Zapisz dokumenty')
-            : t('eTeczka.upload.next', 'Następny')
-          }
-        </Button>
+        {currentStep !== 'signing' && (
+          <Button
+            variant="primary"
+            onClick={currentStep === 'preview' ? handleNext : handleNext}
+            disabled={!canProceedToNext()}
+          >
+            {currentStep === 'preview'
+              ? t('eTeczka.upload.next', 'Przejdź do podpisywania')
+              : t('eTeczka.upload.next', 'Następny')
+            }
+          </Button>
+        )}
       </NavigationButtons>
     </Container>
   );

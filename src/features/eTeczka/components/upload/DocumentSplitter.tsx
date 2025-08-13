@@ -134,6 +134,49 @@ const RemoveRangeButton = styled.button`
   }
 `;
 
+const Select = styled.select`
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: white;
+  min-width: 200px;
+  
+  &:focus {
+    outline: none;
+    border-color: #126678;
+    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
+  }
+`;
+
+const SectionInfo = styled.div`
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: rgba(18, 102, 120, 0.1);
+  border: 1px solid rgba(18, 102, 120, 0.3);
+  border-radius: 4px;
+  font-size: 12px;
+  color: #126678;
+  font-weight: 500;
+`;
+
+const CustomNameInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border: 1px dashed #126678;
+  border-radius: 6px;
+`;
+
+const CustomInputRow = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+`;
+
 export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
   uploadedFiles,
   documentRanges,
@@ -141,7 +184,150 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
 }) => {
   const { t } = useTranslation();
   const [selectedPages, setSelectedPages] = useState<Set<string>>(new Set());
-  const [rangeTitle, setRangeTitle] = useState('');
+  const [selectedDocumentType, setSelectedDocumentType] = useState('');
+  const [customDocumentName, setCustomDocumentName] = useState('');
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customDocumentSection, setCustomDocumentSection] = useState<'A' | 'B' | 'C' | 'D' | 'E' | ''>('');
+
+  // Predefiniowane typy dokumentów zgodnie z polskim prawem o aktach osobowych
+  const documentTypes = [
+    { value: '', label: t('eTeczka.upload.selectType', 'Wybierz typ dokumentu...'), section: undefined },
+    
+    // Część A - dokumenty związane z ubieganiem się o zatrudnienie
+    { value: 'cv', label: t('eTeczka.upload.types.cv', 'CV / Życiorys'), section: 'A' },
+    { value: 'application', label: t('eTeczka.upload.types.application', 'Podanie o zatrudnienie'), section: 'A' },
+    { value: 'education_docs', label: t('eTeczka.upload.types.education_docs', 'Dokumenty wykształcenia'), section: 'A' },
+    { value: 'work_experience', label: t('eTeczka.upload.types.work_experience', 'Dokumenty doświadczenia zawodowego'), section: 'A' },
+    
+    // Część B - dokumenty z okresu zatrudnienia
+    { value: 'contract', label: t('eTeczka.upload.types.contract', 'Umowa o pracę'), section: 'B' },
+    { value: 'personal_data_statement', label: t('eTeczka.upload.types.personal_data_statement', 'Oświadczenie dot. danych osobowych'), section: 'B' },
+    { value: 'job_description', label: t('eTeczka.upload.types.job_description', 'Zakres czynności (obowiązków)'), section: 'B' },
+    { value: 'work_regulations_confirmation', label: t('eTeczka.upload.types.work_regulations_confirmation', 'Potwierdzenie zapoznania z regulaminem pracy'), section: 'B' },
+    { value: 'employment_conditions_info', label: t('eTeczka.upload.types.employment_conditions_info', 'Potwierdzenie poinformowania o warunkach zatrudnienia'), section: 'B' },
+    { value: 'property_handover', label: t('eTeczka.upload.types.property_handover', 'Dokument powierzenia mienia'), section: 'B' },
+    { value: 'qualifications_improvement', label: t('eTeczka.upload.types.qualifications_improvement', 'Dokumenty podnoszenia kwalifikacji'), section: 'B' },
+    { value: 'safety_training', label: t('eTeczka.upload.types.safety_training', 'Przeszkolenie z przepisów BHP'), section: 'B' },
+    { value: 'occupational_risk_info', label: t('eTeczka.upload.types.occupational_risk_info', 'Poinformowanie o ryzyku zawodowym'), section: 'B' },
+    { value: 'monitoring_info', label: t('eTeczka.upload.types.monitoring_info', 'Informacja o monitoringu'), section: 'B' },
+    { value: 'contract_change_statement', label: t('eTeczka.upload.types.contract_change_statement', 'Oświadczenie dot. zmiany warunków umowy'), section: 'B' },
+    { value: 'award_document', label: t('eTeczka.upload.types.award_document', 'Dokument przyznania nagrody/wyróżnienia'), section: 'B' },
+    { value: 'maternity_leave', label: t('eTeczka.upload.types.maternity_leave', 'Dokumenty urlopu macierzyńskiego/rodzicielskiego'), section: 'B' },
+    { value: 'unpaid_leave', label: t('eTeczka.upload.types.unpaid_leave', 'Dokumenty urlopu bezpłatnego'), section: 'B' },
+    { value: 'medical_examination', label: t('eTeczka.upload.types.medical_examination', 'Badania lekarskie (skierowania i orzeczenia)'), section: 'B' },
+    { value: 'parental_rights_statement', label: t('eTeczka.upload.types.parental_rights_statement', 'Oświadczenie dot. uprawnień rodzicielskich'), section: 'B' },
+    { value: 'telework_documents', label: t('eTeczka.upload.types.telework_documents', 'Dokumenty telepracy'), section: 'B' },
+    { value: 'remote_work_documents', label: t('eTeczka.upload.types.remote_work_documents', 'Dokumenty pracy zdalnej'), section: 'B' },
+    { value: 'contract_type_change_request', label: t('eTeczka.upload.types.contract_type_change_request', 'Wniosek o zmianę rodzaju umowy'), section: 'B' },
+    { value: 'trial_period_termination_request', label: t('eTeczka.upload.types.trial_period_termination_request', 'Wniosek o wskazanie przyczyny rozwiązania umowy próbnej'), section: 'B' },
+    { value: 'flexible_work_documents', label: t('eTeczka.upload.types.flexible_work_documents', 'Dokumenty elastycznej organizacji pracy'), section: 'B' },
+    
+    // Część C - dokumenty po zakończeniu zatrudnienia
+    { value: 'termination_notice', label: t('eTeczka.upload.types.termination_notice', 'Oświadczenie o wypowiedzeniu/rozwiązaniu umowy'), section: 'C' },
+    { value: 'work_certificate_request', label: t('eTeczka.upload.types.work_certificate_request', 'Oświadczenie dot. żądania świadectwa pracy'), section: 'C' },
+    { value: 'work_certificate_copy', label: t('eTeczka.upload.types.work_certificate_copy', 'Kopia świadectwa pracy'), section: 'C' },
+    { value: 'wage_garnishment_confirmation', label: t('eTeczka.upload.types.wage_garnishment_confirmation', 'Potwierdzenie zajęcia wynagrodzenia'), section: 'C' },
+    { value: 'non_compete_agreement', label: t('eTeczka.upload.types.non_compete_agreement', 'Umowa o zakazie konkurencji'), section: 'C' },
+    { value: 'vacation_compensation_documents', label: t('eTeczka.upload.types.vacation_compensation_documents', 'Dokumenty ekwiwalentu za urlop'), section: 'C' },
+    
+    // Część D - dokumenty dyscyplinarne
+    { value: 'disciplinary_notice', label: t('eTeczka.upload.types.disciplinary_notice', 'Odpis zawiadomienia o ukaraniu'), section: 'D' },
+    { value: 'disciplinary_documents', label: t('eTeczka.upload.types.disciplinary_documents', 'Dokumenty odpowiedzialności porządkowej'), section: 'D' },
+    
+    // Część E - kontrola trzeźwości
+    { value: 'sobriety_control_employer', label: t('eTeczka.upload.types.sobriety_control_employer', 'Kontrola trzeźwości przez pracodawcę'), section: 'E' },
+    { value: 'sobriety_control_authority', label: t('eTeczka.upload.types.sobriety_control_authority', 'Badanie trzeźwości przez organ publiczny'), section: 'E' },
+    { value: 'substance_control_employer', label: t('eTeczka.upload.types.substance_control_employer', 'Kontrola środków odurzających przez pracodawcę'), section: 'E' },
+    { value: 'substance_control_authority', label: t('eTeczka.upload.types.substance_control_authority', 'Badanie środków odurzających przez organ publiczny'), section: 'E' },
+    
+    { value: 'other', label: t('eTeczka.upload.types.other', 'Inne'), section: undefined }
+  ];
+
+  const handleDocumentTypeChange = (value: string) => {
+    setSelectedDocumentType(value);
+    if (value === 'other') {
+      setShowCustomInput(true);
+      setCustomDocumentName('');
+      setCustomDocumentSection('');
+    } else {
+      setShowCustomInput(false);
+      setCustomDocumentName('');
+      setCustomDocumentSection('');
+    }
+  };
+
+  const getDocumentSection = (documentType: string): 'A' | 'B' | 'C' | 'D' | 'E' | undefined => {
+    if (documentType === 'other') {
+      return customDocumentSection || undefined;
+    }
+    
+    switch (documentType) {
+      // Część A - dokumenty związane z ubieganiem się o zatrudnienie
+      case 'cv':
+      case 'application':
+      case 'education_docs':
+      case 'work_experience':
+        return 'A';
+        
+      // Część B - dokumenty z okresu zatrudnienia
+      case 'contract':
+      case 'personal_data_statement':
+      case 'job_description':
+      case 'work_regulations_confirmation':
+      case 'employment_conditions_info':
+      case 'property_handover':
+      case 'qualifications_improvement':
+      case 'safety_training':
+      case 'occupational_risk_info':
+      case 'monitoring_info':
+      case 'contract_change_statement':
+      case 'award_document':
+      case 'maternity_leave':
+      case 'unpaid_leave':
+      case 'medical_examination':
+      case 'parental_rights_statement':
+      case 'telework_documents':
+      case 'remote_work_documents':
+      case 'contract_type_change_request':
+      case 'trial_period_termination_request':
+      case 'flexible_work_documents':
+        return 'B';
+        
+      // Część C - dokumenty po zakończeniu zatrudnienia
+      case 'termination_notice':
+      case 'work_certificate_request':
+      case 'work_certificate_copy':
+      case 'wage_garnishment_confirmation':
+      case 'non_compete_agreement':
+      case 'vacation_compensation_documents':
+        return 'C';
+        
+      // Część D - dokumenty dyscyplinarne
+      case 'disciplinary_notice':
+      case 'disciplinary_documents':
+        return 'D';
+        
+      // Część E - kontrola trzeźwości
+      case 'sobriety_control_employer':
+      case 'sobriety_control_authority':
+      case 'substance_control_employer':
+      case 'substance_control_authority':
+        return 'E';
+        
+      default:
+        return undefined;
+    }
+  };
+
+  const getDocumentTitle = () => {
+    if (selectedDocumentType === 'other' && customDocumentName.trim() && customDocumentSection) {
+      return customDocumentName.trim();
+    } else if (selectedDocumentType && selectedDocumentType !== 'other') {
+      const selectedType = documentTypes.find(type => type.value === selectedDocumentType);
+      return selectedType?.label || '';
+    }
+    return '';
+  };
 
   const handlePageSelect = (pageId: string) => {
     const newSelected = new Set(selectedPages);
@@ -164,7 +350,8 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
   };
 
   const createRange = () => {
-    if (selectedPages.size === 0 || !rangeTitle.trim()) return;
+    const documentTitle = getDocumentTitle();
+    if (selectedPages.size === 0 || !documentTitle) return;
 
     // Znajdź strony i posortuj po numerach
     const selectedPageData: { page: PageData; fileId: string }[] = [];
@@ -184,34 +371,21 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
     const startPage = selectedPageData[0].page.pageNumber;
     const endPage = selectedPageData[selectedPageData.length - 1].page.pageNumber;
 
-    // Prosta analiza OCR dla sugestii kategorii
-    const combinedText = selectedPageData
-      .map(item => item.page.ocrText || '')
-      .join(' ')
-      .toLowerCase();
-
-    let suggestedCategory = '';
-    if (combinedText.includes('umowa') || combinedText.includes('contract')) {
-      suggestedCategory = 'Umowa o pracę';
-    } else if (combinedText.includes('rodo') || combinedText.includes('gdpr')) {
-      suggestedCategory = 'Oświadczenie RODO';
-    } else if (combinedText.includes('badanie') || combinedText.includes('lekarz')) {
-      suggestedCategory = 'Badania lekarskie';
-    } else if (combinedText.includes('certyfikat') || combinedText.includes('certificate')) {
-      suggestedCategory = 'Certyfikaty';
-    }
-
     const newRange: DocumentRange = {
       id: `range_${Date.now()}`,
       startPage,
       endPage,
-      title: rangeTitle.trim(),
-      suggestedCategory
+      title: documentTitle,
+      documentType: selectedDocumentType !== 'other' ? selectedDocumentType : undefined,
+      section: getDocumentSection(selectedDocumentType)
     };
 
     onRangesChange([...documentRanges, newRange]);
     setSelectedPages(new Set());
-    setRangeTitle('');
+    setSelectedDocumentType('');
+    setCustomDocumentName('');
+    setCustomDocumentSection('');
+    setShowCustomInput(false);
   };
 
   const removeRange = (rangeId: string) => {
@@ -257,15 +431,76 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
             >
               {t('eTeczka.upload.clearSelection', 'Wyczyść zaznaczenie')}
             </Button>
-            <Input
-              placeholder={t('eTeczka.upload.documentTitle', 'Nazwa dokumentu...')}
-              value={rangeTitle}
-              onChange={(e) => setRangeTitle(e.target.value)}
-            />
+            <div>
+              <Select
+                value={selectedDocumentType}
+                onChange={(e) => handleDocumentTypeChange(e.target.value)}
+              >
+                {documentTypes.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.section ? `[${type.section}] ${type.label}` : type.label}
+                  </option>
+                ))}
+              </Select>
+              {selectedDocumentType && selectedDocumentType !== 'other' && (
+                <SectionInfo>
+                  {(() => {
+                    const selectedType = documentTypes.find(type => type.value === selectedDocumentType);
+                    const section = selectedType?.section;
+                    if (section) {
+                      const sectionNames = {
+                        A: t('eTeczka.upload.sections.A', 'Część A - Dokumenty związane z zatrudnieniem'),
+                        B: t('eTeczka.upload.sections.B', 'Część B - Dokumenty z okresu zatrudnienia'),
+                        C: t('eTeczka.upload.sections.C', 'Część C - Dokumenty po rozwiązaniu stosunku pracy'),
+                        D: t('eTeczka.upload.sections.D', 'Część D - Dokumenty ubezpieczeniowe'),
+                        E: t('eTeczka.upload.sections.E', 'Część E - Dokumenty osobowe')
+                      };
+                      return `📂 ${t('eTeczka.upload.willBeStoredIn', 'Zostanie zapisane w:')} ${sectionNames[section as keyof typeof sectionNames]}`;
+                    }
+                    return '';
+                  })()}
+                </SectionInfo>
+              )}
+            </div>
+            {showCustomInput && (
+              <CustomNameInput>
+                <div style={{ fontWeight: 500, fontSize: '14px', color: '#333', marginBottom: '4px' }}>
+                  {t('eTeczka.upload.customDocumentSetup', 'Konfiguracja niestandardowego dokumentu:')}
+                </div>
+                <CustomInputRow>
+                  <div style={{ flex: 1 }}>
+                    <Input
+                      placeholder={t('eTeczka.upload.customDocumentName', 'Wprowadź nazwę dokumentu...')}
+                      value={customDocumentName}
+                      onChange={(e) => setCustomDocumentName(e.target.value)}
+                    />
+                  </div>
+                  <Select
+                    value={customDocumentSection}
+                    onChange={(e) => setCustomDocumentSection(e.target.value as 'A' | 'B' | 'C' | 'D' | 'E')}
+                    style={{ minWidth: '250px' }}
+                  >
+                    <option value="">{t('eTeczka.upload.selectSection', 'Wybierz część akt...')}</option>
+                    <option value="A">{t('eTeczka.upload.sections.A', 'Część A - Dokumenty związane z zatrudnieniem')}</option>
+                    <option value="B">{t('eTeczka.upload.sections.B', 'Część B - Dokumenty z okresu zatrudnienia')}</option>
+                    <option value="C">{t('eTeczka.upload.sections.C', 'Część C - Dokumenty po rozwiązaniu stosunku pracy')}</option>
+                    <option value="D">{t('eTeczka.upload.sections.D', 'Część D - Dokumenty ubezpieczeniowe')}</option>
+                    <option value="E">{t('eTeczka.upload.sections.E', 'Część E - Dokumenty osobowe')}</option>
+                  </Select>
+                </CustomInputRow>
+                {customDocumentName.trim() && customDocumentSection && (
+                  <SectionInfo>
+                    ✅ {t('eTeczka.upload.customDocumentPreview', 'Dokument będzie zapisany jako:')} 
+                    <strong> "{customDocumentName.trim()}"</strong> 
+                    {t('eTeczka.upload.inSection', ' w części')} <strong>{customDocumentSection}</strong>
+                  </SectionInfo>
+                )}
+              </CustomNameInput>
+            )}
             <Button
               variant="primary"
               onClick={createRange}
-              disabled={selectedPages.size === 0 || !rangeTitle.trim()}
+              disabled={selectedPages.size === 0 || !getDocumentTitle()}
             >
               {t('eTeczka.upload.createRange', 'Utwórz zakres')}
             </Button>
@@ -299,9 +534,9 @@ export const DocumentSplitter: React.FC<DocumentSplitterProps> = ({
                 <RangeInfo>
                   <strong>{range.title}</strong> 
                   {' '} ({t('eTeczka.upload.pages', 'Strony')} {range.startPage}-{range.endPage})
-                  {range.suggestedCategory && (
-                    <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>
-                      {t('eTeczka.upload.suggested', 'Sugerowana kategoria:')} {range.suggestedCategory}
+                  {range.section && (
+                    <div style={{ fontSize: '12px', color: '#126678', marginTop: '4px' }}>
+                      {t('eTeczka.upload.section', 'Część akt:')} {range.section}
                     </div>
                   )}
                 </RangeInfo>
