@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import { whiteV1, whiteV2, whiteV3, whiteV4 } from '../assets/images/idp';
+import { whiteV1, whiteV2, whiteV3, whiteV4 } from '../../../shared/assets/images/idp';
 
 interface WhiteValuesModalProps {
   isOpen: boolean;

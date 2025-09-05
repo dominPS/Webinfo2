@@ -1,3 +1,3 @@
-export { default as Footer } from './Footer';
-export { default as BasePage } from './BasePage';
-export { default as TopMenu } from './TopMenu';
+export { Footer } from './Footer';
+export { BasePage } from './BasePage';
+export { TopMenu } from './TopMenu';
