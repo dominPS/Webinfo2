@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useTheme, Theme } from '@emotion/react';
 import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
@@ -10,6 +11,14 @@ const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 24px;
 `;
+declare module '@emotion/react' {
+  export interface Theme {
+    shadows: {
+      large: string;
+      [key: string]: string;
+    };
+  }
+}
 
 const Card = styled.div`
   background-color: white;
