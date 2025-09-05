@@ -49,11 +49,9 @@ src/
     ui/                  # Komponenty UI (Button, Card, Container, Input, LoadingSpinner)
   contexts/              # Konteksty React (np. SidebarContext)
   features/
-    auth/                # Logowanie i autoryzacja
     clients/             # Zarządzanie klientami
     dashboard/           # Strona główna
     employeeEvaluation/  # Ocena pracowników
-    eTeczka/             # Elektroniczna teczka
     invoices/            # Faktury
     licenses/            # Licencje
     mui-demo/            # Demo komponentów MUI
@@ -69,7 +67,6 @@ src/
     index.ts             # Strony aplikacji
     Dashboard/           # Dashboard
     EmployeeEvaluation/  # Ocena pracowników
-    ETeczka/             # Elektroniczna teczka
     HREvaluation/        # Ocena HR
     LeaderEvaluation/    # Ocena lidera
     Login/               # Logowanie

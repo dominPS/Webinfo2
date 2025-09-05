@@ -2,9 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LanguageSelector } from '../shared/components/LanguageSelector';
-import { ReportsLogo } from '../shared/components/ReportsLogo';
-import { Footer } from '../shared/components/Footer';
+import { LanguageSelector } from '../shared/components/navigation/LanguageSelector';
+import { ReportsLogo } from '../shared/components/logos/ReportsLogo';
+import { Footer } from '../shared/components/layout/Footer';
 
 const TOP_SPACING = 0;
 

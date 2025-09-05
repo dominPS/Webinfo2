@@ -1,9 +1,9 @@
-import EmployeeEvaluationPage from './EmployeeEvaluationPage';
-import ProfileSelectionPage from './ProfileSelectionPage';
-import WorkerEvaluationPage from './WorkerEvaluationPage';
-import LeaderEvaluationPage from './LeaderEvaluationPage';
-import HREvaluationPage from './HREvaluationPage';
-import SelfEvaluationPage from './SelfEvaluationPage';
+import EmployeeEvaluationPage from './pages/EmployeeEvaluationPage';
+import ProfileSelectionPage from './pages/ProfileSelectionPage';
+import WorkerEvaluationPage from './pages/WorkerEvaluationPage';
+import LeaderEvaluationPage from './pages/LeaderEvaluationPage';
+import HREvaluationPage from './pages/HREvaluationPage';
+import SelfEvaluationPage from './pages/SelfEvaluationPage';
 
 export { 
   EmployeeEvaluationPage, 

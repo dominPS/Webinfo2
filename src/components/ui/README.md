@@ -132,7 +132,6 @@ Każdy komponent ma pełne wsparcie TypeScript z interfejsami props.
 
 Ta biblioteka zastępuje duplikowane styled components w:
 - ✅ `UploadWorkflow.tsx` - używa `Button` i `Container`
-- ✅ `ETeczkaPage.tsx` - używa `Button`, `Card` i `Container`
 - ✅ `UploadWorkflow.tsx` - w pełni przywrócony z wszystkimi komponentami
   - ✅ `EmployeeSelector` - zintegrowany
   - ✅ `FileUpload` - zintegrowany  
