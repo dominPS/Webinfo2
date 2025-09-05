@@ -60,8 +60,7 @@ src/
     navigation/          # Sidebar, TopBar
     settings/            # Ustawienia
   hooks/
-    useAuth.ts           # Hook uwierzytelniania
-    useUIState.ts        # Hook stanu UI
+    # Folder na hooki (aktualnie pusty)
   layouts/
     MainLayout.tsx       # Główny układ aplikacji
   lib/
@@ -138,31 +137,9 @@ Komponent umożliwiający zmianę języka aplikacji. Dostępne języki:
 
 Aplikacja korzysta z Zustand do zarządzania globalnym stanem. Główne sklepy to:
 
-### useAuth
+### Hooki niestandardowe
 
-Zarządza stanem uwierzytelniania, w tym:
-- Logowanie/wylogowanie użytkowników
-- Przechowywanie informacji o zalogowanym użytkowniku
-- Sprawdzanie uprawnień
-
-```typescript
-interface AuthState {
-  isLoggedIn: boolean;
-  user: {
-    id: string;
-    username: string;
-    role: 'employee' | 'manager' | 'admin';
-  } | null;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-}
-```
-
-### useUIState
-
-Zarządza stanem interfejsu użytkownika:
-- Widoczność formularza logowania
-- Inne stany UI
+W bieżącej wersji aplikacji nie używamy niestandardowych hooków. Logika została uproszczona i zintegrowana bezpośrednio z odpowiednimi komponentami.
 
 ```typescript
 interface UIState {
@@ -289,9 +266,7 @@ WebInfo powinno zawierać kompleksowy zestaw testów automatycznych, zapewniają
 Testy jednostkowe powinny pokrywać logikę biznesową, transformacje danych oraz złożone funkcje, w szczególności:
 
 - Komponenty UI (renderowanie, interakcje)
-- Hooki niestandardowe (`useAuth`, `useUIState`)
 - Funkcje pomocnicze i narzędziowe
-- Store'y Zustand i ich akcje
 
 **Zalecane narzędzia:**
 - Jest lub Vitest jako framework testowy
