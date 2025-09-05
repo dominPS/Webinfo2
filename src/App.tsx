@@ -3,7 +3,6 @@ import { MUIProvider } from './app/providers/MUIProvider';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './app/router';
 import { ErrorBoundary } from './shared/components/ErrorBoundary';
-import { SidebarProvider } from './contexts/SidebarContext';
 import './app/i18n';
 
 export const App = () => {
@@ -11,9 +10,7 @@ export const App = () => {
     <ErrorBoundary>
       <ThemeProvider>
         <MUIProvider>
-          <SidebarProvider>
-            <RouterProvider router={router} />
-          </SidebarProvider>
+          <RouterProvider router={router} />
         </MUIProvider>
       </ThemeProvider>
     </ErrorBoundary>

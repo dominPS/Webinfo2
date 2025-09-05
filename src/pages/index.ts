@@ -1,44 +1,18 @@
-import DashboardPage from './Dashboard';
-import LoginPage from './Login';
+import LoginPage from './Login/LoginPage';
 import NotFoundPage from './NotFound';
-import EmployeeEvaluationPage from './EmployeeEvaluation';
-import ProfileSelectionPage from './ProfileSelection';
-import WorkerEvaluationPage from './WorkerEvaluation';
-import LeaderEvaluationPage from './LeaderEvaluation';
-import HREvaluationPage from './HREvaluation';
-import ETeczkaPage from './ETeczka';
-import { BasePage } from '../shared/components/BasePage';
+import EmployeeEvaluationPage from '../features/employeeEvaluation/EmployeeEvaluationPage';
+import ProfileSelectionPage from '../features/employeeEvaluation/ProfileSelectionPage';
+import WorkerEvaluationPage from '../features/employeeEvaluation/WorkerEvaluationPage';
+import LeaderEvaluationPage from '../features/employeeEvaluation/LeaderEvaluationPage';
+import HREvaluationPage from '../features/employeeEvaluation/HREvaluationPage';
 
 // Named exports for each page
 export { 
-  DashboardPage, 
   LoginPage, 
   NotFoundPage, 
   EmployeeEvaluationPage, 
   ProfileSelectionPage,
   WorkerEvaluationPage,
   LeaderEvaluationPage,
-  HREvaluationPage,
-  ETeczkaPage
+  HREvaluationPage
 };
-
-// Placeholder pages 
-export const MobileAppsPage = BasePage;
-export const AssignmentsPage = BasePage;
-export const MapRegistrationsPage = BasePage;
-export const AttendanceListPage = BasePage;
-export const ScheduleAttendancePage = BasePage;
-export const EmployeeDataPage = BasePage;
-export const ReserveVehiclePage = BasePage;
-export const CanteenPage = BasePage;
-export const VacationPlanPage = BasePage;
-export const WeekendWorkPage = BasePage;
-export const EmployeeRequestsPage = BasePage;
-export const VacationsPage = BasePage;
-export const MonthlySummaryPage = BasePage;
-export const ExamsAndTrainingPage = BasePage;
-export const SettlementPage = BasePage;
-export const AbsencePlanPage = BasePage;
-export const MonthlyAbsencePlanPage = BasePage;
-export const SchedulePage = BasePage;
-export const ProjectsActivitiesPage = BasePage;
