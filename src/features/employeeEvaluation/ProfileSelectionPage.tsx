@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   padding: 40px;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.primary};
   border-radius: 12px;
-  box-shadow: ${props => props.theme.shadows.medium};
+  box-shadow: ${props => props.theme.shadows.large};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@ const AppTitle = styled.h1`
 
 const AppDescription = styled.p`
   font-size: 18px;
-  color: ${props => props.theme.colors.text.secondary};
+  color: ${props => props.theme.colors.primary};
   margin-bottom: 40px;
   text-align: center;
   max-width: 600px;

@@ -12,7 +12,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: ${props => props.theme.colors.background};
+  background: ${props => props.theme.colors.primary};
   padding-top: ${TOP_SPACING}px;
   padding-bottom: ${TOP_SPACING}px;
 `;
@@ -64,7 +64,7 @@ const TopBar = styled.div`
   height: 70px;
   padding: 0 40px;
   margin-bottom: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.medium};
+  box-shadow: ${props => props.theme.shadows.large};
   display: flex;
   align-items: center;
   justify-content: space-between;  

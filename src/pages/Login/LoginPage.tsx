@@ -9,7 +9,7 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.primary};
 `;
 
 const LoginForm = styled.form`
@@ -18,7 +18,7 @@ const LoginForm = styled.form`
   padding: 32px;
   background-color: white;
   border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.medium};
+  box-shadow: ${props => props.theme.shadows.large};
 `;
 
 const Title = styled.h1`
