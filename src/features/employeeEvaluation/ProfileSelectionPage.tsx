@@ -4,15 +4,33 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
-  padding: 24px;
+  padding: 40px;
   background-color: ${props => props.theme.colors.background};
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.small};
+  border-radius: 12px;
+  box-shadow: ${props => props.theme.shadows.medium};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 500px;
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const AppTitle = styled.h1`
+  font-size: 36px;
+  font-weight: 700;
+  color: #126678;
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
+const AppDescription = styled.p`
+  font-size: 18px;
+  color: ${props => props.theme.colors.text.secondary};
+  margin-bottom: 40px;
+  text-align: center;
+  max-width: 600px;
 `;
 
 const Label = styled.h2`
@@ -80,6 +98,10 @@ const ProfileSelectionPage: React.FC = () => {
 
   return (
     <PageContainer>
+      <AppTitle>{t('app.title', 'Employee Evaluation System')}</AppTitle>
+      <AppDescription>
+        {t('app.description', 'Welcome to the employee evaluation system. Please select your role to proceed with the appropriate evaluation process.')}
+      </AppDescription>
       <Label>{t('evaluation.chooseProfile', 'Choose your profile')}</Label>
       <ButtonContainer>
         <ProfileButton onClick={() => handleProfileSelect('worker')}>

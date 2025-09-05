@@ -2,31 +2,24 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sidebar } from '../features/navigation/Sidebar';
 import { LanguageSelector } from '../shared/components/LanguageSelector';
 import { ReportsLogo } from '../shared/components/ReportsLogo';
-import { TopMenu } from '../shared/components/TopMenu';
 import { Footer } from '../shared/components/Footer';
-import { useSidebar } from '../contexts/SidebarContext';
 
-const SIDEBAR_WIDTH = 220;
-const COLLAPSED_SIDEBAR_WIDTH = 50;
 const TOP_SPACING = 0;
 
-const MainContainer = styled.div<{ $sidebarCollapsed: boolean }>`
+const MainContainer = styled.div`
   display: flex;
-  flex-direction: column; /* ← ADD THIS */
+  flex-direction: column;
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
   padding-top: ${TOP_SPACING}px;
   padding-bottom: ${TOP_SPACING}px;
 `;
 
-const LayoutWrapper = styled.div<{ $sidebarCollapsed: boolean }>`
+const LayoutWrapper = styled.div`
   display: flex;
   flex: 1;
-  padding-left: ${props => props.$sidebarCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
-  transition: padding-left 0.3s ease;
 `;
 
 const ContentContainer = styled.div`
@@ -126,25 +119,20 @@ const ProfileButton = styled.button`
 `;
 
 // Add a FooterWrapper to position footer correctly
-const FooterWrapper = styled.div<{ $sidebarCollapsed: boolean }>`
+const FooterWrapper = styled.div`
   position: relative;
-  z-index: 1; /* Footer should be behind sidebar */
-  margin-left: ${props => props.$sidebarCollapsed ? COLLAPSED_SIDEBAR_WIDTH : SIDEBAR_WIDTH}px;
-  transition: margin-left 0.3s ease;
+  z-index: 1;
 `;
 
 export const MainLayout = () => {
   const { t } = useTranslation();
-  const { isCollapsed } = useSidebar();
 
   return (
-    <MainContainer $sidebarCollapsed={isCollapsed}>
-      <LayoutWrapper $sidebarCollapsed={isCollapsed}>
-        <Sidebar />
+    <MainContainer>
+      <LayoutWrapper>
         <ContentContainer>
           <TopBar>
             <TopBarLeft>
-              <TopMenu />
               <ReportsLogo />
             </TopBarLeft>
             <TopBarRight>
@@ -162,7 +150,7 @@ export const MainLayout = () => {
           </MainContent>
         </ContentContainer>
       </LayoutWrapper>
-      <FooterWrapper $sidebarCollapsed={isCollapsed}>
+      <FooterWrapper>
         <Footer />
       </FooterWrapper>
     </MainContainer>

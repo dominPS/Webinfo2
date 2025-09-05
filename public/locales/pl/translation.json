@@ -71,6 +71,10 @@
   "sidebar": {
     "hint": "Kliknij aby przełączyć"
   },
+  "app": {
+    "title": "System Oceny Pracowników",
+    "description": "Witaj w systemie oceny pracowników. Wybierz swoją rolę, aby kontynuować odpowiedni proces oceny."
+  },
   "pages": {
     "employeeEvaluation": {
       "description": "Oceniaj wyniki pracowników i przekazuj informacje zwrotne"

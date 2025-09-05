@@ -68,6 +68,10 @@
     "logout": "Logout",
     "notifications": "Notifications"
   },
+  "app": {
+    "title": "Employee Evaluation System",
+    "description": "Welcome to the employee evaluation system. Please select your role to proceed with the appropriate evaluation process."
+  },
   "pages": {
     "employeeEvaluation": {
       "description": "Evaluate employee performance and provide feedback"

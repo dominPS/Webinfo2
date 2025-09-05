@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: <ProfileSelectionPage />,
       },
       {
         path: 'licenses',
