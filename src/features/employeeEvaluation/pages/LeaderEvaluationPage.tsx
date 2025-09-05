@@ -544,10 +544,6 @@ const LeaderEvaluationPage: React.FC = () => {
             {t('evaluation.leader.controls.meAndDirectReports', 'Me and My Direct Reports')}
           </ControlButton>
           
-          <ControlButton onClick={() => handleControlClick('helpContactHR')}>
-            {t('evaluation.leader.controls.helpContactHR', 'Help and Contact with HR')}
-          </ControlButton>
-          
           <ControlButton onClick={() => handleControlClick('idp')}>
             {t('evaluation.leader.controls.idp', 'IDP (Individual Development Plan)')}
           </ControlButton>
