@@ -13,29 +13,30 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
-  color: ${props => props.theme.colors.primary};
+  font-size: 5rem;
+  color: #126678;
   margin-bottom: 1rem;
+  font-weight: 700;
 `;
 
 const Message = styled.p`
   font-size: 1.2rem;
-  color: ${props => props.theme.colors.text.secondary};
+  color: #666666;
   margin-bottom: 2rem;
   text-align: center;
 `;
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.colors.primary};
+  color: #126678;
   text-decoration: none;
   font-weight: 600;
-  padding: 0.5rem 1rem;
-  border: 2px solid ${props => props.theme.colors.primary};
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #126678;
+  border-radius: 8px;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: ${props => props.theme.colors.primary};
+    background-color: #126678;
     color: white;
   }
 `;

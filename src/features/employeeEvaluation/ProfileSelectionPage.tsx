@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   padding: 40px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: white;
   border-radius: 12px;
-  box-shadow: ${props => props.theme.shadows.large};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@ const AppTitle = styled.h1`
 
 const AppDescription = styled.p`
   font-size: 18px;
-  color: ${props => props.theme.colors.primary};
+  color: #126678;
   margin-bottom: 40px;
   text-align: center;
   max-width: 600px;
@@ -36,7 +36,7 @@ const AppDescription = styled.p`
 const Label = styled.h2`
   font-size: 24px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
+  color: #333333;
   margin-bottom: 32px;
   text-align: center;
 `;
@@ -51,9 +51,9 @@ const ButtonContainer = styled.div`
 const ProfileButton = styled.button`
   padding: 16px 32px;
   border-radius: 8px;
-  border: 2px solid ${props => props.theme.colors.primary};
+  border: 2px solid #126678;
   background-color: white;
-  color: ${props => props.theme.colors.primary};
+  color: #126678;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -61,13 +61,13 @@ const ProfileButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${props => props.theme.colors.primary};
+    background-color: #126678;
     color: white;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}33;
+    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.3);
   }
 `;
 

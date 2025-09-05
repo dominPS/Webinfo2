@@ -12,7 +12,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: ${props => props.theme.colors.primary};
+  background: #F5F5F5; /* Jasne tło dla całej aplikacji */
   padding-top: ${TOP_SPACING}px;
   padding-bottom: ${TOP_SPACING}px;
 `;
@@ -31,13 +31,18 @@ const ContentContainer = styled.div`
   flex-direction: column;
   height: calc(100vh - ${TOP_SPACING * 2}px);
   margin-top: 20px;
+  background: #F5F5F5; /* Dopasowanie do tła kontenera głównego */
 `;
 
 const MainContent = styled.div`
   flex: 1;
   overflow-y: auto;
+  padding: 20px;
   padding-bottom: 30px;
   min-height: 0; /* Allow flex child to shrink below content size */
+  background: #FFFFFF; /* Biały kolor dla treści głównej */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   
   &::-webkit-scrollbar {
     width: 12px;
@@ -59,16 +64,17 @@ const MainContent = styled.div`
 `;
 
 const TopBar = styled.div`
-  background: ${props => props.theme.colors.primary};
-  border-radius: ${props => props.theme.borderRadius.large};
+  background: #126678; /* Kolor primary */
+  border-radius: 12px;
   height: 70px;
   padding: 0 40px;
-  margin-bottom: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.large};
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;  
-  margin-top: -5px;
+  margin-top: 10px;
+  color: white; /* Biały tekst dla lepszego kontrastu */
 `;
 
 const TopBarLeft = styled.div`

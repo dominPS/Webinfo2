@@ -9,7 +9,7 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: #F5F5F5;
 `;
 
 const LoginForm = styled.form`
@@ -17,15 +17,16 @@ const LoginForm = styled.form`
   max-width: 400px;
   padding: 32px;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: ${props => props.theme.shadows.large};
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
-  color: ${props => props.theme.colors.primary};
+  font-size: 28px;
+  color: #126678;
   margin-bottom: 24px;
   text-align: center;
+  font-weight: 700;
 `;
 
 const InputGroup = styled.div`
@@ -47,25 +48,26 @@ const Input = styled.input`
   
   &:focus {
     outline: none;
-    border-color: ${props => props.theme.colors.primary};
+    border-color: #126678;
+    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.2);
   }
 `;
 
 const Button = styled.button`
   width: 100%;
   padding: 12px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: #126678;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   margin-top: 12px;
+  transition: all 0.2s ease;
   
   &:hover {
-    background-color: ${props => props.theme.colors.primary};
-    opacity: 0.9;
+    background-color: #0e5260;
   }
 `;
 
