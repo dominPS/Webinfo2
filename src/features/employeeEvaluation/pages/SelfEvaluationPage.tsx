@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import SelfEvaluationForm from '../components/SelfEvaluationForm';
+import { SelfEvaluationForm } from '../components';
 
 interface SelfEvaluationData {
   id: string;

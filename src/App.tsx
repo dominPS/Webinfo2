@@ -2,7 +2,7 @@ import { ThemeProvider } from './app/providers/ThemeProvider';
 import { MUIProvider } from './app/providers/MUIProvider';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './app/router';
-import { ErrorBoundary } from './shared/components/common/ErrorBoundary';
+import { ErrorBoundary } from './shared/components/common';
 import './app/i18n';
 
 export const App = () => {

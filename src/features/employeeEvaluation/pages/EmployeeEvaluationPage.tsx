@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import EvaluationForm from '../components/EvaluationForm';
+import { EvaluationForm } from '../components';
 
 const PageContainer = styled.div`
   padding: 24px;

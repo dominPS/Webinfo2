@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import IDPFlow from '../components/IDPFlow';
-import AnnualReviewHistory from '../components/AnnualReviewHistory';
+import { IDPFlow, AnnualReviewHistory } from '../components';
 import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../../shared/components/common/WhiteValuesModal';
 

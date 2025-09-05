@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import IDPFlow from '../components/LeaderIDPFlow';
-import AnnualReviewHistory from '../components/LeaderAnnualReviewHistory';
-import LeaderTeamEvaluationFlow from '../components/LeaderTeamEvaluationFlow';
+import { 
+  LeaderIDPFlow as IDPFlow, 
+  LeaderAnnualReviewHistory as AnnualReviewHistory, 
+  LeaderTeamEvaluationFlow, 
+  TeamCharts 
+} from '../components';
 import SelfEvaluationPage from './SelfEvaluationPage';
 import WhiteValuesModal from '../../../shared/components/common/WhiteValuesModal';
-import TeamCharts from '../components/TeamCharts';
 
 interface Employee {
   id: string;
