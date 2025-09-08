@@ -2,7 +2,7 @@
 
 System do zarządzania ocenami pracowników, planami rozwoju indywidualnego (IDP) oraz samoocenami.
 
-## 🚀 Szybki start
+## Szybki start
 
 ### Wymagania
 - .NET 8.0 SDK
@@ -38,7 +38,7 @@ curl -X POST http://localhost:5140/api/seed/sample-data
 - `piotr.wisniewski@company.com` / `Test123!` (HR)
 - `maria.kowal@company.com` / `Test123!` (Employee)
 
-## 📁 Struktura projektu
+## Struktura projektu
 
 ```
 Webinfo2/
@@ -58,7 +58,7 @@ Webinfo2/
 └── dist/                # Build produkcyjny
 ```
 
-## 🛠️ Narzędzia
+## Narzędzia
 
 ### Skrypty
 - `scripts/check_database.ps1` - Sprawdzanie stanu bazy danych
@@ -69,7 +69,7 @@ Webinfo2/
 - `GET /api/auth/me` - Informacje o użytkowniku
 - `POST /api/seed/sample-data` - Ładowanie danych testowych
 
-## 🏗️ Technologie
+## Technologie
 
 **Backend:**
 - .NET 8.0
@@ -91,7 +91,7 @@ Webinfo2/
 - SQL Server / LocalDB
 - Entity Framework Migrations
 
-## 📝 Rozwój
+## Rozwój
 
 ### Budowanie
 ```bash
