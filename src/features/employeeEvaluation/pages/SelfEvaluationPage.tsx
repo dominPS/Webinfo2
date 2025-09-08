@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { SelfEvaluationForm } from '../components';
+import apiClient, { handleApiError } from '../../../lib/api/client';
 
 interface SelfEvaluationData {
   id: string;
@@ -190,32 +191,28 @@ const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({
   const [currentView, setCurrentView] = useState<'list' | 'form'>('list');
   const [selectedEvaluation, setSelectedEvaluation] = useState<SelfEvaluationData | null>(null);
   const [isReadOnly, setIsReadOnly] = useState(false);
+  const [evaluations, setEvaluations] = useState<SelfEvaluationData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data - in real app this would come from API
-  const mockEvaluations: SelfEvaluationData[] = [
-    {
-      id: '1',
-      employeeId: 'EMP001',
-      employeeName: 'Jan Kowalski',
-      position: 'Senior Developer',
-      department: 'IT',
-      evaluationPeriod: '2024',
-      status: 'submitted',
-      submissionDate: '2024-03-15',
-      lastModified: '2024-03-15T10:30:00Z'
-    },
-    {
-      id: '2',
-      employeeId: 'EMP001',
-      employeeName: 'Jan Kowalski',
-      position: 'Senior Developer',
-      department: 'IT',
-      evaluationPeriod: '2023',
-      status: 'approved',
-      submissionDate: '2023-12-20',
-      lastModified: '2023-12-20T14:15:00Z'
-    }
-  ];
+  // Fetch evaluations from API
+  useEffect(() => {
+    const fetchEvaluations = async () => {
+      try {
+        setIsLoading(true);
+        const data = await apiClient.get<SelfEvaluationData[]>('/SelfEvaluation');
+        setEvaluations(data);
+        setError(null);
+      } catch (err) {
+        setError(handleApiError(err));
+        console.error('Failed to fetch self-evaluations:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvaluations();
+  }, []);
 
   const handleCreateNew = () => {
     setSelectedEvaluation(null);
@@ -229,17 +226,55 @@ const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({
     setCurrentView('form');
   };
 
-  const handleSave = (data: any) => {
-    console.log('Saving evaluation:', data);
-    // In real app, this would call API to save draft
-    alert(t('evaluation.messages.saved', 'Samoocena została zapisana jako szkic'));
+  const handleSave = async (data: any) => {
+    try {
+      if (selectedEvaluation?.id) {
+        // Update existing
+        await apiClient.put(`/SelfEvaluation/${selectedEvaluation.id}`, data);
+      } else {
+        // Create new
+        await apiClient.post('/SelfEvaluation', data);
+      }
+      
+      alert(t('evaluation.messages.saved', 'Samoocena została zapisana jako szkic'));
+      
+      // Refresh evaluations list
+      const updatedData = await apiClient.get<SelfEvaluationData[]>('/SelfEvaluation/my');
+      setEvaluations(updatedData);
+    } catch (err) {
+      alert(t('common.error', 'Błąd') + ': ' + handleApiError(err));
+      console.error('Failed to save evaluation:', err);
+    }
   };
 
-  const handleSubmit = (data: any) => {
-    console.log('Submitting evaluation:', data);
-    // In real app, this would call API to submit evaluation
-    alert(t('evaluation.messages.submitted', 'Samoocena została wysłana do przełożonego'));
-    setCurrentView('list');
+  const handleSubmit = async (data: any) => {
+    try {
+      let evaluationId;
+      
+      if (selectedEvaluation?.id) {
+        // First update
+        await apiClient.put(`/SelfEvaluation/${selectedEvaluation.id}`, data);
+        evaluationId = selectedEvaluation.id;
+      } else {
+        // Create new and get ID
+        const result = await apiClient.post<SelfEvaluationData>('/SelfEvaluation', data);
+        evaluationId = result.id;
+      }
+      
+      // Then submit
+      await apiClient.post(`/SelfEvaluation/${evaluationId}/submit`, {});
+      
+      alert(t('evaluation.messages.submitted', 'Samoocena została wysłana do przełożonego'));
+      
+      // Refresh evaluations list
+      const updatedData = await apiClient.get<SelfEvaluationData[]>('/SelfEvaluation/my');
+      setEvaluations(updatedData);
+      
+      setCurrentView('list');
+    } catch (err) {
+      alert(t('common.error', 'Błąd') + ': ' + handleApiError(err));
+      console.error('Failed to submit evaluation:', err);
+    }
   };
 
   const handleCancel = () => {
@@ -312,12 +347,20 @@ const SelfEvaluationPage: React.FC<SelfEvaluationPageProps> = ({
               + {t('evaluation.selfEvaluation.createNew', 'Utwórz nową samoocenę')}
             </CreateButton>
 
-            {mockEvaluations.length === 0 ? (
+            {isLoading ? (
+              <EmptyState>
+                {t('common.loading', 'Ładowanie...')}
+              </EmptyState>
+            ) : error ? (
+              <EmptyState>
+                {t('common.error', 'Błąd')}: {error}
+              </EmptyState>
+            ) : evaluations.length === 0 ? (
               <EmptyState>
                 {t('evaluation.selfEvaluation.noEvaluations', 'Nie masz jeszcze żadnych samoocen')}
               </EmptyState>
             ) : (
-              mockEvaluations.map((evaluation) => (
+              evaluations.map((evaluation: SelfEvaluationData) => (
                 <EvaluationCard
                   key={evaluation.id}
                   onClick={() => handleEditEvaluation(evaluation)}

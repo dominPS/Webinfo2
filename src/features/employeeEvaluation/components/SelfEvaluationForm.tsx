@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 
@@ -330,6 +330,7 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
   isReadOnly = false
 }) => {
   const { t } = useTranslation();
+  const [loadingUserData, setLoadingUserData] = useState(false);
   
   const [formData, setFormData] = useState<Partial<SelfEvaluationData>>({
     employeeId: '',
@@ -372,6 +373,56 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
       return { ...newData, lastModified: new Date().toISOString() };
     });
   };
+  
+  // Fetch user data from API
+  useEffect(() => {
+    // If we're creating a new evaluation (no initialData) or don't have employee info yet
+    if ((!initialData || !initialData.employeeName) && !isReadOnly) {
+      const fetchCurrentUserData = async () => {
+        setLoadingUserData(true);
+        try {
+          // Get current user from Auth service (returns from localStorage or API)
+          const userData = await fetch('http://localhost:5140/api/auth/me', {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+          });
+          
+          if (!userData.ok) {
+            throw new Error('Failed to fetch user data');
+          }
+          
+          const user = await userData.json();
+          
+          // Update form data with user information
+          setFormData(prev => ({
+            ...prev,
+            employeeId: user.employeeId || '',
+            employeeName: `${user.firstName} ${user.lastName}`,
+            position: user.position || '',
+            department: user.department || '',
+          }));
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          // Fallback to any available data from auth store
+          const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+          if (storedUser && storedUser.firstName) {
+            setFormData(prev => ({
+              ...prev,
+              employeeId: storedUser.employeeId || '',
+              employeeName: `${storedUser.firstName} ${storedUser.lastName}`,
+              position: storedUser.position || '',
+              department: storedUser.department || '',
+            }));
+          }
+        } finally {
+          setLoadingUserData(false);
+        }
+      };
+      
+      fetchCurrentUserData();
+    }
+  }, [initialData, isReadOnly]);
 
   const getRatingDescription = (rating: number) => {
     const descriptions = {
@@ -451,54 +502,66 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
       {/* Personal Information */}
       <Section>
         <SectionTitle>{t('evaluation.personalInfo.title', 'Informacje podstawowe')}</SectionTitle>
-        <TwoColumnGrid>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.employeeId', 'ID Pracownika')}</Label>
-            <Input
-              type="text"
-              value={formData.employeeId || ''}
-              onChange={(e) => updateFormData('employeeId', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.name', 'Imię i nazwisko')}</Label>
-            <Input
-              type="text"
-              value={formData.employeeName || ''}
-              onChange={(e) => updateFormData('employeeName', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.position', 'Stanowisko')}</Label>
-            <Input
-              type="text"
-              value={formData.position || ''}
-              onChange={(e) => updateFormData('position', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('evaluation.personalInfo.department', 'Dział')}</Label>
-            <Input
-              type="text"
-              value={formData.department || ''}
-              onChange={(e) => updateFormData('department', e.target.value)}
-              disabled={isReadOnly}
-            />
-          </FormGroup>
-        </TwoColumnGrid>
-        <FormGroup>
-          <Label>{t('evaluation.personalInfo.period', 'Okres oceny')}</Label>
-          <Input
-            type="text"
-            value={formData.evaluationPeriod || ''}
-            onChange={(e) => updateFormData('evaluationPeriod', e.target.value)}
-            disabled={isReadOnly}
-            placeholder="np. 2024, Q1 2024, styczeń-grudzień 2024"
-          />
-        </FormGroup>
+        {loadingUserData ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            {t('evaluation.loading', 'Ładowanie danych pracownika...')}
+          </div>
+        ) : (
+          <>
+            <TwoColumnGrid>
+              <FormGroup>
+                <Label>{t('evaluation.personalInfo.employeeId', 'ID Pracownika')}</Label>
+                <Input
+                  type="text"
+                  value={formData.employeeId || ''}
+                  onChange={(e) => updateFormData('employeeId', e.target.value)}
+                  disabled={true} // Always disabled as it comes from the system
+                  placeholder={loadingUserData ? t('evaluation.loading', 'Ładowanie...') : ''}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>{t('evaluation.personalInfo.name', 'Imię i nazwisko')}</Label>
+                <Input
+                  type="text"
+                  value={formData.employeeName || ''}
+                  onChange={(e) => updateFormData('employeeName', e.target.value)}
+                  disabled={true} // Always disabled as it comes from the system
+                  placeholder={loadingUserData ? t('evaluation.loading', 'Ładowanie...') : ''}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>{t('evaluation.personalInfo.position', 'Stanowisko')}</Label>
+                <Input
+                  type="text"
+                  value={formData.position || ''}
+                  onChange={(e) => updateFormData('position', e.target.value)}
+                  disabled={true} // Always disabled as it comes from the system
+                  placeholder={loadingUserData ? t('evaluation.loading', 'Ładowanie...') : ''}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>{t('evaluation.personalInfo.department', 'Dział')}</Label>
+                <Input
+                  type="text"
+                  value={formData.department || ''}
+                  onChange={(e) => updateFormData('department', e.target.value)}
+                  disabled={true} // Always disabled as it comes from the system
+                  placeholder={loadingUserData ? t('evaluation.loading', 'Ładowanie...') : ''}
+                />
+              </FormGroup>
+            </TwoColumnGrid>
+            <FormGroup>
+              <Label>{t('evaluation.personalInfo.period', 'Okres oceny')}</Label>
+              <Input
+                type="text"
+                value={formData.evaluationPeriod || ''}
+                onChange={(e) => updateFormData('evaluationPeriod', e.target.value)}
+                disabled={isReadOnly}
+                placeholder="np. 2024, Q1 2024, styczeń-grudzień 2024"
+              />
+            </FormGroup>
+          </>
+        )}
       </Section>
 
       {/* Performance Areas */}

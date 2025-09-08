@@ -87,6 +87,72 @@ const Button = styled.button`
   }
 `;
 
+const LoginCredentials = styled.div`
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 24px;
+`;
+
+const CredentialsTitle = styled.h2`
+  font-size: 18px;
+  color: #126678;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: 600;
+`;
+
+const CredentialsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const CredentialItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border-left: 3px solid #126678;
+`;
+
+interface RoleBadgeProps {
+  employee?: boolean;
+  manager?: boolean;
+  hr?: boolean;
+}
+
+const RoleBadge = styled.span<RoleBadgeProps>`
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  min-width: 80px;
+  text-align: center;
+  background-color: ${props => 
+    props.manager ? '#FFA000' : 
+    props.hr ? '#2E7D32' : 
+    '#126678'
+  };
+`;
+
+const CredentialEmail = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+`;
+
+const CredentialPassword = styled.div`
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+`;
+
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -154,6 +220,33 @@ const LoginPage: React.FC = () => {
           {t('login.loginButton')}
         </Button>
       </LoginForm>
+      
+      <LoginCredentials>
+        <CredentialsTitle>Demo Credentials</CredentialsTitle>
+        <CredentialsList>
+          <CredentialItem>
+            <RoleBadge employee>Employee</RoleBadge>
+            <div>
+              <CredentialEmail>jan.kowalski@company.com</CredentialEmail>
+              <CredentialPassword>Test123!</CredentialPassword>
+            </div>
+          </CredentialItem>
+          <CredentialItem>
+            <RoleBadge manager>Manager</RoleBadge>
+            <div>
+              <CredentialEmail>anna.nowak@company.com</CredentialEmail>
+              <CredentialPassword>Test123!</CredentialPassword>
+            </div>
+          </CredentialItem>
+          <CredentialItem>
+            <RoleBadge hr>HR</RoleBadge>
+            <div>
+              <CredentialEmail>piotr.wisniewski@company.com</CredentialEmail>
+              <CredentialPassword>Test123!</CredentialPassword>
+            </div>
+          </CredentialItem>
+        </CredentialsList>
+      </LoginCredentials>
     </LoginContainer>
   );
 };
