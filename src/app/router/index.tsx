@@ -1,12 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { MainLayout } from '../../layouts/MainLayout';
-import { ProtectedRoute } from '../../shared/components/common';
+import { ProtectedRoute, RoleBasedRedirect } from '../../shared/components/common';
 import IDPTestPage from '../../pages/Test/IDPTestPage';
 import {
   LoginPage,
   NotFoundPage,
   EmployeeEvaluationPage,
-  ProfileSelectionPage,
   WorkerEvaluationPage,
   LeaderEvaluationPage,
   HREvaluationPage
@@ -27,7 +26,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ProfileSelectionPage />,
+        element: <RoleBasedRedirect />,
       },
       {
         path: 'test-idp',
@@ -35,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'employee-evaluation',
-        element: <ProfileSelectionPage />,
+        element: <RoleBasedRedirect />,
       },
       {
         path: 'employee-evaluation/worker',

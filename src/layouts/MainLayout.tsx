@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSelector } from '../shared/components/navigation/LanguageSelector';
+import { ProfileMenu } from '../shared/components/navigation/ProfileMenu';
 import { ReportsLogo } from '../shared/components/logos/ReportsLogo';
 import { Footer } from '../shared/components/layout/Footer';
 
@@ -107,23 +108,6 @@ const NotificationButton = styled.button`
   }
 `;
 
-const ProfileButton = styled.button`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: white;
-  padding: 8px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-radius: ${props => props.theme.borderRadius.small};
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-`;
-
 // Add a FooterWrapper to position footer correctly
 const FooterWrapper = styled.div`
   position: relative;
@@ -146,9 +130,7 @@ export const MainLayout = () => {
               <NotificationButton title={t('header.notifications')}>
                 🔔
               </NotificationButton>
-              <ProfileButton>
-                👤 Test
-              </ProfileButton>
+              <ProfileMenu />
             </TopBarRight>
           </TopBar>
           <MainContent>

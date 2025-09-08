@@ -2,7 +2,6 @@ import LoginPage from './Login/LoginPage';
 import NotFoundPage from './NotFound';
 import { 
   EmployeeEvaluationPage,
-  ProfileSelectionPage,
   WorkerEvaluationPage,
   LeaderEvaluationPage,
   HREvaluationPage
@@ -13,7 +12,6 @@ export {
   LoginPage, 
   NotFoundPage, 
   EmployeeEvaluationPage, 
-  ProfileSelectionPage,
   WorkerEvaluationPage,
   LeaderEvaluationPage,
   HREvaluationPage

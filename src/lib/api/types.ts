@@ -4,12 +4,16 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: number;
+  employeeId: string;
+  department: string;
+  position: string;
+  manager?: string;
+  isActive: boolean;
+  roles: string[];
+  roleId?: number;
   departmentId?: number;
   positionId?: number;
   role?: Role;
-  department?: Department;
-  position?: Position;
 }
 
 export interface Role {

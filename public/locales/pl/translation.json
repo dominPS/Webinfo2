@@ -68,6 +68,13 @@
     "logout": "Wyloguj",
     "notifications": "Powiadomienia"
   },
+  "profile": {
+    "menu": {
+      "profile": "Mój profil",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj się"
+    }
+  },
   "sidebar": {
     "hint": "Kliknij aby przełączyć"
   },

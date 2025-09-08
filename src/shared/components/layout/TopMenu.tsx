@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MenuIcon } from './MenuIcon';
+import { MenuIcon } from '../navigation/MenuIcon';
 
 const MenuContainer = styled.div`
   position: relative;
