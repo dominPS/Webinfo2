@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { MainLayout } from '../../layouts/MainLayout';
+import { ProtectedRoute } from '../../shared/components/common';
+import IDPTestPage from '../../pages/Test/IDPTestPage';
 import {
   LoginPage,
   NotFoundPage,
@@ -17,11 +19,19 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
         element: <ProfileSelectionPage />,
+      },
+      {
+        path: 'test-idp',
+        element: <IDPTestPage />,
       },
       {
         path: 'employee-evaluation',

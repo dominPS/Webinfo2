@@ -1,0 +1,6 @@
+@OcenaPlus.API_HostAddress = http://localhost:5140
+
+GET {{OcenaPlus.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../lib/stores';
+import { Alert, CircularProgress } from '@mui/material';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -51,6 +53,11 @@ const Input = styled.input`
     border-color: #126678;
     box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.2);
   }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
 `;
 
 const Button = styled.button`
@@ -65,28 +72,43 @@ const Button = styled.button`
   cursor: pointer;
   margin-top: 12px;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   
   &:hover {
     background-color: #0e5260;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 `;
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { login, isLoading, error, clearError } = useAuthStore();
+  
+  const [email, setEmail] = useState('jan.kowalski@company.com'); // Pre-filled for demo
+  const [password, setPassword] = useState('Test123!'); // Pre-filled for demo
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    clearError();
     
-    // W normalnej aplikacji tutaj byłaby prawdziwa logika uwierzytelniania
-    // Dla demonstracji, po prostu przekierowujemy na stronę główną
-    if (username && password) {
+    if (!email || !password) {
+      return;
+    }
+
+    try {
+      await login(email, password);
       navigate('/');
-    } else {
-      setError(t('login.invalidCredentials'));
+    } catch (error) {
+      // Error is handled by the store
+      console.error('Login failed:', error);
     }
   };
 
@@ -95,14 +117,22 @@ const LoginPage: React.FC = () => {
       <LoginForm onSubmit={handleSubmit}>
         <Title>{t('login.title')}</Title>
         
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        
         <InputGroup>
-          <Label htmlFor="username">{t('login.username')}</Label>
+          <Label htmlFor="email">{t('login.username')}</Label>
           <Input 
-            id="username"
-            type="text" 
+            id="email"
+            type="email" 
             placeholder={t('login.usernamePlaceholder')}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            required
           />
         </InputGroup>
         
@@ -114,12 +144,13 @@ const LoginPage: React.FC = () => {
             placeholder={t('login.passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading}
+            required
           />
         </InputGroup>
         
-        {error && <div style={{ color: 'red', marginBottom: '16px' }}>{error}</div>}
-        
-        <Button type="submit">
+        <Button type="submit" disabled={isLoading}>
+          {isLoading && <CircularProgress size={20} color="inherit" />}
           {t('login.loginButton')}
         </Button>
       </LoginForm>
