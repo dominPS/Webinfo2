@@ -10,6 +10,8 @@ namespace OcenaPlus.API.DTOs
         public string Id { get; set; } = string.Empty;
         public string EmployeeId { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
+        public string EmployeeDepartment { get; set; } = string.Empty;
+        public string EmployeePosition { get; set; } = string.Empty;
         public int Year { get; set; } = DateTime.Now.Year;
         public string Status { get; set; } = "draft"; // draft | submitted | approved
         public List<IDPGoalFrontendDto> Goals { get; set; } = new();

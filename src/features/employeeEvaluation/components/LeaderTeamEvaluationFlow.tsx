@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
+import { useIDPPlans, useIDPPlan, useApproveIDPPlan, useRejectIDPPlan } from '../../../lib/hooks/useIDP';
+import type { IDPFrontendDto, IDPGoalFrontendDto } from '../../../lib/api/types';
 
 interface Employee {
   id: string;
@@ -11,6 +13,7 @@ interface Employee {
   hasIDPPlan: boolean;
   reviewStatus: 'not_started' | 'in_progress' | 'completed' | 'requires_correction';
   idpStatus: 'not_started' | 'draft' | 'submitted' | 'approved';
+  idpId?: string; // ID planu IDP (jeśli istnieje)
 }
 
 interface LeaderTeamEvaluationFlowProps {
@@ -357,6 +360,192 @@ const ActionButton = styled.button<{ variant: 'primary' | 'secondary' | 'success
   }
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+`;
+
+const ModalTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 600;
+  color: #126678;
+  margin: 0;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+  
+  &:hover {
+    color: #374151;
+  }
+`;
+
+const IDPSection = styled.div`
+  margin-bottom: 24px;
+`;
+
+const IDPSectionTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+`;
+
+const IDPGoal = styled.div`
+  background-color: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+`;
+
+const IDPGoalTitle = styled.h4`
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+`;
+
+const IDPGoalDescription = styled.p`
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+`;
+
+const IDPGoalMeta = styled.div`
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #6b7280;
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  
+  &:focus {
+    outline: none;
+    border-color: #126678;
+    box-shadow: 0 0 0 2px rgba(18, 102, 120, 0.1);
+  }
+`;
+
+const EmployeeInfo = styled.div`
+  background-color: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+`;
+
+const EmployeeInfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const EmployeeInfoLabel = styled.span`
+  font-weight: 600;
+  color: #374151;
+`;
+
+const EmployeeInfoValue = styled.span`
+  color: #6b7280;
+`;
+
+const Button = styled.button<{ color: 'red' | 'green' | 'gray' }>`
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  ${props => {
+    switch (props.color) {
+      case 'red':
+        return `
+          background-color: #ef4444;
+          color: white;
+          &:hover {
+            background-color: #dc2626;
+          }
+        `;
+      case 'green':
+        return `
+          background-color: #10b981;
+          color: white;
+          &:hover {
+            background-color: #059669;
+          }
+        `;
+      case 'gray':
+      default:
+        return `
+          background-color: #6b7280;
+          color: white;
+          &:hover {
+            background-color: #4b5563;
+          }
+        `;
+    }
+  }}
+`;
+
 const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onBack, onStepChange, backTrigger }) => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<FlowStep>('team-overview');
@@ -405,49 +594,86 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
     resetFilters();
   }, []);
 
-  // Mock data - w rzeczywistej aplikacji to byłoby pobrane z API
-  const teamMembers: Employee[] = [
-    {
-      id: '1',
-      name: 'Anna Kowalska',
-      position: 'Senior Developer',
-      department: 'IT',
-      hasAnnualReview: true,
-      hasIDPPlan: true,
-      reviewStatus: 'completed',
-      idpStatus: 'approved'
-    },
-    {
-      id: '2',
-      name: 'Piotr Nowak',
-      position: 'Junior Developer',
-      department: 'IT',
-      hasAnnualReview: false,
-      hasIDPPlan: true,
-      reviewStatus: 'not_started',
-      idpStatus: 'draft'
-    },
-    {
-      id: '3',
-      name: 'Maria Wiśniewska',
-      position: 'UX Designer',
-      department: 'Design',
-      hasAnnualReview: true,
-      hasIDPPlan: false,
-      reviewStatus: 'in_progress',
-      idpStatus: 'not_started'
-    },
-    {
-      id: '4',
-      name: 'Tomasz Zieliński',
-      position: 'QA Engineer',
-      department: 'Quality',
-      hasAnnualReview: true,
-      hasIDPPlan: true,
-      reviewStatus: 'requires_correction',
-      idpStatus: 'submitted'
+  // Pobieranie danych z API
+  const { data: idpPlansData, isLoading: idpLoading } = useIDPPlans();
+  const approveMutation = useApproveIDPPlan();
+  const rejectMutation = useRejectIDPPlan();
+  
+  // Przechowywanie przetworzonych danych pracowników
+  const [teamMembers, setTeamMembers] = useState<Employee[]>([]);
+  
+  // Stany dla modali
+  const [selectedIDPPlan, setSelectedIDPPlan] = useState<IDPFrontendDto | null>(null);
+  const [isIDPModalOpen, setIsIDPModalOpen] = useState(false);
+  const [isCorrectionModalOpen, setIsCorrectionModalOpen] = useState(false);
+  const [correctionComment, setCorrectionComment] = useState('');
+  
+  // Efekt pobierający dane z API i przekształcający je na format Employee
+  useEffect(() => {
+    // Sprawdzamy, czy dane zostały już pobrane
+    if (idpPlansData) {
+      // API może zwracać pojedynczy obiekt lub tablicę, w zależności od implementacji
+      // Normalizujemy to do tablicy
+      let plans: any[] = [];
+      
+      if (Array.isArray(idpPlansData)) {
+        plans = idpPlansData;
+      } else if (idpPlansData.items && Array.isArray(idpPlansData.items)) {
+        plans = idpPlansData.items;
+      } else if (typeof idpPlansData === 'object' && 'id' in idpPlansData) {
+        // Jeśli API zwraca pojedynczy obiekt
+        plans = [idpPlansData];
+      }
+      
+      // Tworzymy mapę pracowników na podstawie planów IDP
+      const employeeMap = new Map<string, Employee>();
+      
+      plans.forEach(plan => {
+        // Tylko lider może widzieć plany IDP swoich podwładnych
+        // Backend zwraca nam tylko plany pracowników, którymi zarządza lider 
+        // lub własny plan lidera (widok "Ja i moi bezpośredni podwładni")
+        
+        // Konwertujemy employeeId do stringa (w przypadku niektórych typów API może być liczbą)
+        const employeeId = String(plan.employeeId);
+        
+        // Próbujemy odzyskać nazwę pracownika
+        let employeeName = '';
+        if (plan.employeeName) {
+          employeeName = plan.employeeName;
+        } else if (plan.employee) {
+          employeeName = `${plan.employee.firstName} ${plan.employee.lastName}`;
+        } else {
+          employeeName = `Pracownik ${employeeId}`;
+        }
+        
+        const employee = employeeMap.get(employeeId) || {
+          id: employeeId,
+          name: employeeName,
+          position: plan.employeePosition || 'Nieznane',
+          department: plan.employeeDepartment || 'Nieznany',
+          hasAnnualReview: false, // To mogłoby być pobrane z API ocen
+          hasIDPPlan: true,
+          reviewStatus: 'not_started' as const,
+          idpStatus: mapBackendStatusToFrontend(plan.status),
+          idpId: String(plan.id)
+        };
+        
+        employeeMap.set(employeeId, employee);
+      });
+      
+      setTeamMembers(Array.from(employeeMap.values()));
     }
-  ];
+  }, [idpPlansData]);
+  
+  // Funkcja mapująca statusy z backendu na frontend
+  const mapBackendStatusToFrontend = (status: string): 'not_started' | 'draft' | 'submitted' | 'approved' => {
+    switch (status) {
+      case 'draft': return 'draft';
+      case 'submitted': return 'submitted';
+      case 'approved': return 'approved';
+      default: return 'not_started';
+    }
+  };
 
   // Helper function to filter team members
   const getFilteredTeamMembers = () => {
@@ -464,7 +690,7 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
   };
 
   // Get unique departments for filter dropdown
-  const uniqueDepartments = [...new Set(teamMembers.map(emp => emp.department))];
+  const uniqueDepartments = [...new Set(teamMembers.map(emp => emp.department).filter(Boolean))];
 
   // Reset filters when switching views
   const resetFilters = () => {
@@ -477,6 +703,30 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
     return t(`evaluation.status.${prefix}.${status}`, status.replace('_', ' '));
   };
 
+  const getStatusBadge = (status: string) => {
+    const statusStyles = {
+      '0': { backgroundColor: '#fef3c7', color: '#d97706', text: 'Szkic' }, // Draft
+      '1': { backgroundColor: '#dbeafe', color: '#2563eb', text: 'Do akceptacji' }, // Submitted
+      '2': { backgroundColor: '#dcfce7', color: '#16a34a', text: 'Zaakceptowany' } // Approved
+    };
+    
+    const style = statusStyles[status as keyof typeof statusStyles] || statusStyles['0'];
+    return (
+      <span
+        style={{
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          fontWeight: '500',
+          backgroundColor: style.backgroundColor,
+          color: style.color
+        }}
+      >
+        {style.text}
+      </span>
+    );
+  };
+
   const handleProcessStepClick = (step: FlowStep) => {
     resetFilters();
     handleStepChange(step);
@@ -485,6 +735,63 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
   const handleEmployeeClick = (employee: Employee) => {
     setSelectedEmployee(employee);
     handleStepChange('employee-detail');
+  };
+
+  const handleViewIDPPlan = async (employee: Employee) => {
+    if (employee.idpId) {
+      // Znajdź plan w danych, które już mamy
+      const plans = Array.isArray(idpPlansData) ? idpPlansData : 
+        (idpPlansData?.items || (typeof idpPlansData === 'object' && 'id' in idpPlansData ? [idpPlansData] : []));
+      
+      const plan = plans.find(p => String(p.id) === employee.idpId);
+      if (plan) {
+        setSelectedIDPPlan(plan);
+        setIsIDPModalOpen(true);
+      }
+    }
+  };
+
+  const handleApproveIDPPlan = async () => {
+    if (selectedIDPPlan) {
+      try {
+        await approveMutation.mutateAsync(Number(selectedIDPPlan.id));
+        setIsIDPModalOpen(false);
+        setSelectedIDPPlan(null);
+      } catch (error) {
+        console.error('Error approving IDP plan:', error);
+      }
+    }
+  };
+
+  const handleRejectIDPPlan = () => {
+    setIsCorrectionModalOpen(true);
+  };
+
+  const handleSendForCorrection = async () => {
+    if (selectedIDPPlan) {
+      try {
+        await rejectMutation.mutateAsync({ 
+          id: Number(selectedIDPPlan.id), 
+          reason: correctionComment 
+        });
+        setIsCorrectionModalOpen(false);
+        setIsIDPModalOpen(false);
+        setSelectedIDPPlan(null);
+        setCorrectionComment('');
+      } catch (error) {
+        console.error('Error rejecting IDP plan:', error);
+      }
+    }
+  };
+
+  const handleCloseCorrectionModal = () => {
+    setIsCorrectionModalOpen(false);
+    setCorrectionComment('');
+  };
+
+  const handleCloseIDPModal = () => {
+    setIsIDPModalOpen(false);
+    setSelectedIDPPlan(null);
   };
 
   const renderTeamOverview = () => (
@@ -640,57 +947,71 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
           </FilterGroup>
         </FilterContainer>
 
-        <FilterResultsText>
-          {t('evaluation.leader.team.filter.showing', 'Pokazano {{count}} z {{total}} pracowników', {
-            count: filteredMembers.length,
-            total: teamMembers.length
-          })}
-        </FilterResultsText>
+        {idpLoading ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            {t('common.loading', 'Ładowanie...')}
+          </div>
+        ) : (
+          <>
+            <FilterResultsText>
+              {t('evaluation.leader.team.filter.showing', 'Pokazano {{count}} z {{total}} pracowników', {
+                count: filteredMembers.length,
+                total: teamMembers.length
+              })}
+            </FilterResultsText>
 
-        <EmployeeTable>
-          <EmployeeTableHeader>
-            <div>ID</div>
-            <div>{t('evaluation.leader.team.table.name', 'Imię i nazwisko')}</div>
-            <div>{t('evaluation.leader.team.table.department', 'Dział')}</div>
-            <div>{t('evaluation.leader.team.table.status', 'Status')}</div>
-            <div>{t('evaluation.leader.team.table.actions', 'Akcje')}</div>
-          </EmployeeTableHeader>
-          
-          {filteredMembers.map((employee) => (
-            <EmployeeTableRow key={employee.id}>
-              <EmployeeId>{employee.id}</EmployeeId>
-              <EmployeeNameCell>{employee.name}</EmployeeNameCell>
-              <EmployeeDepartmentCell>{employee.department}</EmployeeDepartmentCell>
-              <StatusCell>
-                <StatusBadge status={employee.idpStatus}>
-                  {getStatusText(employee.idpStatus, 'idp')}
-                </StatusBadge>
-              </StatusCell>
-              <ActionCell>
-                {employee.idpStatus === 'not_started' && (
-                  <ActionButton variant="primary">
-                    {t('evaluation.leader.team.actions.createIDP', 'Utwórz IDP')}
-                  </ActionButton>
-                )}
-                {employee.idpStatus === 'draft' && (
-                  <ActionButton variant="secondary">
-                    {t('evaluation.leader.team.actions.reviewDraft', 'Sprawdź szkic')}
-                  </ActionButton>
-                )}
-                {employee.idpStatus === 'submitted' && (
-                  <ActionButton variant="primary">
-                    {t('evaluation.leader.team.actions.approveIDP', 'Zatwierdź IDP')}
-                  </ActionButton>
-                )}
-                {employee.idpStatus === 'approved' && (
-                  <ActionButton variant="success">
-                    {t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
-                  </ActionButton>
-                )}
-              </ActionCell>
-            </EmployeeTableRow>
-          ))}
-        </EmployeeTable>
+            {filteredMembers.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>
+                {t('evaluation.leader.team.noDataFound', 'Nie znaleziono pracowników spełniających kryteria wyszukiwania')}
+              </div>
+            ) : (
+              <EmployeeTable>
+                <EmployeeTableHeader>
+                  <div>ID</div>
+                  <div>{t('evaluation.leader.team.table.name', 'Imię i nazwisko')}</div>
+                  <div>{t('evaluation.leader.team.table.department', 'Dział')}</div>
+                  <div>{t('evaluation.leader.team.table.status', 'Status')}</div>
+                  <div>{t('evaluation.leader.team.table.actions', 'Akcje')}</div>
+                </EmployeeTableHeader>
+                
+                {filteredMembers.map((employee) => (
+                  <EmployeeTableRow key={employee.id}>
+                    <EmployeeId>{employee.id}</EmployeeId>
+                    <EmployeeNameCell>{employee.name}</EmployeeNameCell>
+                    <EmployeeDepartmentCell>{employee.department}</EmployeeDepartmentCell>
+                    <StatusCell>
+                      <StatusBadge status={employee.idpStatus}>
+                        {getStatusText(employee.idpStatus, 'idp')}
+                      </StatusBadge>
+                    </StatusCell>
+                    <ActionCell>
+                      {employee.idpStatus === 'not_started' && (
+                        <ActionButton variant="primary">
+                          {t('evaluation.leader.team.actions.createIDP', 'Utwórz IDP')}
+                        </ActionButton>
+                      )}
+                      {employee.idpStatus === 'draft' && (
+                        <ActionButton variant="secondary" onClick={() => handleViewIDPPlan(employee)}>
+                          {t('evaluation.leader.team.actions.viewIDPDraft', 'Zobacz szkic IDP')}
+                        </ActionButton>
+                      )}
+                      {employee.idpStatus === 'submitted' && (
+                        <ActionButton variant="primary" onClick={() => handleViewIDPPlan(employee)}>
+                          {t('evaluation.leader.team.actions.reviewIDP', 'Oceń IDP')}
+                        </ActionButton>
+                      )}
+                      {employee.idpStatus === 'approved' && (
+                        <ActionButton variant="success" onClick={() => handleViewIDPPlan(employee)}>
+                          {t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
+                        </ActionButton>
+                      )}
+                    </ActionCell>
+                  </EmployeeTableRow>
+                ))}
+              </EmployeeTable>
+            )}
+          </>
+        )}
     </StepContainer>
     );
   };
@@ -751,6 +1072,121 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
       {currentStep === 'annual-review' && renderAnnualReviewManagement()}
       {currentStep === 'idp-management' && renderIDPManagement()}
       {currentStep === 'employee-detail' && renderEmployeeDetail()}
+
+      {/* IDP Plan Modal */}
+      {isIDPModalOpen && selectedIDPPlan && (
+        <Modal onClick={() => setIsIDPModalOpen(false)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <ModalTitle>Plan IDP - {selectedIDPPlan.employeeName}</ModalTitle>
+              <CloseButton onClick={() => setIsIDPModalOpen(false)}>×</CloseButton>
+            </ModalHeader>
+
+            <EmployeeInfo>
+              <EmployeeInfoRow>
+                <EmployeeInfoLabel>Pracownik:</EmployeeInfoLabel>
+                <EmployeeInfoValue>{selectedIDPPlan.employeeName}</EmployeeInfoValue>
+              </EmployeeInfoRow>
+              <EmployeeInfoRow>
+                <EmployeeInfoLabel>Dział:</EmployeeInfoLabel>
+                <EmployeeInfoValue>{selectedIDPPlan.employeeDepartment}</EmployeeInfoValue>
+              </EmployeeInfoRow>
+              <EmployeeInfoRow>
+                <EmployeeInfoLabel>Stanowisko:</EmployeeInfoLabel>
+                <EmployeeInfoValue>{selectedIDPPlan.employeePosition}</EmployeeInfoValue>
+              </EmployeeInfoRow>
+              <EmployeeInfoRow>
+                <EmployeeInfoLabel>Status:</EmployeeInfoLabel>
+                <EmployeeInfoValue>{getStatusBadge(selectedIDPPlan.status)}</EmployeeInfoValue>
+              </EmployeeInfoRow>
+            </EmployeeInfo>
+
+            {selectedIDPPlan.goals && selectedIDPPlan.goals.length > 0 && (
+              <IDPSection>
+                <IDPSectionTitle>Cele rozwojowe</IDPSectionTitle>
+                {selectedIDPPlan.goals.map((goal, index) => (
+                  <IDPGoal key={index}>
+                    <IDPGoalTitle>{goal.title}</IDPGoalTitle>
+                    <IDPGoalDescription>{goal.description}</IDPGoalDescription>
+                    <IDPGoalMeta>
+                      {goal.targetDate && (
+                        <span>Deadline: {new Date(goal.targetDate).toLocaleDateString('pl-PL')}</span>
+                      )}
+                      {goal.progress !== undefined && (
+                        <span>Postęp: {goal.progress}%</span>
+                      )}
+                    </IDPGoalMeta>
+                  </IDPGoal>
+                ))}
+              </IDPSection>
+            )}
+
+            <ModalActions>
+              {selectedIDPPlan.status === '1' && ( // Submitted
+                <>
+                  <Button 
+                    color="red" 
+                    onClick={() => {
+                      setIsCorrectionModalOpen(true);
+                      setIsIDPModalOpen(false);
+                    }}
+                  >
+                    Wyślij do korekty
+                  </Button>
+                  <Button 
+                    color="green" 
+                    onClick={handleApproveIDPPlan}
+                  >
+                    Zatwierdź
+                  </Button>
+                </>
+              )}
+              <Button color="gray" onClick={() => setIsIDPModalOpen(false)}>
+                Zamknij
+              </Button>
+            </ModalActions>
+          </ModalContent>
+        </Modal>
+      )}
+
+      {/* Correction Comment Modal */}
+      {isCorrectionModalOpen && (
+        <Modal onClick={() => setIsCorrectionModalOpen(false)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <ModalTitle>Wyślij do korekty</ModalTitle>
+              <CloseButton onClick={() => setIsCorrectionModalOpen(false)}>×</CloseButton>
+            </ModalHeader>
+
+            <IDPSection>
+              <IDPSectionTitle>Komentarz dla pracownika</IDPSectionTitle>
+              <TextArea
+                value={correctionComment}
+                onChange={(e) => setCorrectionComment(e.target.value)}
+                placeholder="Wprowadź uwagi do korekty planu IDP..."
+              />
+            </IDPSection>
+
+            <ModalActions>
+              <Button 
+                color="gray" 
+                onClick={() => {
+                  setIsCorrectionModalOpen(false);
+                  setCorrectionComment('');
+                }}
+              >
+                Anuluj
+              </Button>
+              <Button 
+                color="red" 
+                onClick={handleSendForCorrection}
+              >
+                Wyślij do korekty
+              </Button>
+            </ModalActions>
+          </ModalContent>
+        </Modal>
+      )}
     </FlowContainer>
   );
 };

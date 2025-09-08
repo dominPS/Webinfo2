@@ -31,13 +31,18 @@ namespace OcenaPlus.API.Controllers
                 return Unauthorized();
 
             var role = GetCurrentUserRole();
-            var query = _context.IDPPlans.Include(p => p.Employee).AsQueryable();
+            var query = _context.IDPPlans
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
+                .AsQueryable();
 
             if (role == "Employee")
             {
                 query = query.Where(p => p.EmployeeId == userId.Value);
             }
-            else if (role == "Leader")
+            else if (role == "Manager")
             {
                 var teamMemberIds = await _context.Users
                     .Where(u => u.ManagerId == userId.Value)
@@ -65,6 +70,9 @@ namespace OcenaPlus.API.Controllers
 
             var plan = await _context.IDPPlans
                 .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
                 .Include(p => p.Goals)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -107,6 +115,9 @@ namespace OcenaPlus.API.Controllers
             // Reload with related data
             plan = await _context.IDPPlans
                 .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
                 .Include(p => p.Goals)
                 .FirstAsync(p => p.Id == plan.Id);
 
@@ -125,6 +136,9 @@ namespace OcenaPlus.API.Controllers
 
             var plan = await _context.IDPPlans
                 .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
                 .Include(p => p.Goals)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -277,6 +291,9 @@ namespace OcenaPlus.API.Controllers
 
             var plan = await _context.IDPPlans
                 .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
                 .Include(p => p.Goals)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -300,11 +317,14 @@ namespace OcenaPlus.API.Controllers
         /// Approve IDP plan (Leaders and HR only)
         /// </summary>
         [HttpPost("{id}/approve")]
-        [Authorize(Roles = "Leader,HR,Admin")]
+        [Authorize(Roles = "Leader,Manager,HR,Admin")]
         public async Task<ActionResult<IDPFrontendDto>> ApprovePlan(int id)
         {
             var plan = await _context.IDPPlans
                 .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
                 .Include(p => p.Goals)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -317,6 +337,36 @@ namespace OcenaPlus.API.Controllers
             plan.Status = "approved";
             plan.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
+
+            return Ok(MapToFrontendDto(plan));
+        }
+
+        /// <summary>
+        /// Send IDP plan back for correction (Leaders and HR only)
+        /// </summary>
+        [HttpPost("{id}/reject")]
+        [Authorize(Roles = "Leader,Manager,HR,Admin")]
+        public async Task<ActionResult<IDPFrontendDto>> RejectPlan(int id, [FromBody] RejectIDPDto dto)
+        {
+            var plan = await _context.IDPPlans
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
+                .Include(p => p.Goals)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (plan == null)
+                return NotFound();
+
+            if (plan.Status != "submitted")
+                return BadRequest("Plan must be submitted before rejection");
+
+            plan.Status = "draft";
+            plan.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            // TODO: W przyszłości można dodać tabelę komentarzy/historii dla dto.Comment
 
             return Ok(MapToFrontendDto(plan));
         }
@@ -346,7 +396,7 @@ namespace OcenaPlus.API.Controllers
             if (plan.EmployeeId == userId)
                 return true;
             
-            if (role == "Leader")
+            if (role == "Leader" || role == "Manager")
             {
                 return await _context.Users
                     .AnyAsync(u => u.Id == plan.EmployeeId && u.ManagerId == userId);
@@ -365,7 +415,7 @@ namespace OcenaPlus.API.Controllers
             if (employeeId == managerId)
                 return true;
             
-            if (role == "Leader")
+            if (role == "Leader" || role == "Manager")
             {
                 return await _context.Users
                     .AnyAsync(u => u.Id == employeeId && u.ManagerId == managerId);
@@ -381,6 +431,8 @@ namespace OcenaPlus.API.Controllers
                 Id = plan.Id.ToString(),
                 EmployeeId = plan.Employee.EmployeeId,
                 EmployeeName = $"{plan.Employee.FirstName} {plan.Employee.LastName}",
+                EmployeeDepartment = plan.Employee.Department?.Name ?? "Nieznany",
+                EmployeePosition = plan.Employee.Position?.Name ?? "Nieznane",
                 Year = plan.Year,
                 Status = plan.Status,
                 Goals = plan.Goals?.Select(MapGoalToFrontendDto).ToList() ?? new List<IDPGoalFrontendDto>(),

@@ -25,4 +25,9 @@ namespace OcenaPlus.API.DTOs
         public string? Category { get; set; }
         public string? Status { get; set; } // "inProgress", "completed", "notStarted"
     }
+
+    public class RejectIDPDto
+    {
+        public string? Comment { get; set; }
+    }
 }

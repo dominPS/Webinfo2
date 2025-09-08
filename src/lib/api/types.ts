@@ -142,6 +142,9 @@ export interface UpdateIDPGoalRequest {
 export interface IDPFrontendDto {
   id: string;
   employeeId: string;
+  employeeName: string;
+  employeeDepartment: string;
+  employeePosition: string;
   year: number;
   status: string;
   createdAt: string;
