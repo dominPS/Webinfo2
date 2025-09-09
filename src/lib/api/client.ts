@@ -92,8 +92,23 @@ class ApiClient {
         throw new Error(errorMessage);
       }
 
-      const result = await response.json();
-      return result;
+      // Handle No Content responses (204)
+      if (response.status === 204 || response.headers.get('content-length') === '0') {
+        return undefined as T;
+      }
+
+      // Try to parse JSON, but handle empty responses
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const text = await response.text();
+        if (text.length === 0) {
+          return undefined as T;
+        }
+        return JSON.parse(text);
+      }
+
+      // For non-JSON responses, return the response itself
+      return response as unknown as T;
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {

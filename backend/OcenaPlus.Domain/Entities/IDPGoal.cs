@@ -16,14 +16,17 @@ namespace OcenaPlus.Domain.Entities
         public string Title { get; set; } = string.Empty;
 
         [MaxLength(1000)]
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty; // Opis celu - ogólny opis
+
+        [MaxLength(2000)]
+        public string? Details { get; set; } = string.Empty; // Szczegóły celu - szczegółowe kroki i działania
 
         [Required]
         [MaxLength(50)]
-        public string Category { get; set; } = string.Empty; // "business" or "development"
+        public string Category { get; set; } = string.Empty; // "business" or "development" - typ celu
 
         [MaxLength(50)]
-        public string Status { get; set; } = "inProgress"; // "inProgress", "completed", "notStarted"
+        public string Status { get; set; } = "draft"; // "draft", "submitted", "approved", "correction_needed"
 
         public DateTime? TargetDate { get; set; }
 
@@ -32,5 +35,22 @@ namespace OcenaPlus.Domain.Entities
 
         [MaxLength(1000)]
         public string? Notes { get; set; }
+
+        // Nowe pole do oznaczenia czy cel jest szkicem
+        public bool IsDraft { get; set; } = true;
+
+        // Data przesłania do akceptacji
+        public DateTime? SubmittedDate { get; set; }
+
+        // Data akceptacji
+        public DateTime? ApprovalDate { get; set; }
+
+        // Kto zaakceptował cel
+        public int? ApprovedById { get; set; }
+        public User? ApprovedBy { get; set; }
+
+        // Komentarze do celu
+        [MaxLength(1000)]
+        public string? ApprovalComments { get; set; }
     }
 }

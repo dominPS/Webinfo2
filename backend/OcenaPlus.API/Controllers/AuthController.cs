@@ -296,5 +296,17 @@ namespace OcenaPlus.API.Controllers
 
             return Ok(response);
         }
+
+        /// <summary>
+        /// Logout user
+        /// </summary>
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            // Since we're using stateless JWT tokens, logout is handled client-side
+            // by removing the token from storage. This endpoint confirms successful logout.
+            return Ok(new { message = "Logged out successfully" });
+        }
     }
 }

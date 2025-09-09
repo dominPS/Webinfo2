@@ -32,6 +32,9 @@ namespace OcenaPlus.Domain.Entities
         public int? ManagerId { get; set; }
         public User? Manager { get; set; }
 
+        public int? ClientId { get; set; }
+        public Client? Client { get; set; }
+
         public bool IsActive { get; set; } = true;
 
         // Navigation properties

@@ -698,6 +698,9 @@
     "addGoal": {
       "title": "Add IDP Goal"
     },
+    "editGoal": {
+      "title": "Edit IDP Goal"
+    },
     "plan2025": {
       "title": "Plan for Year 2025"
     },
@@ -721,6 +724,7 @@
       "info": "Creation date: Assessment tools Goal details Expected outcome",
       "category": "Category",
       "description": "Description",
+      "details": "Details",
       "year": "Year",
       "status": "Status"
     },
@@ -732,29 +736,32 @@
       "category": "Goal Category",
       "goalType": "Goal Type",
       "goalDetails": "Goal Details",
-      "goalDetailsPlaceholder": "Enter your goal details...",
-      "goalResultsPlaceholder": "Describe expected results..."
+      "goalDetailsPlaceholder": "Enter detailed steps, requirements and expected results...",
+      "goalResultsPlaceholder": "Describe expected results...",
+      "imageAlt": "IDP planning illustration"
     },
     "categories": {
       "business": "Business Goal",
       "development": "Development Goal"
     },
     "actions": {
-      "addGoal": "Add IDP Goal",
-      "viewDrafts": "View Drafts",
-      "viewSaved": "View Saved Goals",
-      "viewPastPlans": "Past Plans",
-      "editGoal": "Edit Goal",
-      "deleteGoal": "Delete Goal",
-      "backToMain": "Back to Main",
+      "addGoal": "Add IDP goal",
+      "viewDrafts": "View drafts",
+      "viewSaved": "View saved goals",
+      "viewPastPlans": "Past plans",
+      "editGoal": "Edit goal",
+      "updateGoal": "Update goal",
+      "deleteGoal": "Delete goal",
+      "backToMain": "Back to main",
       "cancel": "Cancel",
       "draft": "Draft",
       "save": "Save",
+      "sendToApproval": "Send to approval",
       "submit": "Submit",
-      "needsCorrection": "Needs Correction",
+      "needsCorrection": "Needs correction",
       "approve": "Approve",
       "print": "Print",
-      "editAgain": "Return to Editing"
+      "editAgain": "Return to editing"
     },
     "status": {
       "draft": "Draft",

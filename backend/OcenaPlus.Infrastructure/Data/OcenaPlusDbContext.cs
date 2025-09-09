@@ -16,6 +16,7 @@ namespace OcenaPlus.Infrastructure.Data
         public DbSet<Position> Positions { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
         // Evaluations
         public DbSet<EvaluationRound> EvaluationRounds { get; set; }
@@ -57,6 +58,24 @@ namespace OcenaPlus.Infrastructure.Data
                     .WithMany(m => m.DirectReports)
                     .HasForeignKey(e => e.ManagerId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Client)
+                    .WithMany(c => c.Users)
+                    .HasForeignKey(e => e.ClientId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Client entity configuration
+            modelBuilder.Entity<Client>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasIndex(e => e.ApiKey)
+                    .IsUnique();
+                
+                entity.HasIndex(e => e.ExternalClientId)
+                    .IsUnique()
+                    .HasFilter("[ExternalClientId] IS NOT NULL");
             });
 
             // UserRole entity configuration
@@ -154,6 +173,11 @@ namespace OcenaPlus.Infrastructure.Data
                     .WithMany(p => p.Goals)
                     .HasForeignKey(g => g.PlanId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(g => g.ApprovedBy)
+                    .WithMany()
+                    .HasForeignKey(g => g.ApprovedById)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             // Configure automatic timestamps
@@ -201,6 +225,35 @@ namespace OcenaPlus.Infrastructure.Data
                 new Position { Id = 2, Name = "Team Lead", Description = "Team Leadership", CreatedAt = seedDate, UpdatedAt = seedDate },
                 new Position { Id = 3, Name = "HR Specialist", Description = "Human Resources", CreatedAt = seedDate, UpdatedAt = seedDate },
                 new Position { Id = 4, Name = "Project Manager", Description = "Project Management", CreatedAt = seedDate, UpdatedAt = seedDate }
+            );
+
+            // Seed Clients
+            modelBuilder.Entity<Client>().HasData(
+                new Client 
+                { 
+                    Id = 1, 
+                    Name = "WebInfo Test Client", 
+                    Description = "Test client for WebInfo integration", 
+                    ApiKey = "webinfo-api-key-12345",
+                    ExternalClientId = Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+                    ContactEmail = "test@webinfo.com",
+                    ContactPhone = "+48123456789",
+                    IsActive = true,
+                    CreatedAt = seedDate, 
+                    UpdatedAt = seedDate 
+                },
+                new Client 
+                { 
+                    Id = 2, 
+                    Name = "WebInfo Demo Client", 
+                    Description = "Demo client for WebInfo integration", 
+                    ApiKey = "webinfo-test-key",
+                    ExternalClientId = Guid.Parse("b2c3d4e5-f6a7-8901-bcde-f23456789012"),
+                    ContactEmail = "demo@webinfo.com",
+                    IsActive = true,
+                    CreatedAt = seedDate, 
+                    UpdatedAt = seedDate 
+                }
             );
         }
 

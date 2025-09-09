@@ -87,6 +87,103 @@ namespace OcenaPlus.API.Controllers
         }
 
         /// <summary>
+        /// Get current user's IDP plans
+        /// </summary>
+        [HttpGet("my-plans")]
+        public async Task<ActionResult<List<IDPFrontendDto>>> GetMyPlans(
+            [FromQuery] int? year = null,
+            [FromQuery] string? status = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 100)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var query = _context.IDPPlans
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
+                .Include(p => p.Goals)
+                .Where(p => p.EmployeeId == userId.Value);
+
+            // Apply filters
+            if (year.HasValue)
+                query = query.Where(p => p.Year == year.Value);
+            
+            if (!string.IsNullOrEmpty(status))
+                query = query.Where(p => p.Status == status);
+
+            // Apply pagination
+            var totalCount = await query.CountAsync();
+            var plans = await query
+                .OrderByDescending(p => p.Year)
+                .ThenByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var result = plans.Select(MapToFrontendDto).ToList();
+            
+            // Return paginated response structure
+            var response = new
+            {
+                items = result,
+                totalCount = totalCount,
+                page = page,
+                pageSize = pageSize,
+                totalPages = (int)Math.Ceiling((double)totalCount / pageSize)
+            };
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Create new IDP plan for current user
+        /// </summary>
+        [HttpPost("my-plans")]
+        public async Task<ActionResult<IDPFrontendDto>> CreateMyPlan([FromBody] CreateMyIDPDto dto)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            // Check if plan already exists for this year
+            var existingPlan = await _context.IDPPlans
+                .FirstOrDefaultAsync(p => p.EmployeeId == userId.Value && p.Year == dto.Year);
+            
+            if (existingPlan != null)
+                return BadRequest($"IDP plan for year {dto.Year} already exists");
+
+            var plan = new IDPPlan
+            {
+                EmployeeId = userId.Value,
+                Year = dto.Year,
+                Status = "draft",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.IDPPlans.Add(plan);
+            await _context.SaveChangesAsync();
+
+            // Reload with related data
+            plan = await _context.IDPPlans
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Department)
+                .Include(p => p.Employee)
+                .ThenInclude(e => e.Position)
+                .Include(p => p.Goals)
+                .FirstOrDefaultAsync(p => p.Id == plan.Id);
+
+            if (plan == null)
+                return StatusCode(500, "Failed to create plan");
+
+            return Ok(MapToFrontendDto(plan));
+        }
+
+        /// <summary>
         /// Create new IDP plan
         /// </summary>
         [HttpPost]
@@ -203,8 +300,11 @@ namespace OcenaPlus.API.Controllers
                 GoalId = Guid.NewGuid().ToString(),
                 Title = dto.Title,
                 Description = dto.Description ?? string.Empty,
+                Details = dto.Details ?? string.Empty,
                 Category = dto.Category,
-                Status = "inProgress",
+                Status = dto.IsDraft ? "draft" : "submitted",
+                IsDraft = dto.IsDraft,
+                SubmittedDate = dto.IsDraft ? null : DateTime.UtcNow,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -241,11 +341,21 @@ namespace OcenaPlus.API.Controllers
             if (dto.Description != null)
                 goal.Description = dto.Description;
             
+            if (dto.Details != null)
+                goal.Details = dto.Details;
+            
             if (dto.Category != null)
                 goal.Category = dto.Category;
             
             if (dto.Status != null)
                 goal.Status = dto.Status;
+
+            if (dto.IsDraft.HasValue)
+                goal.IsDraft = dto.IsDraft.Value;
+
+            // Jeśli cel przestał być draftem, ustaw datę przesłania
+            if (goal.IsDraft == false && goal.SubmittedDate == null)
+                goal.SubmittedDate = DateTime.UtcNow;
 
             goal.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
@@ -307,10 +417,159 @@ namespace OcenaPlus.API.Controllers
                 return BadRequest("Plan is already submitted or approved");
 
             plan.Status = "submitted";
+            plan.SubmittedDate = DateTime.UtcNow;
             plan.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
             return Ok(MapToFrontendDto(plan));
+        }
+
+        /// <summary>
+        /// Submit IDP goal for approval
+        /// </summary>
+        /// <summary>
+        /// Update existing IDP goal
+        /// </summary>
+        [HttpPut("goals/{goalId}")]
+        public async Task<ActionResult<IDPGoalFrontendDto>> UpdateGoal(string goalId, UpdateIDPGoalDto dto)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var goal = await _context.IDPGoals
+                .Include(g => g.Plan)
+                .FirstOrDefaultAsync(g => g.GoalId == goalId);
+
+            if (goal == null)
+                return NotFound("Goal not found");
+
+            if (!await HasAccessToPlan(goal.Plan, userId.Value))
+                return Forbid();
+
+            // Only allow updating draft goals
+            if (!goal.IsDraft)
+                return BadRequest("Can only update draft goals");
+
+            // Update goal data
+            goal.Title = dto.Title ?? goal.Title;
+            goal.Description = dto.Description ?? goal.Description;
+            goal.Details = dto.Details ?? goal.Details;
+            goal.Category = dto.Category ?? goal.Category;
+            goal.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(MapGoalToFrontendDto(goal));
+        }
+
+        /// <summary>
+        /// Submit goal for approval (simplified endpoint)
+        /// </summary>
+        [HttpPost("goals/submit")]
+        public async Task<ActionResult> SubmitGoalForApproval(SubmitGoalRequestDto dto)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var goal = await _context.IDPGoals
+                .Include(g => g.Plan)
+                .FirstOrDefaultAsync(g => g.Id == dto.GoalId);
+
+            if (goal == null)
+                return NotFound("Goal not found");
+
+            if (!await HasAccessToPlan(goal.Plan, userId.Value))
+                return Forbid();
+
+            if (goal.Status == "submitted" || goal.Status == "approved")
+                return BadRequest("Goal is already submitted or approved");
+
+            // Change status to submitted
+            goal.Status = "submitted";
+            goal.IsDraft = false;
+            goal.SubmittedDate = DateTime.UtcNow;
+            goal.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Goal submitted successfully" });
+        }
+
+        /// <summary>
+        /// Submit IDP goal for approval
+        /// </summary>
+        [HttpPost("{id}/goals/{goalId}/submit")]
+        public async Task<ActionResult<IDPGoalFrontendDto>> SubmitGoal(int id, string goalId, SubmitIDPGoalDto dto)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var goal = await _context.IDPGoals
+                .Include(g => g.Plan)
+                .FirstOrDefaultAsync(g => g.PlanId == id && g.GoalId == goalId);
+
+            if (goal == null)
+                return NotFound();
+
+            if (!await HasAccessToPlan(goal.Plan, userId.Value))
+                return Forbid();
+
+            if (goal.Status == "submitted" || goal.Status == "approved")
+                return BadRequest("Goal is already submitted or approved");
+
+            // Aktualizuj dane celu
+            goal.Title = dto.Title;
+            goal.Description = dto.Description ?? string.Empty;
+            goal.Details = dto.Details ?? string.Empty;
+            goal.Category = dto.Category;
+            goal.Status = "submitted";
+            goal.IsDraft = false;
+            goal.SubmittedDate = DateTime.UtcNow;
+            goal.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(MapGoalToFrontendDto(goal));
+        }
+
+        /// <summary>
+        /// Get draft goals for current user
+        /// </summary>
+        [HttpGet("drafts")]
+        public async Task<ActionResult<List<IDPGoalFrontendDto>>> GetDraftGoals()
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var role = GetCurrentUserRole();
+            var query = _context.IDPGoals
+                .Include(g => g.Plan)
+                .ThenInclude(p => p.Employee)
+                .Where(g => g.IsDraft == true)
+                .AsQueryable();
+
+            if (role == "Employee")
+            {
+                query = query.Where(g => g.Plan.EmployeeId == userId.Value);
+            }
+            else if (role == "Manager")
+            {
+                var teamMemberIds = await _context.Users
+                    .Where(u => u.ManagerId == userId.Value)
+                    .Select(u => u.Id)
+                    .ToListAsync();
+                
+                teamMemberIds.Add(userId.Value);
+                query = query.Where(g => teamMemberIds.Contains(g.Plan.EmployeeId));
+            }
+
+            var goals = await query.ToListAsync();
+            var result = goals.Select(MapGoalToFrontendDto).ToList();
+            return Ok(result);
         }
 
         /// <summary>
@@ -441,15 +700,46 @@ namespace OcenaPlus.API.Controllers
             };
         }
 
+        /// <summary>
+        /// Delete goal by ID
+        /// </summary>
+        [HttpDelete("goals/{goalId}")]
+        public async Task<ActionResult> DeleteGoalById(int goalId)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var goal = await _context.IDPGoals
+                .Include(g => g.Plan)
+                .FirstOrDefaultAsync(g => g.Id == goalId);
+
+            if (goal == null)
+                return NotFound("Goal not found");
+
+            if (!await HasAccessToPlan(goal.Plan, userId.Value))
+                return Forbid();
+
+            _context.IDPGoals.Remove(goal);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private IDPGoalFrontendDto MapGoalToFrontendDto(IDPGoal goal)
         {
             return new IDPGoalFrontendDto
             {
-                Id = goal.GoalId,
+                Id = goal.Id.ToString(), // Use database ID (int) converted to string for frontend
                 Title = goal.Title,
                 Description = goal.Description,
+                Details = goal.Details ?? string.Empty,
                 Category = goal.Category,
-                Status = goal.Status
+                Status = goal.Status,
+                IsDraft = goal.IsDraft,
+                SubmittedDate = goal.SubmittedDate,
+                ApprovalDate = goal.ApprovalDate,
+                ApprovalComments = goal.ApprovalComments
             };
         }
 }

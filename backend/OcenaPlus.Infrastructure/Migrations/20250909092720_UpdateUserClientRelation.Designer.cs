@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OcenaPlus.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using OcenaPlus.Infrastructure.Data;
 namespace OcenaPlus.Infrastructure.Migrations
 {
     [DbContext(typeof(OcenaPlusDbContext))]
-    partial class OcenaPlusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250909092720_UpdateUserClientRelation")]
+    partial class UpdateUserClientRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

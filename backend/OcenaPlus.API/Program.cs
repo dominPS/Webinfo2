@@ -54,10 +54,31 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000") // Multiple Vite ports
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        if (builder.Environment.IsDevelopment())
+        {
+            // W środowisku deweloperskim pozwalamy na wszystkie localhost origins oraz sieć lokalną
+            policy.SetIsOriginAllowed(origin => 
+                origin.StartsWith("http://localhost") || 
+                origin.StartsWith("https://localhost") ||
+                origin.StartsWith("http://192.168.") ||
+                origin.StartsWith("http://10.") ||
+                origin.StartsWith("http://172.") ||
+                origin == "null") // file:// protocol
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
+        else
+        {
+            // W produkcji tylko określone domeny
+            policy.WithOrigins(
+                    "https://webinfo.yourdomain.com",
+                    "https://ocenaplus.yourdomain.com"
+                  )
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
     });
 });
 
@@ -99,7 +120,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "OcenaPlus API v1");
+        c.RoutePrefix = "swagger"; // Swagger będzie dostępny pod /swagger
+    });
     app.UseDeveloperExceptionPage();
 }
 else

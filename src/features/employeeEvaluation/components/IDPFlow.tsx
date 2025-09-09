@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
+import { idpApi, type IDPGoalWithDetails, type IDPPlanWithDetails } from '../../../lib/api/idp';
+import { handleApiError } from '../../../lib/api/client';
 
 interface IDPGoal {
   id: string;
   title: string;
   description: string;
+  details?: string;
   category: 'business' | 'development';
   status: 'draft' | 'submitted' | 'approved' | 'correction_needed';
   year: number;
@@ -153,7 +156,7 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
   color: ${props => props.variant === 'cancel' ? '#126678' : 'white'};
   border: ${props => props.variant === 'cancel' ? '2px solid #126678' : 'none'};
 
-  &:hover {
+  &:hover:not(:disabled) {
     opacity: 0.9;
     transform: translateY(-1px);
     background-color: ${props => {
@@ -162,6 +165,12 @@ const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'sub
         default: return '#0f5459';
       }
     }};
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 `;
 
@@ -404,138 +413,251 @@ const StatusMessage = styled.div<{ type: 'success' | 'warning' | 'info' }>`
   }};
 `;
 
-type FlowStep = 'my-idp' | 'add-goal' | 'plan-2025' | 'review' | 'final' | 'drafts' | 'saved-goals' | 'past-plans';
-
-// Mock data for past IDP plans
-const mockPastPlans = {
-  2024: [
-    {
-      id: '2024-1',
-      title: 'Improve Leadership Skills',
-      description: 'Develop team management and communication abilities through mentoring and training programs.',
-      category: 'development' as const,
-      status: 'approved' as const,
-      year: 2024
-    },
-    {
-      id: '2024-2',
-      title: 'Increase Sales Revenue by 15%',
-      description: 'Focus on expanding client base and improving conversion rates through strategic initiatives.',
-      category: 'business' as const,
-      status: 'approved' as const,
-      year: 2024
-    },
-    {
-      id: '2024-3',
-      title: 'Complete Advanced Project Management Certification',
-      description: 'Obtain PMP certification to enhance project delivery capabilities and methodologies.',
-      category: 'development' as const,
-      status: 'approved' as const,
-      year: 2024
-    },
-    {
-      id: '2024-4',
-      title: 'Implement Customer Feedback System',
-      description: 'Design and deploy a comprehensive customer feedback collection and analysis system to improve service quality.',
-      category: 'business' as const,
-      status: 'approved' as const,
-      year: 2024
-    },
-    {
-      id: '2024-5',
-      title: 'Master Data Analytics and Visualization',
-      description: 'Complete advanced courses in data analytics, Python, and Tableau to enhance decision-making capabilities.',
-      category: 'development' as const,
-      status: 'approved' as const,
-      year: 2024
-    }
-  ],
-  2023: [
-    {
-      id: '2023-1',
-      title: 'Digital Transformation Initiative',
-      description: 'Lead the implementation of new digital tools and processes to improve operational efficiency.',
-      category: 'business' as const,
-      status: 'approved' as const,
-      year: 2023
-    },
-    {
-      id: '2023-2',
-      title: 'Public Speaking and Presentation Skills',
-      description: 'Enhance communication skills through Toastmasters participation and presentation workshops.',
-      category: 'development' as const,
-      status: 'approved' as const,
-      year: 2023
-    },
-    {
-      id: '2023-3',
-      title: 'Cross-Functional Team Collaboration',
-      description: 'Improve collaboration with marketing, sales, and product teams to enhance project outcomes.',
-      category: 'business' as const,
-      status: 'approved' as const,
-      year: 2023
-    },
-    {
-      id: '2023-4',
-      title: 'Agile and Scrum Methodology Mastery',
-      description: 'Become certified Scrum Master and implement agile practices across development teams.',
-      category: 'development' as const,
-      status: 'approved' as const,
-      year: 2023
-    }
-  ]
-};
+type FlowStep = 'my-idp' | 'add-goal' | 'edit-goal' | 'plan-2025' | 'review' | 'final' | 'drafts' | 'saved-goals' | 'past-plans';
 
 const IDPFlow: React.FC = () => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<FlowStep>('my-idp');
   const [goals, setGoals] = useState<IDPGoal[]>([]);
+  const [pastPlans, setPastPlans] = useState<Record<number, IDPGoal[]>>({});
   const [showIdpModal, setShowIdpModal] = useState(false);
   const [selectedPastYear, setSelectedPastYear] = useState<2024 | 2023>(2024);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [editingGoal, setEditingGoal] = useState<IDPGoal | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [goalToDelete, setGoalToDelete] = useState<IDPGoal | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
   const [newGoal, setNewGoal] = useState({
     title: '',
     description: '',
+    details: '',
     category: 'business' as 'business' | 'development'
   });
 
-  const handleAddGoal = () => {
-    if (newGoal.title && newGoal.description) {
-      const goal: IDPGoal = {
-        id: Date.now().toString(),
+  // Load user's IDP data on component mount
+  useEffect(() => {
+    loadIdpData();
+  }, []);
+
+  const loadIdpData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Load current year plans and draft goals
+      const currentPlansResponse = await idpApi.getCurrentUserPlans({ 
+        year: 2025,
+        page: 1,
+        pageSize: 100
+      });
+
+      // Load past plans
+      const pastPlansResponse = await idpApi.getCurrentUserPlans({
+        page: 1,
+        pageSize: 100
+      });
+
+      // Transform API data to component format
+      const currentGoals: IDPGoal[] = [];
+      const pastGoalsGrouped: Record<number, IDPGoal[]> = {};
+
+      // Process current plans
+      if (currentPlansResponse.items) {
+        currentPlansResponse.items.forEach(plan => {
+          if (plan.goals) {
+            plan.goals.forEach(goal => {
+              currentGoals.push({
+                id: goal.id.toString(),
+                title: goal.title,
+                description: goal.description,
+                details: goal.details,
+                category: goal.category,
+                status: goal.isDraft ? 'draft' : 
+                        (goal.approvalDate ? 'approved' : 'submitted'),
+                year: plan.year
+              });
+            });
+          }
+        });
+      }
+
+      // Process past plans
+      if (pastPlansResponse.items) {
+        pastPlansResponse.items
+          .filter(plan => plan.year < 2025)
+          .forEach(plan => {
+            if (plan.goals) {
+              const pastGoals: IDPGoal[] = plan.goals.map(goal => ({
+                id: goal.id.toString(),
+                title: goal.title,
+                description: goal.description,
+                details: goal.details,
+                category: goal.category,
+                status: goal.approvalDate ? 'approved' : 'submitted',
+                year: plan.year
+              }));
+              
+              pastGoalsGrouped[plan.year] = pastGoals;
+            }
+          });
+      }
+
+      setGoals(currentGoals);
+      setPastPlans(pastGoalsGrouped);
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error loading IDP data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddGoal = async () => {
+    if (!newGoal.title || !newGoal.description) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // First, get or create current year plan
+      const currentPlansResponse = await idpApi.getCurrentUserPlans({ 
+        year: 2025,
+        page: 1,
+        pageSize: 1 
+      });
+
+      let planId: number;
+      
+      if (currentPlansResponse.items && currentPlansResponse.items.length > 0) {
+        planId = currentPlansResponse.items[0].id;
+      } else {
+        // Create new plan for 2025
+        const newPlan = await idpApi.createPlan({
+          year: 2025
+        });
+        planId = newPlan.id;
+      }
+
+      // Add goal to plan
+      const createdGoal = await idpApi.createGoal(planId, {
         title: newGoal.title,
         description: newGoal.description,
+        details: newGoal.details,
         category: newGoal.category,
-        status: 'draft',
+        isDraft: false // Submit immediately for approval
+      });
+
+      // Update local state
+      const goal: IDPGoal = {
+        id: createdGoal.id.toString(),
+        title: createdGoal.title,
+        description: createdGoal.description,
+        details: createdGoal.details,
+        category: createdGoal.category,
+        status: 'submitted',
         year: 2025
       };
+
       setGoals([...goals, goal]);
-      setNewGoal({ title: '', description: '', category: 'business' });
+      setNewGoal({ title: '', description: '', details: '', category: 'business' });
       setCurrentStep('plan-2025');
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error adding goal:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSaveDraft = () => {
-    if (newGoal.title && newGoal.description) {
-      const goal: IDPGoal = {
-        id: Date.now().toString(),
+  const handleSaveDraft = async () => {
+    if (!newGoal.title || !newGoal.description) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // First, get or create current year plan
+      const currentPlansResponse = await idpApi.getCurrentUserPlans({ 
+        year: 2025,
+        page: 1,
+        pageSize: 1 
+      });
+
+      let planId: number;
+      
+      if (currentPlansResponse.items && currentPlansResponse.items.length > 0) {
+        planId = currentPlansResponse.items[0].id;
+      } else {
+        // Create new plan for 2025
+        const newPlan = await idpApi.createPlan({
+          year: 2025
+        });
+        planId = newPlan.id;
+      }
+
+      // Save goal as draft
+      const createdGoal = await idpApi.createGoal(planId, {
         title: newGoal.title,
         description: newGoal.description,
+        details: newGoal.details,
         category: newGoal.category,
+        isDraft: true
+      });
+
+      console.log('Created goal response:', createdGoal);
+
+      // Update local state
+      const goal: IDPGoal = {
+        id: createdGoal.id.toString(),
+        title: createdGoal.title,
+        description: createdGoal.description,
+        details: createdGoal.details,
+        category: createdGoal.category,
         status: 'draft',
         year: 2025
       };
+
+      console.log('Local goal object:', goal);
+
       setGoals([...goals, goal]);
-      setNewGoal({ title: '', description: '', category: 'business' });
-      // Stay on the same page to allow adding more goals
+      setNewGoal({ title: '', description: '', details: '', category: 'business' });
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error saving draft:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSaveGoal = (goalId: string) => {
-    setGoals(goals.map(goal => 
-      goal.id === goalId 
-        ? { ...goal, status: 'submitted' } 
-        : goal
-    ));
+  const handleSaveGoal = async (goalId: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Submit goal for approval
+      await idpApi.submitGoal({ goalId: parseInt(goalId) });
+
+      // Update local state
+      setGoals(goals.map(goal => 
+        goal.id === goalId 
+          ? { ...goal, status: 'submitted' } 
+          : goal
+      ));
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error submitting goal:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmitForReview = () => {
@@ -552,10 +674,106 @@ const IDPFlow: React.FC = () => {
     setCurrentStep('add-goal');
   };
 
+  const handleEditGoal = (goal: IDPGoal) => {
+    setEditingGoal(goal);
+    setCurrentStep('edit-goal');
+  };
+
+  const handleUpdateGoal = (updatedGoal: IDPGoal) => {
+    setGoals(goals.map(goal => goal.id === updatedGoal.id ? updatedGoal : goal));
+    setEditingGoal(null);
+    setCurrentStep('drafts');
+  };
+
+  const handleDeleteGoal = (goal: IDPGoal) => {
+    // Verify goal still exists in current state before opening modal
+    const existingGoal = goals.find(g => g.id === goal.id);
+    if (!existingGoal) {
+      console.warn('Goal not found in current state:', goal.id);
+      return;
+    }
+    
+    console.log('Opening delete modal for goal:', goal.id, goal.title);
+    setGoalToDelete(existingGoal);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteGoal = async () => {
+    if (!goalToDelete) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const goalIdToDelete = goalToDelete.id;
+      const goalIdNumber = parseInt(goalIdToDelete);
+      let apiSuccess = true;
+
+      // If the goal has a valid API ID, delete it from backend first
+      if (goalIdToDelete && !isNaN(goalIdNumber) && goalIdNumber > 0) {
+        console.log('Deleting goal with ID:', goalIdNumber);
+        try {
+          const deleteResult = await idpApi.deleteGoal(goalIdNumber);
+          console.log('API delete successful:', deleteResult);
+        } catch (apiError) {
+          console.error('API delete failed:', apiError);
+          apiSuccess = false;
+          // Still continue with local state update for better UX
+        }
+      } else {
+        console.log('Goal has no valid server ID, only removing from local state');
+      }
+
+      // Only update local state after API call completes (or fails)
+      setGoals(prevGoals => {
+        const updatedGoals = prevGoals.filter(g => g.id !== goalIdToDelete);
+        console.log('Updated goals state after deletion:', updatedGoals.length, 'goals remaining');
+        return updatedGoals;
+      });
+      
+      // Close modal and clear state
+      setShowDeleteModal(false);
+      setGoalToDelete(null);
+      
+      // Show success notification
+      setShowNotification(true);
+      
+      // Auto-hide notification after 3 seconds
+      setTimeout(() => setShowNotification(false), 3000);
+
+      if (!apiSuccess) {
+        console.warn('Goal removed from local state despite API error for better UX');
+      }
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error in delete process:', err);
+      
+      // Still clean up UI state
+      setShowDeleteModal(false);
+      setGoalToDelete(null);
+      
+      // Remove from local state for UX even if API failed
+      setGoals(prevGoals => prevGoals.filter(g => g.id !== goalToDelete?.id));
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelDeleteGoal = () => {
+    setShowDeleteModal(false);
+    setGoalToDelete(null);
+  };
+
   return (
     <FlowContainer>
       <FlowHeader>
         <FlowTitle>{t('idp.flow.title', 'Plan Rozwoju Indywidualnego (IDP)')}</FlowTitle>
+        {loading && <div>Loading...</div>}
+        {error && <StatusMessage type="warning">{error}</StatusMessage>}
       </FlowHeader>
 
       {/* Step 1: My IDP */}
@@ -632,20 +850,29 @@ const IDPFlow: React.FC = () => {
                 </FormGroup>
 
                 <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
+                  <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
                   <StyledTextArea
                     value={newGoal.title}
                     onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
-                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Wpisz szczegóły swojego celu...')}
+                    placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
                   />
                 </TextAreaContainer>
                 
                 <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDescription', 'Wyniki celu')}</TextAreaLabel>
+                  <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
                   <StyledTextArea
                     value={newGoal.description}
                     onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
-                    placeholder={t('idp.form.goalResultsPlaceholder', 'Opisz oczekiwane wyniki...')}
+                    placeholder={t('idp.form.goalDescriptionPlaceholder', 'Opisz swój cel...')}
+                  />
+                </TextAreaContainer>
+                
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={newGoal.details}
+                    onChange={(e) => setNewGoal({...newGoal, details: e.target.value})}
+                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Opisz szczegółowe kroki i oczekiwane wyniki...')}
                   />
                 </TextAreaContainer>
 
@@ -654,10 +881,96 @@ const IDPFlow: React.FC = () => {
                     {t('idp.actions.cancel', 'Anuluj')}
                   </ModernButton>
                   <ModernButton variant="draft" onClick={handleSaveDraft}>
-                    {t('idp.actions.draft', 'Draft')}
+                    {t('idp.actions.draft', 'Szkic')}
                   </ModernButton>
                   <ModernButton variant="save" onClick={handleAddGoal}>
-                    {t('idp.actions.save', 'Zapisz')}
+                    {t('idp.actions.sendToApproval', 'Wyślij do akceptacji')}
+                  </ModernButton>
+                </ButtonGroup>
+              </LeftFormSection>
+              
+              <RightImageSection>
+                <IDPImage 
+                  src={idpWomenPerson} 
+                  alt={t('idp.form.imageAlt', 'IDP planning illustration')}
+                />
+              </RightImageSection>
+            </MainFormLayout>
+        </FlowStep>
+      )}
+
+      {/* Step 2b: Edit IDP Goal */}
+      {currentStep === 'edit-goal' && editingGoal && (
+        <FlowStep isActive={true}>
+          <StepHeader>
+            <StepTitle>{t('idp.editGoal.title', 'Edytuj Cel')}</StepTitle>
+          </StepHeader>
+          
+          <MainFormLayout>
+              <LeftFormSection>
+                <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
+                  {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
+                </InfoBadge>
+
+                <FormGroup>
+                  <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
+                  <RadioGroup>
+                    <RadioOption>
+                      <RadioInput
+                        type="radio"
+                        name="editGoalType"
+                        value="business"
+                        checked={editingGoal.category === 'business'}
+                        onChange={(e) => setEditingGoal({...editingGoal, category: 'business'})}
+                      />
+                      <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
+                    </RadioOption>
+                    <RadioOption>
+                      <RadioInput
+                        type="radio"
+                        name="editGoalType"
+                        value="development"
+                        checked={editingGoal.category === 'development'}
+                        onChange={(e) => setEditingGoal({...editingGoal, category: 'development'})}
+                      />
+                      <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
+                    </RadioOption>
+                  </RadioGroup>
+                </FormGroup>
+
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={editingGoal.title}
+                    onChange={(e) => setEditingGoal({...editingGoal, title: e.target.value})}
+                    placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
+                  />
+                </TextAreaContainer>
+                
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={editingGoal.description}
+                    onChange={(e) => setEditingGoal({...editingGoal, description: e.target.value})}
+                    placeholder={t('idp.form.goalDescriptionPlaceholder', 'Opisz swój cel...')}
+                  />
+                </TextAreaContainer>
+                
+                <TextAreaContainer>
+                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
+                  <StyledTextArea
+                    value={editingGoal.details}
+                    onChange={(e) => setEditingGoal({...editingGoal, details: e.target.value})}
+                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Opisz szczegółowe kroki i oczekiwane wyniki...')}
+                  />
+                </TextAreaContainer>
+
+                <ButtonGroup>
+                  <ModernButton variant="cancel" onClick={() => { setEditingGoal(null); setCurrentStep('drafts'); }}>
+                    {t('idp.actions.cancel', 'Anuluj')}
+                  </ModernButton>
+                  <ModernButton variant="save" onClick={() => handleUpdateGoal(editingGoal)}>
+                    {t('idp.actions.updateGoal', 'Zaktualizuj cel')}
                   </ModernButton>
                 </ButtonGroup>
               </LeftFormSection>
@@ -689,9 +1002,10 @@ const IDPFlow: React.FC = () => {
                 <PlanBox key={goal.id}>
                   <PlanTitle>{goal.title}</PlanTitle>
                   <PlanDetails>
-                    <div><strong>{t('idp.plan.category', 'Category')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                    <div><strong>{t('idp.plan.description', 'Description')}:</strong> {goal.description}</div>
-                    <div><strong>{t('idp.plan.year', 'Year')}:</strong> {goal.year}</div>
+                    <div><strong>{t('idp.plan.category', 'Kategoria')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
+                    <div><strong>{t('idp.plan.description', 'Opis')}:</strong> {goal.description}</div>
+                    {goal.details && <div><strong>{t('idp.plan.details', 'Szczegóły')}:</strong> {goal.details}</div>}
+                    <div><strong>{t('idp.plan.year', 'Rok')}:</strong> {goal.year}</div>
                     <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
                   </PlanDetails>
                 </PlanBox>
@@ -764,36 +1078,136 @@ const IDPFlow: React.FC = () => {
       {currentStep === 'drafts' && (
         <FlowStep isActive={true}>
           <StepHeader>
-            <StepTitle>{t('idp.drafts.title', 'Draft Goals')}</StepTitle>
+            <StepTitle>{t('idp.drafts.title', 'Szkice celów')}</StepTitle>
           </StepHeader>
           
-          <p>{t('idp.drafts.description', 'View and manage your draft goals')}</p>
+          <p>{t('idp.drafts.description', 'Przeglądaj i zarządzaj swoimi szkicami celów')}</p>
           
           {goals.filter(goal => goal.status === 'draft').length === 0 ? (
             <StatusMessage type="info">
-              {t('idp.drafts.empty', 'No draft goals yet. Start by adding a new goal.')}
+              {t('idp.drafts.empty', 'Brak szkiców celów. Zacznij od dodania nowego celu.')}
             </StatusMessage>
           ) : (
             <ScrollableContainer>
               <GoalsContainer>
                 {goals.filter(goal => goal.status === 'draft').map((goal) => (
-                  <PlanBox key={goal.id}>
-                    <PlanTitle>{goal.title}</PlanTitle>
-                    <PlanDetails>
-                      <div><strong>{t('idp.plan.category', 'Category')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                      <div><strong>{t('idp.plan.description', 'Description')}:</strong> {goal.description}</div>
-                      <div><strong>{t('idp.plan.year', 'Year')}:</strong> {goal.year}</div>
-                      <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
-                    </PlanDetails>
+                  <div key={goal.id} style={{
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    marginBottom: '16px',
+                    backgroundColor: 'white'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '16px'
+                    }}>
+                      <h4 style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#126678',
+                        margin: '0'
+                      }}>
+                        {String(t(`idp.categories.${goal.category}`, goal.category))} - {goal.title}
+                      </h4>
+                      <div style={{
+                        display: 'flex',
+                        gap: '12px',
+                        alignItems: 'center'
+                      }}>
+                        <span style={{
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          backgroundColor: '#6b7280',
+                          color: 'white'
+                        }}>
+                          {String(t(`idp.status.${goal.status}`, goal.status))}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr 1fr',
+                      gap: '16px'
+                    }}>
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.category', 'Kategoria')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {String(t(`idp.categories.${goal.category}`, goal.category))}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.details', 'Szczegóły celu')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {goal.title}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.description', 'Opis celu')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {goal.description}
+                        </div>
+                      </div>
+                    </div>
+
                     <ActionButtons style={{ marginTop: '12px', justifyContent: 'flex-start' }}>
                       <ActionButton variant="submit" onClick={() => handleSaveGoal(goal.id)}>
-                        {t('idp.actions.save', 'Save')}
+                        {t('idp.actions.sendToApproval', 'Wyślij do akceptacji')}
                       </ActionButton>
-                      <ActionButton variant="cancel" onClick={() => setGoals(goals.filter(g => g.id !== goal.id))}>
-                        {t('idp.actions.deleteGoal', 'Delete Goal')}
+                      <ActionButton variant="save" onClick={() => handleEditGoal(goal)}>
+                        {t('idp.actions.editGoal', 'Edytuj cel')}
+                      </ActionButton>
+                      <ActionButton variant="cancel" onClick={() => handleDeleteGoal(goal)} disabled={loading || showDeleteModal}>
+                        {t('idp.actions.deleteGoal', 'Usuń cel')}
                       </ActionButton>
                     </ActionButtons>
-                  </PlanBox>
+                  </div>
                 ))}
               </GoalsContainer>
             </ScrollableContainer>
@@ -801,10 +1215,10 @@ const IDPFlow: React.FC = () => {
 
           <ActionButtons>
             <ActionButton variant="submit" onClick={() => setCurrentStep('add-goal')}>
-              {t('idp.actions.addGoal', 'Add IDP Goal')}
+              {t('idp.actions.addGoal', 'Dodaj cel IDP')}
             </ActionButton>
             <ActionButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-              {t('idp.actions.backToMain', 'Back to Main')}
+              {t('idp.actions.backToMain', 'Powrót do głównej')}
             </ActionButton>
           </ActionButtons>
         </FlowStep>
@@ -884,7 +1298,7 @@ const IDPFlow: React.FC = () => {
 
             <ScrollableContainer>
               <GoalsContainer>
-                {(mockPastPlans[selectedPastYear] as IDPGoal[])?.map((goal: IDPGoal) => (
+                {(pastPlans[selectedPastYear] as IDPGoal[])?.map((goal: IDPGoal) => (
                   <div key={goal.id} style={{
                     border: '1px solid #e5e7eb',
                     borderRadius: '12px',
@@ -927,29 +1341,9 @@ const IDPFlow: React.FC = () => {
 
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
+                      gridTemplateColumns: '1fr 1fr 1fr',
                       gap: '16px'
                     }}>
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.description', 'Opis Celu')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {goal.description}
-                        </div>
-                      </div>
-
                       <div style={{
                         backgroundColor: '#f9fafb',
                         border: '1px solid #e5e7eb',
@@ -967,6 +1361,46 @@ const IDPFlow: React.FC = () => {
                         </div>
                         <div style={{ color: '#374151', lineHeight: '1.5' }}>
                           {String(t(`idp.categories.${goal.category}`, goal.category))}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.details', 'Szczegóły Celu')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {goal.details || t('idp.plan.noDetails', 'Brak szczegółów')}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: '#f9fafb',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          marginBottom: '8px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {t('idp.plan.description', 'Opis Celu')}
+                        </div>
+                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
+                          {goal.description}
                         </div>
                       </div>
                     </div>
@@ -1000,6 +1434,49 @@ const IDPFlow: React.FC = () => {
             </p>
           </ModalContent>
         </ModalOverlay>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <ModalOverlay onClick={cancelDeleteGoal}>
+          <ConfirmModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalCloseButton onClick={cancelDeleteGoal}>
+              ×
+            </ModalCloseButton>
+            <ConfirmModalTitle>
+              {t('idp.deleteModal.title', 'Czy na pewno chcesz usunąć szkic?')}
+            </ConfirmModalTitle>
+            <ConfirmModalText>
+              {t('idp.deleteModal.description', 'Ta operacja jest nieodwracalna. Szkic celu zostanie trwale usunięty.')}
+            </ConfirmModalText>
+            {goalToDelete && (
+              <GoalPreview>
+                <strong>{goalToDelete.title}</strong>
+                <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>
+                  {goalToDelete.description}
+                </div>
+              </GoalPreview>
+            )}
+            <ConfirmModalButtons>
+              <ConfirmButton variant="cancel" onClick={cancelDeleteGoal}>
+                {t('idp.actions.cancel', 'Anuluj')}
+              </ConfirmButton>
+              <ConfirmButton variant="delete" onClick={confirmDeleteGoal} disabled={loading}>
+                {loading ? t('idp.actions.deleting', 'Usuwanie...') : t('idp.actions.confirmDelete', 'Tak, usuń')}
+              </ConfirmButton>
+            </ConfirmModalButtons>
+          </ConfirmModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* Success Notification */}
+      {showNotification && (
+        <SuccessNotification>
+          <NotificationIcon>✓</NotificationIcon>
+          <NotificationText>
+            {t('idp.notification.deleted', 'Usunięto szkic')}
+          </NotificationText>
+        </SuccessNotification>
       )}
     </FlowContainer>
   );
@@ -1058,4 +1535,134 @@ const ModalTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 16px;
   color: #1f2937;
+`;
+
+// Confirmation Modal Styles
+const ConfirmModalContent = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90vw;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+`;
+
+const ConfirmModalTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #dc2626;
+  text-align: center;
+`;
+
+const ConfirmModalText = styled.p`
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  text-align: center;
+  line-height: 1.5;
+`;
+
+const GoalPreview = styled.div`
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #126678;
+`;
+
+const ConfirmModalButtons = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+`;
+
+const ConfirmButton = styled.button<{ variant: 'cancel' | 'delete' }>`
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+
+  ${props => {
+    switch (props.variant) {
+      case 'cancel':
+        return `
+          background-color: white;
+          color: #6b7280;
+          border: 2px solid #d1d5db;
+          
+          &:hover {
+            background-color: #f9fafb;
+            border-color: #9ca3af;
+          }
+        `;
+      case 'delete':
+        return `
+          background-color: #dc2626;
+          color: white;
+          
+          &:hover {
+            background-color: #b91c1c;
+          }
+          
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        `;
+    }
+  }}
+
+  &:active {
+    transform: translateY(1px);
+  }
+`;
+
+// Notification Styles
+const SuccessNotification = styled.div`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #10b981;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  animation: slideIn 0.3s ease-out;
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`;
+
+const NotificationIcon = styled.div`
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+`;
+
+const NotificationText = styled.span`
+  font-size: 14px;
+  font-weight: 500;
 `;

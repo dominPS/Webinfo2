@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OcenaPlus.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using OcenaPlus.Infrastructure.Data;
 namespace OcenaPlus.Infrastructure.Migrations
 {
     [DbContext(typeof(OcenaPlusDbContext))]
-    partial class OcenaPlusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250909073031_AddIDPGoalDetailsAndDraftSupport")]
+    partial class AddIDPGoalDetailsAndDraftSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,102 +24,6 @@ namespace OcenaPlus.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("OcenaPlus.Domain.Entities.Client", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApiKey")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ContactEmail")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("ContactPhone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid?>("ExternalClientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApiKey")
-                        .IsUnique();
-
-                    b.HasIndex("ExternalClientId")
-                        .IsUnique()
-                        .HasFilter("[ExternalClientId] IS NOT NULL");
-
-                    b.ToTable("Clients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ApiKey = "webinfo-api-key-12345",
-                            ContactEmail = "test@webinfo.com",
-                            ContactPhone = "+48123456789",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Test client for WebInfo integration",
-                            ExternalClientId = new Guid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "WebInfo Test Client",
-                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApiKey = "webinfo-test-key",
-                            ContactEmail = "demo@webinfo.com",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Demo client for WebInfo integration",
-                            ExternalClientId = new Guid("b2c3d4e5-f6a7-8901-bcde-f23456789012"),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "WebInfo Demo Client",
-                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                        });
-                });
 
             modelBuilder.Entity("OcenaPlus.Domain.Entities.Department", b =>
                 {
@@ -851,9 +758,6 @@ namespace OcenaPlus.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -910,8 +814,6 @@ namespace OcenaPlus.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.HasIndex("DepartmentId");
 
@@ -1066,11 +968,6 @@ namespace OcenaPlus.Infrastructure.Migrations
 
             modelBuilder.Entity("OcenaPlus.Domain.Entities.User", b =>
                 {
-                    b.HasOne("OcenaPlus.Domain.Entities.Client", "Client")
-                        .WithMany("Users")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("OcenaPlus.Domain.Entities.Department", "Department")
                         .WithMany("Users")
                         .HasForeignKey("DepartmentId")
@@ -1087,8 +984,6 @@ namespace OcenaPlus.Infrastructure.Migrations
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("Department");
 
@@ -1114,11 +1009,6 @@ namespace OcenaPlus.Infrastructure.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OcenaPlus.Domain.Entities.Client", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("OcenaPlus.Domain.Entities.Department", b =>

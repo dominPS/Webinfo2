@@ -23,7 +23,8 @@
     "settlement": "Rozliczenie",
     "absencePlan": "Plan absencji",
     "monthlyAbsencePlan": "Miesięczny plan absencji",
-    "schedule": "Grafik",    "projectsActivities": "Projekty / Czynności",
+    "schedule": "Grafik",
+    "projectsActivities": "Projekty / Czynności",
     "eTeczka": "e-Teczka",
     "employeeEvaluation": "Ocena pracowników",
     "logout": "Wyloguj się",
@@ -774,6 +775,9 @@
     "addGoal": {
       "title": "DODAJ CEL IDP"
     },
+    "editGoal": {
+      "title": "EDYTUJ CEL IDP"
+    },
     "plan2025": {
       "title": "PLAN NA ROK 2025"
     },
@@ -797,6 +801,7 @@
       "info": "Data utworzenia: Narzędzia oceny Szczegóły celu Oczekiwany wynik",
       "category": "Kategoria",
       "description": "Opis Celu",
+      "details": "Szczegóły",
       "year": "Rok",
       "status": "Status"
     },
@@ -808,8 +813,9 @@
       "category": "Kategoria celu",
       "goalType": "Typ celu",
       "goalDetails": "Szczegóły celu",
-      "goalDetailsPlaceholder": "Wpisz szczegóły swojego celu...",
-      "goalResultsPlaceholder": "Opisz oczekiwane wyniki..."
+      "goalDetailsPlaceholder": "Wpisz szczegóły swojego celu, kroki realizacji i oczekiwane wyniki...",
+      "goalResultsPlaceholder": "Opisz oczekiwane wyniki...",
+      "imageAlt": "Ilustracja planowania IDP"
     },
     "categories": {
       "business": "Cel Biznesowy",
@@ -821,11 +827,13 @@
       "viewSaved": "ZOBACZ ZAPISANE CELE",
       "viewPastPlans": "POPRZEDNIE PLANY",
       "editGoal": "EDYTUJ CEL",
+      "updateGoal": "Zaktualizuj cel",
       "deleteGoal": "USUŃ CEL",
       "backToMain": "POWRÓT DO GŁÓWNEJ",
-      "cancel": "ANULUJ",
-      "draft": "SZKIC",
-      "save": "ZAPISZ",
+      "cancel": "Anuluj",
+      "draft": "Szkic",
+      "save": "Zapisz",
+      "sendToApproval": "Wyślij do akceptacji",
       "submit": "WYŚLIJ",
       "needsCorrection": "DO KOREKTY",
       "approve": "ZATWIERDŹ",

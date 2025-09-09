@@ -11,7 +11,9 @@ namespace OcenaPlus.Domain.Entities
         public int Year { get; set; }
 
         [MaxLength(50)]
-        public string Status { get; set; } = "draft"; // "draft", "submitted", "approved"
+        public string Status { get; set; } = "draft"; // "draft", "submitted", "approved", "correction_needed"
+
+        public DateTime? SubmittedDate { get; set; } // Data przesłania do akceptacji
 
         public DateTime? ApprovalDate { get; set; }
 
@@ -20,6 +22,10 @@ namespace OcenaPlus.Domain.Entities
 
         [MaxLength(2000)]
         public string? OverallComments { get; set; }
+
+        // Komentarze od przełożonego
+        [MaxLength(2000)]
+        public string? SupervisorComments { get; set; }
 
         // Navigation properties
         public ICollection<IDPGoal> Goals { get; set; } = new List<IDPGoal>();

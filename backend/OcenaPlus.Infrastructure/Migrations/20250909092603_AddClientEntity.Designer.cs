@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OcenaPlus.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using OcenaPlus.Infrastructure.Data;
 namespace OcenaPlus.Infrastructure.Migrations
 {
     [DbContext(typeof(OcenaPlusDbContext))]
-    partial class OcenaPlusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250909092603_AddClientEntity")]
+    partial class AddClientEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1066,10 +1069,9 @@ namespace OcenaPlus.Infrastructure.Migrations
 
             modelBuilder.Entity("OcenaPlus.Domain.Entities.User", b =>
                 {
-                    b.HasOne("OcenaPlus.Domain.Entities.Client", "Client")
+                    b.HasOne("OcenaPlus.Domain.Entities.Client", null)
                         .WithMany("Users")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("OcenaPlus.Domain.Entities.Department", "Department")
                         .WithMany("Users")
@@ -1087,8 +1089,6 @@ namespace OcenaPlus.Infrastructure.Migrations
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("Department");
 

@@ -119,7 +119,6 @@ export interface IDPPlan {
 }
 
 export interface CreateIDPPlanRequest {
-  employeeId: number;
   year: number;
 }
 

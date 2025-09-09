@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebInfo - Integracja z OcenaPlus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .user-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #fafafa;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WebInfo - Integracja z OcenaPlus</h1>
+        <p>Przykładowa implementacja integracji z systemem ocen pracowników.</p>
+        
+        <div class="status success">
+            <strong>✅ Konfiguracja:</strong> Backend API działa na http://localhost:5140<br>
+            <strong>ℹ️ Jeśli widzisz błędy CORS:</strong> Odśwież stronę po uruchomieniu backend
+        </div>
+
+        <div id="status"></div>
+
+        <div class="user-card">
+            <h3>Symulacja użytkownika WebInfo</h3>
+            <p><strong>Imię:</strong> Jan Kowalski</p>
+            <p><strong>Email:</strong> jan.kowalski@firma.pl</p>
+            <p><strong>Dział:</strong> IT</p>
+            <p><strong>Stanowisko:</strong> Software Developer</p>
+            
+            <button class="btn btn-success" onclick="redirectToEvaluations('jan.kowalski@firma.pl')">
+                🎯 Przejdź do ocen pracowniczych
+            </button>
+            
+            <button class="btn" onclick="syncUser('jan.kowalski@firma.pl')">
+                🔄 Synchronizuj dane użytkownika
+            </button>
+            
+            <button class="btn" onclick="getUserRoles('jan.kowalski@firma.pl')">
+                👤 Sprawdź role użytkownika
+            </button>
+        </div>
+
+        <div class="user-card">
+            <h3>Test API</h3>
+            <button class="btn" onclick="testAddUser()">➕ Dodaj testowego użytkownika</button>
+            <button class="btn" onclick="getAllUsers()">📋 Pobierz wszystkich użytkowników</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        class OcenaPlusIntegration {
+            constructor() {
+                // UWAGA: W prawdziwej aplikacji te wartości powinny być w konfiguracji serwera
+                this.apiKey = 'webinfo-api-key-12345';
+                this.baseUrl = 'http://localhost:5140/api/WebInfo'; // Backend działa na porcie 5140 (HTTP)
+                this.clientId = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+                this.frontendUrl = 'http://localhost:5173'; // URL frontend OcenaPlus
+            }
+
+            async makeRequest(endpoint, method = 'GET', data = null) {
+                try {
+                    const options = {
+                        method,
+                        headers: {
+                            'ClientApiKey': this.apiKey,
+                            'Content-Type': 'application/json'
+                        }
+                    };
+
+                    if (data) {
+                        options.body = JSON.stringify(data);
+                    }
+
+                    const response = await fetch(`${this.baseUrl}${endpoint}`, options);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.text();
+                        throw new Error(`HTTP ${response.status}: ${errorData}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw error;
+                }
+            }
+
+            async redirectToEvaluations(userEmail) {
+                try {
+                    this.showStatus('Przekierowywanie do systemu ocen...', 'info');
+                    
+                    const ssoData = {
+                        email: userEmail,
+                        clientId: this.clientId,
+                        redirectUrl: '/evaluations',
+                        userData: {
+                            firstName: 'Jan',
+                            lastName: 'Kowalski',
+                            departmentName: 'IT',
+                            positionName: 'Software Developer',
+                            roleNames: ['Employee']
+                        }
+                    };
+
+                    const response = await this.makeRequest('/SSO', 'POST', ssoData);
+                    
+                    // Zapisz token do localStorage
+                    localStorage.setItem('ocenaplus_token', response.token);
+                    
+                    // Otwórz nową kartę z systemem ocen
+                    const redirectUrl = `${this.frontendUrl}${response.redirectUrl}?token=${response.token}`;
+                    window.open(redirectUrl, '_blank');
+                    
+                    this.showStatus(`✅ Przekierowanie successful! Token zapisany.`, 'success');
+                    this.showResults('SSO Response:', response);
+                    
+                } catch (error) {
+                    this.showStatus(`❌ Błąd podczas przekierowywania: ${error.message}`, 'error');
+                }
+            }
+
+            async syncUser(userEmail) {
+                try {
+                    this.showStatus('Synchronizacja danych użytkownika...', 'info');
+                    
+                    const userData = {
+                        firstName: 'Jan',
+                        lastName: 'Kowalski',
+                        email: userEmail,
+                        departmentName: 'IT',
+                        positionName: 'Senior Software Developer', // Zmienione stanowisko
+                        managerEmail: 'anna.manager@firma.pl',
+                        isActive: true,
+                        clientId: this.clientId,
+                        roleNames: ['Employee', 'Developer']
+                    };
+
+                    const response = await this.makeRequest('/UpdateUser', 'PUT', userData);
+                    this.showStatus('✅ Dane użytkownika zostały zsynchronizowane!', 'success');
+                    this.showResults('Update Response:', response);
+                    
+                } catch (error) {
+                    this.showStatus(`❌ Błąd synchronizacji: ${error.message}`, 'error');
+                }
+            }
+
+            async getUserRoles(userEmail) {
+                try {
+                    this.showStatus('Pobieranie ról użytkownika...', 'info');
+                    
+                    const response = await this.makeRequest(`/GetUserRoles?email=${encodeURIComponent(userEmail)}&clientId=${this.clientId}`);
+                    this.showStatus('✅ Role użytkownika pobrane pomyślnie!', 'success');
+                    this.showResults('User Roles:', response);
+                    
+                } catch (error) {
+                    this.showStatus(`❌ Błąd pobierania ról: ${error.message}`, 'error');
+                }
+            }
+
+            async testAddUser() {
+                try {
+                    this.showStatus('Dodawanie testowego użytkownika...', 'info');
+                    
+                    const userData = {
+                        firstName: 'Anna',
+                        lastName: 'Testowa',
+                        email: `anna.test${Date.now()}@firma.pl`, // Unikalny email
+                        employeeId: `TEST${Date.now()}`,
+                        departmentName: 'HR',
+                        positionName: 'HR Specialist',
+                        defaultPassword: 'TestPassword123!',
+                        roleNames: ['Employee', 'HR']
+                    };
+
+                    const response = await this.makeRequest('/AddUser', 'POST', userData);
+                    this.showStatus('✅ Testowy użytkownik został dodany!', 'success');
+                    this.showResults('Add User Response:', response);
+                    
+                } catch (error) {
+                    this.showStatus(`❌ Błąd dodawania użytkownika: ${error.message}`, 'error');
+                }
+            }
+
+            async getAllUsers() {
+                try {
+                    this.showStatus('Pobieranie wszystkich użytkowników...', 'info');
+                    
+                    const response = await this.makeRequest(`/GetClientUsers?clientId=${this.clientId}`);
+                    this.showStatus(`✅ Pobrano ${response.length} użytkowników!`, 'success');
+                    this.showResults('All Users:', response);
+                    
+                } catch (error) {
+                    this.showStatus(`❌ Błąd pobierania użytkowników: ${error.message}`, 'error');
+                }
+            }
+
+            showStatus(message, type = 'info') {
+                const statusDiv = document.getElementById('status');
+                statusDiv.className = `status ${type}`;
+                statusDiv.innerHTML = message;
+            }
+
+            showResults(title, data) {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `
+                    <h3>${title}</h3>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto;">
+${JSON.stringify(data, null, 2)}
+                    </pre>
+                `;
+            }
+        }
+
+        // Inicjalizacja
+        const ocenaPlus = new OcenaPlusIntegration();
+
+        // Funkcje globalne wywoływane przez buttony
+        function redirectToEvaluations(email) {
+            ocenaPlus.redirectToEvaluations(email);
+        }
+
+        function syncUser(email) {
+            ocenaPlus.syncUser(email);
+        }
+
+        function getUserRoles(email) {
+            ocenaPlus.getUserRoles(email);
+        }
+
+        function testAddUser() {
+            ocenaPlus.testAddUser();
+        }
+
+        function getAllUsers() {
+            ocenaPlus.getAllUsers();
+        }
+
+        // Sprawdzenie stanu na początku
+        document.addEventListener('DOMContentLoaded', function() {
+            ocenaPlus.showStatus('🚀 WebInfo Integration gotowa do testowania!', 'success');
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OcenaPlus.Infrastructure.Data;
+using System.Reflection;
+using System.Net;
 
 namespace OcenaPlus.API.Controllers
 {
@@ -68,6 +70,37 @@ namespace OcenaPlus.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetStatus")]
+        public IActionResult GetStatus()
+        {
+            try
+            {
+                AssemblyInformationalVersionAttribute? version = 
+                    Assembly.GetExecutingAssembly()
+                        .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                        .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+
+                var connection = _context.Database.GetDbConnection();
+                
+                return Ok(new
+                {
+                    DatabaseInstanceName = connection.Database,
+                    DatabaseHost = $"{connection.DataSource} ({Dns.GetHostName()})",
+                    ConnectedToDatabase = _context.Database.CanConnect(),
+                    ApiVersion = version?.InformationalVersion ?? "Unknown",
+                    Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development",
+                    FrontEnd = "React Application" // Możesz skonfigurować to w appsettings.json
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { 
+                    error = ex.Message,
+                    timestamp = DateTime.UtcNow 
+                });
             }
         }
     }
