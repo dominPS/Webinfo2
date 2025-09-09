@@ -405,15 +405,19 @@ const SelfEvaluationForm: React.FC<SelfEvaluationFormProps> = ({
         } catch (error) {
           console.error('Error fetching user data:', error);
           // Fallback to any available data from auth store
-          const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-          if (storedUser && storedUser.firstName) {
-            setFormData(prev => ({
-              ...prev,
-              employeeId: storedUser.employeeId || '',
-              employeeName: `${storedUser.firstName} ${storedUser.lastName}`,
-              position: storedUser.position || '',
-              department: storedUser.department || '',
-            }));
+          try {
+            const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+            if (storedUser && storedUser.firstName) {
+              setFormData(prev => ({
+                ...prev,
+                employeeId: storedUser.employeeId || '',
+                employeeName: `${storedUser.firstName} ${storedUser.lastName}`,
+                position: storedUser.position || '',
+                department: storedUser.department || '',
+              }));
+            }
+          } catch (parseError) {
+            console.error('Error parsing stored user data:', parseError);
           }
         } finally {
           setLoadingUserData(false);

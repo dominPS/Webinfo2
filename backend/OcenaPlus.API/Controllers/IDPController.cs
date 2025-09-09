@@ -431,7 +431,7 @@ namespace OcenaPlus.API.Controllers
         /// Update existing IDP goal
         /// </summary>
         [HttpPut("goals/{goalId}")]
-        public async Task<ActionResult<IDPGoalFrontendDto>> UpdateGoal(string goalId, UpdateIDPGoalDto dto)
+        public async Task<ActionResult<IDPGoalFrontendDto>> UpdateGoal(int goalId, UpdateIDPGoalDto dto)
         {
             var userId = GetCurrentUserId();
             if (userId == null)
@@ -439,7 +439,7 @@ namespace OcenaPlus.API.Controllers
 
             var goal = await _context.IDPGoals
                 .Include(g => g.Plan)
-                .FirstOrDefaultAsync(g => g.GoalId == goalId);
+                .FirstOrDefaultAsync(g => g.Id == goalId);
 
             if (goal == null)
                 return NotFound("Goal not found");

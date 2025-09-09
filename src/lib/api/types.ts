@@ -132,6 +132,7 @@ export interface CreateIDPGoalRequest {
 export interface UpdateIDPGoalRequest {
   title?: string;
   description?: string;
+  category?: 'business' | 'development';
   targetDate?: string;
   progress?: number;
   status?: string;
@@ -155,10 +156,15 @@ export interface IDPGoalFrontendDto {
   id: string;
   title: string;
   description: string;
+  details?: string;
   category: 'business' | 'development';
   status: string;
   targetDate?: string;
   progress?: number;
+  isDraft?: boolean;
+  submittedDate?: string;
+  approvalDate?: string;
+  approvalComments?: string;
 }
 
 // API Response Types

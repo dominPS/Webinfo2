@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:firefox": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
@@ -19,6 +20,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-basic-ssl": "^2.1.0",
     "@vitejs/plugin-react": "^4.5.2",
     "jsdom": "^26.1.0",
     "typescript": "~5.8.3",

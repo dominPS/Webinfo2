@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { useIDPPlans, useIDPPlan, useApproveIDPPlan, useRejectIDPPlan } from '../../../lib/hooks/useIDP';
+import { IDPService } from '../../../lib/api/services';
 import type { IDPFrontendDto, IDPGoalFrontendDto } from '../../../lib/api/types';
 
 interface Employee {
@@ -478,6 +479,29 @@ const TextArea = styled.textarea`
   }
 `;
 
+const CommentSection = styled.div`
+  margin: 24px 0;
+  padding: 16px 0;
+  border-top: 1px solid #e5e7eb;
+`;
+
+const CommentLabel = styled.label`
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+`;
+
+const ApprovalActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+`;
+
 const EmployeeInfo = styled.div`
   background-color: #f8f9fa;
   border: 1px solid #e5e7eb;
@@ -595,7 +619,7 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
   }, []);
 
   // Pobieranie danych z API
-  const { data: idpPlansData, isLoading: idpLoading } = useIDPPlans();
+  const { data: idpPlansData, isLoading: idpLoading, refetch: refetchIDPPlans } = useIDPPlans();
   const approveMutation = useApproveIDPPlan();
   const rejectMutation = useRejectIDPPlan();
   
@@ -607,6 +631,8 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
   const [isIDPModalOpen, setIsIDPModalOpen] = useState(false);
   const [isCorrectionModalOpen, setIsCorrectionModalOpen] = useState(false);
   const [correctionComment, setCorrectionComment] = useState('');
+  const [approvalComment, setApprovalComment] = useState('');
+  const [isLoadingPlan, setIsLoadingPlan] = useState(false);
   
   // Efekt pobierający dane z API i przekształcający je na format Employee
   useEffect(() => {
@@ -739,14 +765,28 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
 
   const handleViewIDPPlan = async (employee: Employee) => {
     if (employee.idpId) {
-      // Znajdź plan w danych, które już mamy
-      const plans = Array.isArray(idpPlansData) ? idpPlansData : 
-        (idpPlansData?.items || (typeof idpPlansData === 'object' && 'id' in idpPlansData ? [idpPlansData] : []));
-      
-      const plan = plans.find(p => String(p.id) === employee.idpId);
-      if (plan) {
-        setSelectedIDPPlan(plan);
-        setIsIDPModalOpen(true);
+      setIsLoadingPlan(true);
+      try {
+        // Pobierz świeże dane z API
+        const planData = await IDPService.getByIdFrontend(employee.idpId);
+        
+        if (planData) {
+          setSelectedIDPPlan(planData);
+          setIsIDPModalOpen(true);
+        }
+      } catch (error) {
+        console.error('Error fetching IDP plan:', error);
+        // Fallback - spróbuj znaleźć w cache
+        const plans = Array.isArray(idpPlansData) ? idpPlansData : 
+          (idpPlansData?.items || (typeof idpPlansData === 'object' && 'id' in idpPlansData ? [idpPlansData] : []));
+        
+        const plan = plans.find(p => String(p.id) === employee.idpId);
+        if (plan) {
+          setSelectedIDPPlan(plan);
+          setIsIDPModalOpen(true);
+        }
+      } finally {
+        setIsLoadingPlan(false);
       }
     }
   };
@@ -757,6 +797,7 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
         await approveMutation.mutateAsync(Number(selectedIDPPlan.id));
         setIsIDPModalOpen(false);
         setSelectedIDPPlan(null);
+        setApprovalComment(''); // Wyczyść komentarz po akceptacji
       } catch (error) {
         console.error('Error approving IDP plan:', error);
       }
@@ -792,6 +833,7 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
   const handleCloseIDPModal = () => {
     setIsIDPModalOpen(false);
     setSelectedIDPPlan(null);
+    setApprovalComment(''); // Wyczyść komentarz akceptacji
   };
 
   const renderTeamOverview = () => (
@@ -914,6 +956,13 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
       <StepContainer>
         <StepHeader>
           <StepTitle>{t('evaluation.leader.team.idp.title', 'Zarządzanie Planami IDP')}</StepTitle>
+          <ActionButton 
+            variant="secondary" 
+            onClick={() => refetchIDPPlans()}
+            style={{ marginLeft: 'auto', fontSize: '14px', padding: '8px 16px' }}
+          >
+            🔄 Odśwież dane
+          </ActionButton>
         </StepHeader>
 
         <FilterContainer>
@@ -991,18 +1040,30 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
                         </ActionButton>
                       )}
                       {employee.idpStatus === 'draft' && (
-                        <ActionButton variant="secondary" onClick={() => handleViewIDPPlan(employee)}>
-                          {t('evaluation.leader.team.actions.viewIDPDraft', 'Zobacz szkic IDP')}
+                        <ActionButton 
+                          variant="secondary" 
+                          onClick={() => handleViewIDPPlan(employee)}
+                          disabled={isLoadingPlan}
+                        >
+                          {isLoadingPlan ? 'Ładowanie...' : t('evaluation.leader.team.actions.viewIDPDraft', 'Zobacz szkic IDP')}
                         </ActionButton>
                       )}
                       {employee.idpStatus === 'submitted' && (
-                        <ActionButton variant="primary" onClick={() => handleViewIDPPlan(employee)}>
-                          {t('evaluation.leader.team.actions.reviewIDP', 'Oceń IDP')}
+                        <ActionButton 
+                          variant="primary" 
+                          onClick={() => handleViewIDPPlan(employee)}
+                          disabled={isLoadingPlan}
+                        >
+                          {isLoadingPlan ? 'Ładowanie...' : t('evaluation.leader.team.actions.reviewIDP', 'Sprawdź plan')}
                         </ActionButton>
                       )}
                       {employee.idpStatus === 'approved' && (
-                        <ActionButton variant="success" onClick={() => handleViewIDPPlan(employee)}>
-                          {t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
+                        <ActionButton 
+                          variant="success" 
+                          onClick={() => handleViewIDPPlan(employee)}
+                          disabled={isLoadingPlan}
+                        >
+                          {isLoadingPlan ? 'Ładowanie...' : t('evaluation.leader.team.actions.viewIDP', 'Zobacz IDP')}
                         </ActionButton>
                       )}
                     </ActionCell>
@@ -1075,11 +1136,11 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
 
       {/* IDP Plan Modal */}
       {isIDPModalOpen && selectedIDPPlan && (
-        <Modal onClick={() => setIsIDPModalOpen(false)}>
+        <Modal onClick={handleCloseIDPModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <ModalHeader>
               <ModalTitle>Plan IDP - {selectedIDPPlan.employeeName}</ModalTitle>
-              <CloseButton onClick={() => setIsIDPModalOpen(false)}>×</CloseButton>
+              <CloseButton onClick={handleCloseIDPModal}>×</CloseButton>
             </ModalHeader>
 
             <EmployeeInfo>
@@ -1107,8 +1168,49 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
                 {selectedIDPPlan.goals.map((goal, index) => (
                   <IDPGoal key={index}>
                     <IDPGoalTitle>{goal.title}</IDPGoalTitle>
-                    <IDPGoalDescription>{goal.description}</IDPGoalDescription>
+                    
+                    {goal.description && (
+                      <div style={{ marginBottom: '12px' }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          fontWeight: '600', 
+                          color: '#6b7280', 
+                          textTransform: 'uppercase',
+                          marginBottom: '6px'
+                        }}>
+                          Opis celu
+                        </div>
+                        <IDPGoalDescription>{goal.description}</IDPGoalDescription>
+                      </div>
+                    )}
+                    
+                    {goal.details && (
+                      <div style={{ marginBottom: '12px' }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          fontWeight: '600', 
+                          color: '#6b7280', 
+                          textTransform: 'uppercase',
+                          marginBottom: '6px'
+                        }}>
+                          Szczegóły celu
+                        </div>
+                        <IDPGoalDescription>{goal.details}</IDPGoalDescription>
+                      </div>
+                    )}
+                    
                     <IDPGoalMeta>
+                      <span style={{ 
+                        padding: '4px 8px', 
+                        borderRadius: '12px', 
+                        fontSize: '11px',
+                        fontWeight: '500',
+                        backgroundColor: goal.category === 'business' ? '#dbeafe' : '#dcfce7',
+                        color: goal.category === 'business' ? '#1d4ed8' : '#16a34a',
+                        marginRight: '8px'
+                      }}>
+                        {goal.category === 'business' ? 'Cel biznesowy' : 'Cel rozwojowy'}
+                      </span>
                       {goal.targetDate && (
                         <span>Deadline: {new Date(goal.targetDate).toLocaleDateString('pl-PL')}</span>
                       )}
@@ -1121,27 +1223,41 @@ const LeaderTeamEvaluationFlow: React.FC<LeaderTeamEvaluationFlowProps> = ({ onB
               </IDPSection>
             )}
 
+            {selectedIDPPlan.status === '1' && ( // Submitted - Plan do akceptacji
+              <ApprovalActions>
+                <Button 
+                  color="green" 
+                  onClick={handleApproveIDPPlan}
+                >
+                  Zaakceptuj plan
+                </Button>
+                
+                <CommentSection>
+                  <CommentLabel htmlFor="approvalComment">
+                    Komentarz (opcjonalny):
+                  </CommentLabel>
+                  <TextArea
+                    id="approvalComment"
+                    value={approvalComment}
+                    onChange={(e) => setApprovalComment(e.target.value)}
+                    placeholder="Dodaj komentarz do planu IDP..."
+                  />
+                </CommentSection>
+                
+                <Button 
+                  color="red" 
+                  onClick={() => {
+                    setIsCorrectionModalOpen(true);
+                    handleCloseIDPModal();
+                  }}
+                >
+                  Wyślij do korekty
+                </Button>
+              </ApprovalActions>
+            )}
+
             <ModalActions>
-              {selectedIDPPlan.status === '1' && ( // Submitted
-                <>
-                  <Button 
-                    color="red" 
-                    onClick={() => {
-                      setIsCorrectionModalOpen(true);
-                      setIsIDPModalOpen(false);
-                    }}
-                  >
-                    Wyślij do korekty
-                  </Button>
-                  <Button 
-                    color="green" 
-                    onClick={handleApproveIDPPlan}
-                  >
-                    Zatwierdź
-                  </Button>
-                </>
-              )}
-              <Button color="gray" onClick={() => setIsIDPModalOpen(false)}>
+              <Button color="gray" onClick={handleCloseIDPModal}>
                 Zamknij
               </Button>
             </ModalActions>

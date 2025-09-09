@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
 import { idpApi, type IDPGoalWithDetails, type IDPPlanWithDetails } from '../../../lib/api/idp';
+import IDPService from '../../../lib/api/services/idpService';
+import { useSubmitIDPPlanFrontend } from '../../../lib/hooks/useIDP';
 import { handleApiError } from '../../../lib/api/client';
 
 interface IDPGoal {
@@ -267,6 +269,11 @@ const TextAreaContainer = styled.div`
   flex: 1;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const TextAreaLabel = styled.label`
   font-size: 12px;
   font-weight: 600;
@@ -286,6 +293,30 @@ const StyledTextArea = styled.textarea`
   font-family: inherit;
   resize: none;
   line-height: 1.5;
+  
+  &:focus {
+    outline: none;
+    border-color: #126678;
+    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
+  }
+  
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+const StyledTitleInput = styled.textarea`
+  width: 100%;
+  min-height: 48px;
+  max-height: 120px;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  line-height: 1.5;
+  overflow-y: hidden;
   
   &:focus {
     outline: none;
@@ -349,7 +380,13 @@ const ModernButton = styled.button<{ variant: 'cancel' | 'save' | 'draft' }>`
     }
   }}
   
-  &:active {
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  &:active:not(:disabled) {
     transform: translateY(1px);
   }
 `;
@@ -417,9 +454,12 @@ type FlowStep = 'my-idp' | 'add-goal' | 'edit-goal' | 'plan-2025' | 'review' | '
 
 const IDPFlow: React.FC = () => {
   const { t } = useTranslation();
+  const submitPlanMutation = useSubmitIDPPlanFrontend();
+  
   const [currentStep, setCurrentStep] = useState<FlowStep>('my-idp');
   const [goals, setGoals] = useState<IDPGoal[]>([]);
   const [pastPlans, setPastPlans] = useState<Record<number, IDPGoal[]>>({});
+  const [currentPlanId, setCurrentPlanId] = useState<string | null>(null);
   const [showIdpModal, setShowIdpModal] = useState(false);
   const [selectedPastYear, setSelectedPastYear] = useState<2024 | 2023>(2024);
   const [loading, setLoading] = useState(false);
@@ -439,6 +479,20 @@ const IDPFlow: React.FC = () => {
   useEffect(() => {
     loadIdpData();
   }, []);
+
+  // Auto-resize title input
+  const handleTitleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>, isEditing = false) => {
+    const target = e.target;
+    target.style.height = '48px'; // Reset to minimum height
+    const scrollHeight = target.scrollHeight;
+    target.style.height = Math.min(scrollHeight, 120) + 'px'; // Max height of 120px
+    
+    if (isEditing && editingGoal) {
+      setEditingGoal({...editingGoal, title: target.value});
+    } else {
+      setNewGoal({...newGoal, title: target.value});
+    }
+  };
 
   const loadIdpData = async () => {
     try {
@@ -465,6 +519,11 @@ const IDPFlow: React.FC = () => {
       // Process current plans
       if (currentPlansResponse.items) {
         currentPlansResponse.items.forEach(plan => {
+          // Przechowaj ID aktualnego planu
+          if (plan.year === 2025) {
+            setCurrentPlanId(plan.id.toString());
+          }
+          
           if (plan.goals) {
             plan.goals.forEach(goal => {
               currentGoals.push({
@@ -533,12 +592,14 @@ const IDPFlow: React.FC = () => {
       
       if (currentPlansResponse.items && currentPlansResponse.items.length > 0) {
         planId = currentPlansResponse.items[0].id;
+        setCurrentPlanId(planId.toString());
       } else {
         // Create new plan for 2025
         const newPlan = await idpApi.createPlan({
           year: 2025
         });
         planId = newPlan.id;
+        setCurrentPlanId(planId.toString());
       }
 
       // Add goal to plan
@@ -660,8 +721,28 @@ const IDPFlow: React.FC = () => {
     }
   };
 
-  const handleSubmitForReview = () => {
-    setCurrentStep('review');
+  const handleSubmitForReview = async () => {
+    if (!currentPlanId) {
+      setError('Brak ID planu IDP');
+      return;
+    }
+
+    try {
+      setError(null);
+      
+      // Prześlij plan do akceptacji przez API
+      await submitPlanMutation.mutateAsync(currentPlanId);
+      
+      // Przejdź do kroku review
+      setCurrentStep('review');
+      
+      // Odśwież dane planu aby uzyskać aktualny status - hook automatycznie invaliduje cache
+      await loadIdpData();
+      
+    } catch (err) {
+      console.error('Error submitting plan for review:', err);
+      setError('Błąd podczas przesyłania planu do akceptacji');
+    }
   };
 
   const handleApprove = () => {
@@ -679,10 +760,47 @@ const IDPFlow: React.FC = () => {
     setCurrentStep('edit-goal');
   };
 
-  const handleUpdateGoal = (updatedGoal: IDPGoal) => {
-    setGoals(goals.map(goal => goal.id === updatedGoal.id ? updatedGoal : goal));
-    setEditingGoal(null);
-    setCurrentStep('drafts');
+  const handleUpdateGoal = async (updatedGoal: IDPGoal) => {
+    if (!updatedGoal.title || !updatedGoal.description) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const goalIdNumber = parseInt(updatedGoal.id);
+      
+      // Update goal in the backend
+      const updatedApiGoal = await idpApi.updateGoal(goalIdNumber, {
+        title: updatedGoal.title,
+        description: updatedGoal.description,
+        details: updatedGoal.details,
+        category: updatedGoal.category,
+        isDraft: updatedGoal.status === 'draft'
+      });
+
+      // Update local state with the response from the API
+      const updatedLocalGoal: IDPGoal = {
+        id: updatedApiGoal.id.toString(),
+        title: updatedApiGoal.title,
+        description: updatedApiGoal.description,
+        details: updatedApiGoal.details,
+        category: updatedApiGoal.category,
+        status: updatedApiGoal.isDraft ? 'draft' : 
+                (updatedApiGoal.approvalDate ? 'approved' : 'submitted'),
+        year: updatedGoal.year
+      };
+
+      setGoals(goals.map(goal => goal.id === updatedGoal.id ? updatedLocalGoal : goal));
+      setEditingGoal(null);
+      setCurrentStep('drafts');
+
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      console.error('Error updating goal:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteGoal = (goal: IDPGoal) => {
@@ -849,14 +967,15 @@ const IDPFlow: React.FC = () => {
                   </RadioGroup>
                 </FormGroup>
 
-                <TextAreaContainer>
+                <TitleContainer>
                   <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
-                  <StyledTextArea
+                  <StyledTitleInput
                     value={newGoal.title}
-                    onChange={(e) => setNewGoal({...newGoal, title: e.target.value})}
+                    onChange={(e) => handleTitleInputChange(e, false)}
                     placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
+                    rows={1}
                   />
-                </TextAreaContainer>
+                </TitleContainer>
                 
                 <TextAreaContainer>
                   <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
@@ -938,14 +1057,15 @@ const IDPFlow: React.FC = () => {
                   </RadioGroup>
                 </FormGroup>
 
-                <TextAreaContainer>
+                <TitleContainer>
                   <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
-                  <StyledTextArea
+                  <StyledTitleInput
                     value={editingGoal.title}
-                    onChange={(e) => setEditingGoal({...editingGoal, title: e.target.value})}
+                    onChange={(e) => handleTitleInputChange(e, true)}
                     placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
+                    rows={1}
                   />
-                </TextAreaContainer>
+                </TitleContainer>
                 
                 <TextAreaContainer>
                   <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
@@ -969,8 +1089,12 @@ const IDPFlow: React.FC = () => {
                   <ModernButton variant="cancel" onClick={() => { setEditingGoal(null); setCurrentStep('drafts'); }}>
                     {t('idp.actions.cancel', 'Anuluj')}
                   </ModernButton>
-                  <ModernButton variant="save" onClick={() => handleUpdateGoal(editingGoal)}>
-                    {t('idp.actions.updateGoal', 'Zaktualizuj cel')}
+                  <ModernButton 
+                    variant="save" 
+                    onClick={() => handleUpdateGoal(editingGoal)}
+                    disabled={loading}
+                  >
+                    {loading ? t('idp.actions.updating', 'Aktualizuję...') : t('idp.actions.updateGoal', 'Zaktualizuj cel')}
                   </ModernButton>
                 </ButtonGroup>
               </LeftFormSection>
@@ -1023,8 +1147,8 @@ const IDPFlow: React.FC = () => {
             <ActionButton variant="save" onClick={() => goals.forEach(goal => handleSaveGoal(goal.id))}>
               {t('idp.actions.save', 'Save')}
             </ActionButton>
-            <ActionButton variant="submit" onClick={handleSubmitForReview}>
-              {t('idp.actions.submit', 'Submit')}
+            <ActionButton variant="submit" onClick={handleSubmitForReview} disabled={submitPlanMutation.isPending}>
+              {submitPlanMutation.isPending ? 'Przesyłanie...' : t('idp.actions.submit', 'Submit')}
             </ActionButton>
           </ActionButtons>
         </FlowStep>

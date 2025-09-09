@@ -35,7 +35,6 @@ const IDPTestPage: React.FC = () => {
     
     try {
       await createPlanMutation.mutateAsync({
-        employeeId: user.id,
         year: new Date().getFullYear(),
       });
       refetch();
