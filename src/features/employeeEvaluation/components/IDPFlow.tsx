@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
@@ -7,456 +6,40 @@ import { idpApi, type IDPGoalWithDetails, type IDPPlanWithDetails } from '../../
 import IDPService from '../../../lib/api/services/idpService';
 import { useSubmitIDPPlanFrontend } from '../../../lib/hooks/useIDP';
 import { handleApiError } from '../../../lib/api/client';
+import {
+  FlowContainer,
+  FlowHeader,
+  FlowTitle,
+  FlowStep,
+  StepHeader,
+  StepTitle,
+  MainFormLayout,
+  LeftFormSection,
+  RightImageSection,
+  ButtonGroup,
+  ModernButton,
+  ActionButtons,
+  ActionButton,
+  StatusMessage,
+  IDPImage,
+  InfoBadge,
+  GoalForm,
+  DeleteConfirmationModal,
+  Notification,
+  InfoModal,
+  GoalsList,
+  PastPlansView,
+  PlanPreview
+} from './idpFlow/index';
+import type { IDPGoal, GoalFormData } from './idpFlow/index';
 
-interface IDPGoal {
-  id: string;
-  title: string;
-  description: string;
-  details?: string;
-  category: 'business' | 'development';
-  status: 'draft' | 'submitted' | 'approved' | 'correction_needed';
-  year: number;
-}
-
-const FlowContainer = styled.div`
-  padding: 18px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: ${props => props.theme.fonts.primary};
-  
-  * {
-    font-family: ${props => props.theme.fonts.primary};
-  }
-`;
-
-const FlowHeader = styled.div`
-  text-align: center;
-  margin-bottom: 24px;
-`;
-
-const FlowTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  color: #126678;
-  margin-bottom: 6px;
-`;
-
-const FlowStep = styled.div<{ isActive: boolean }>`
-  padding: 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  background-color: ${props => props.isActive ? '#f8fafc' : 'white'};
-  transition: all 0.3s ease;
-`;
-
-const StepHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-`;
-
-const ScrollableContainer = styled.div`
-  margin-bottom: 12px;
-  padding-bottom: 30px;
-`;
-
-const GoalsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const YearSection = styled.div`
-  margin-bottom: 18px;
-`;
-
-const YearTitle = styled.h4`
-  color: #126678;
-  font-weight: 600;
-  margin-bottom: 12px;
-  font-size: 14px;
-`;
-
-const StepTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-`;
-
-const InfoBadge = styled.div<{ type: 'training' | 'plan' }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 11px;
-  font-weight: 500;
-  background-color: ${props => props.type === 'training' ? '#126678' : '#126678'};
-  color: white;
-  margin-bottom: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  max-width: fit-content;
-
-  &:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-`;
-
-const PlanBox = styled.div`
-  padding: 16px;
-  background-color: #126678;
-  color: white;
-  border-radius: 8px;
-  margin-bottom: 16px;
-`;
-
-const PlanTitle = styled.h4`
-  font-weight: 600;
-  margin-bottom: 8px;
-`;
-
-const PlanDetails = styled.div`
-  font-size: 14px;
-  line-height: 1.5;
-`;
-
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 8px;
-  justify-content: flex-start;
-  margin-top: 16px;
-  flex-wrap: wrap;
-  padding-left: 0;
-`;
-
-const ActionButton = styled.button<{ variant: 'cancel' | 'draft' | 'save' | 'submit' | 'approve' | 'correct' }>`
-  padding: 6px 14px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  
-  background-color: ${props => {
-    switch (props.variant) {
-      case 'cancel': return 'white';
-      case 'draft': return '#126678';
-      case 'save': return '#126678';
-      case 'submit': return '#126678';
-      case 'approve': return '#126678';
-      case 'correct': return '#126678';
-      default: return '#126678';
-    }
-  }};
-  
-  color: ${props => props.variant === 'cancel' ? '#126678' : 'white'};
-  border: ${props => props.variant === 'cancel' ? '2px solid #126678' : 'none'};
-
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-    transform: translateY(-1px);
-    background-color: ${props => {
-      switch (props.variant) {
-        case 'cancel': return '#f8f9fa';
-        default: return '#0f5459';
-      }
-    }};
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
-
-
-
-
-const RadioGroup = styled.div`
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-`;
-
-const RadioOption = styled.label<{ checked?: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: #f9fafb;
-  }
-`;
-
-const RadioInput = styled.input`
-  width: 16px;
-  height: 16px;
-  accent-color: #126678;
-`;
-
-const RadioLabel = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-`;
-
-const TextAreaGroup = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 40px;
-  margin-bottom: 24px;
-  align-items: start;
-`;
-
-const TextAreaColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const ImageContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  min-height: 300px;
-  margin-top: 0;
-`;
-
-const MainFormLayout = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 24px;
-  align-items: stretch;
-`;
-
-const LeftFormSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  height: 100%;
-  justify-content: space-between;
-`;
-
-const RightImageSection = styled.div`
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  height: 100%;
-`;
-
-const IDPImage = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  object-fit: contain;
-`;
-
-const TextAreaContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const TextAreaLabel = styled.label`
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const StyledTextArea = styled.textarea`
-  width: 100%;
-  min-height: 140px;
-  flex: 1;
-  padding: 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: none;
-  line-height: 1.5;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
-  }
-  
-  &::placeholder {
-    color: #9ca3af;
-  }
-`;
-
-const StyledTitleInput = styled.textarea`
-  width: 100%;
-  min-height: 48px;
-  max-height: 120px;
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: none;
-  line-height: 1.5;
-  overflow-y: hidden;
-  
-  &:focus {
-    outline: none;
-    border-color: #126678;
-    box-shadow: 0 0 0 3px rgba(18, 102, 120, 0.1);
-  }
-  
-  &::placeholder {
-    color: #9ca3af;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  gap: 8px;
-  margin-top: 12px;
-  width: 100%;
-  flex-shrink: 0;
-`;
-
-const ModernButton = styled.button<{ variant: 'cancel' | 'save' | 'draft' }>`
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  
-  ${props => {
-    switch (props.variant) {
-      case 'cancel':
-        return `
-          background-color: white;
-          color: #126678;
-          border: 2px solid #126678;
-          
-          &:hover {
-            background-color: #f8f9fa;
-          }
-        `;
-      case 'draft':
-        return `
-          background-color: #6b7280;
-          color: white;
-          
-          &:hover {
-            background-color: #4b5563;
-          }
-        `;
-      default: // 'save'
-        return `
-          background-color: #126678;
-          color: white;
-          
-          &:hover {
-            background-color: #0f5459;
-          }
-        `;
-    }
-  }}
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-  
-  &:active:not(:disabled) {
-    transform: translateY(1px);
-  }
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 16px;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #374151;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  rows: 3;
-  resize: vertical;
-`;
-
-const Select = styled.select`
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-`;
-
-const StatusMessage = styled.div<{ type: 'success' | 'warning' | 'info' }>`
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 16px;
-  background-color: ${props => {
-    switch (props.type) {
-      case 'success': return '#d1fae5';
-      case 'warning': return '#fef3c7';
-      case 'info': return '#dbeafe';
-      default: return '#f3f4f6';
-    }
-  }};
-  border-left: 4px solid ${props => {
-    switch (props.type) {
-      case 'success': return '#126678';
-      case 'warning': return '#126678';
-      case 'info': return '#126678';
-      default: return '#126678';
-    }
-  }};
-`;
-
-type FlowStep = 'my-idp' | 'add-goal' | 'edit-goal' | 'plan-2025' | 'review' | 'final' | 'drafts' | 'saved-goals' | 'past-plans';
+type FlowStepType = 'my-idp' | 'add-goal' | 'edit-goal' | 'plan-2025' | 'review' | 'final' | 'drafts' | 'saved-goals' | 'past-plans';
 
 const IDPFlow: React.FC = () => {
   const { t } = useTranslation();
   const submitPlanMutation = useSubmitIDPPlanFrontend();
   
-  const [currentStep, setCurrentStep] = useState<FlowStep>('my-idp');
+  const [currentStep, setCurrentStep] = useState<FlowStepType>('my-idp');
   const [goals, setGoals] = useState<IDPGoal[]>([]);
   const [pastPlans, setPastPlans] = useState<Record<number, IDPGoal[]>>({});
   const [currentPlanId, setCurrentPlanId] = useState<string | null>(null);
@@ -468,11 +51,11 @@ const IDPFlow: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState<IDPGoal | null>(null);
   const [showNotification, setShowNotification] = useState(false);
-  const [newGoal, setNewGoal] = useState({
+  const [newGoal, setNewGoal] = useState<GoalFormData>({
     title: '',
     description: '',
     details: '',
-    category: 'business' as 'business' | 'development'
+    category: 'business'
   });
 
   // Load user's IDP data on component mount
@@ -481,7 +64,7 @@ const IDPFlow: React.FC = () => {
   }, []);
 
   // Auto-resize title input
-  const handleTitleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>, isEditing = false) => {
+    const handleTitleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, isEditing: boolean) => {
     const target = e.target;
     target.style.height = '48px'; // Reset to minimum height
     const scrollHeight = target.scrollHeight;
@@ -670,8 +253,6 @@ const IDPFlow: React.FC = () => {
         isDraft: true
       });
 
-      console.log('Created goal response:', createdGoal);
-
       // Update local state
       const goal: IDPGoal = {
         id: createdGoal.id.toString(),
@@ -682,8 +263,6 @@ const IDPFlow: React.FC = () => {
         status: 'draft',
         year: 2025
       };
-
-      console.log('Local goal object:', goal);
 
       setGoals([...goals, goal]);
       setNewGoal({ title: '', description: '', details: '', category: 'business' });
@@ -811,7 +390,6 @@ const IDPFlow: React.FC = () => {
       return;
     }
     
-    console.log('Opening delete modal for goal:', goal.id, goal.title);
     setGoalToDelete(existingGoal);
     setShowDeleteModal(true);
   };
@@ -829,7 +407,6 @@ const IDPFlow: React.FC = () => {
 
       // If the goal has a valid API ID, delete it from backend first
       if (goalIdToDelete && !isNaN(goalIdNumber) && goalIdNumber > 0) {
-        console.log('Deleting goal with ID:', goalIdNumber);
         try {
           const deleteResult = await idpApi.deleteGoal(goalIdNumber);
           console.log('API delete successful:', deleteResult);
@@ -838,14 +415,11 @@ const IDPFlow: React.FC = () => {
           apiSuccess = false;
           // Still continue with local state update for better UX
         }
-      } else {
-        console.log('Goal has no valid server ID, only removing from local state');
       }
 
       // Only update local state after API call completes (or fails)
       setGoals(prevGoals => {
         const updatedGoals = prevGoals.filter(g => g.id !== goalIdToDelete);
-        console.log('Updated goals state after deletion:', updatedGoals.length, 'goals remaining');
         return updatedGoals;
       });
       
@@ -936,85 +510,34 @@ const IDPFlow: React.FC = () => {
           </StepHeader>
           
           <MainFormLayout>
-              <LeftFormSection>
-                <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
-                  {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
-                </InfoBadge>
+            <LeftFormSection>
+              <GoalForm
+                goalData={newGoal}
+                onGoalDataChange={setNewGoal}
+                onInfoClick={() => setShowIdpModal(true)}
+                onTitleInputChange={(e) => handleTitleInputChange(e, false)}
+              />
 
-                <FormGroup>
-                  <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
-                  <RadioGroup>
-                    <RadioOption>
-                      <RadioInput
-                        type="radio"
-                        name="goalType"
-                        value="business"
-                        checked={newGoal.category === 'business'}
-                        onChange={(e) => setNewGoal({...newGoal, category: 'business'})}
-                      />
-                      <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
-                    </RadioOption>
-                    <RadioOption>
-                      <RadioInput
-                        type="radio"
-                        name="goalType"
-                        value="development"
-                        checked={newGoal.category === 'development'}
-                        onChange={(e) => setNewGoal({...newGoal, category: 'development'})}
-                      />
-                      <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
-                    </RadioOption>
-                  </RadioGroup>
-                </FormGroup>
-
-                <TitleContainer>
-                  <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
-                  <StyledTitleInput
-                    value={newGoal.title}
-                    onChange={(e) => handleTitleInputChange(e, false)}
-                    placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
-                    rows={1}
-                  />
-                </TitleContainer>
-                
-                <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
-                  <StyledTextArea
-                    value={newGoal.description}
-                    onChange={(e) => setNewGoal({...newGoal, description: e.target.value})}
-                    placeholder={t('idp.form.goalDescriptionPlaceholder', 'Opisz swój cel...')}
-                  />
-                </TextAreaContainer>
-                
-                <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
-                  <StyledTextArea
-                    value={newGoal.details}
-                    onChange={(e) => setNewGoal({...newGoal, details: e.target.value})}
-                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Opisz szczegółowe kroki i oczekiwane wyniki...')}
-                  />
-                </TextAreaContainer>
-
-                <ButtonGroup>
-                  <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-                    {t('idp.actions.cancel', 'Anuluj')}
-                  </ModernButton>
-                  <ModernButton variant="draft" onClick={handleSaveDraft}>
-                    {t('idp.actions.draft', 'Szkic')}
-                  </ModernButton>
-                  <ModernButton variant="save" onClick={handleAddGoal}>
-                    {t('idp.actions.sendToApproval', 'Wyślij do akceptacji')}
-                  </ModernButton>
-                </ButtonGroup>
-              </LeftFormSection>
-              
-              <RightImageSection>
-                <IDPImage 
-                  src={idpWomenPerson} 
-                  alt={t('idp.form.imageAlt', 'IDP planning illustration')}
-                />
-              </RightImageSection>
-            </MainFormLayout>
+              <ButtonGroup>
+                <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
+                  {t('idp.actions.cancel', 'Anuluj')}
+                </ModernButton>
+                <ModernButton variant="draft" onClick={handleSaveDraft}>
+                  {t('idp.actions.draft', 'Szkic')}
+                </ModernButton>
+                <ModernButton variant="save" onClick={handleAddGoal}>
+                  {t('idp.actions.sendToApproval', 'Wyślij do akceptacji')}
+                </ModernButton>
+              </ButtonGroup>
+            </LeftFormSection>
+            
+            <RightImageSection>
+              <IDPImage 
+                src={idpWomenPerson} 
+                alt={t('idp.form.imageAlt', 'IDP planning illustration')}
+              />
+            </RightImageSection>
+          </MainFormLayout>
         </FlowStep>
       )}
 
@@ -1026,86 +549,46 @@ const IDPFlow: React.FC = () => {
           </StepHeader>
           
           <MainFormLayout>
-              <LeftFormSection>
-                <InfoBadge type="training" onClick={() => setShowIdpModal(true)}>
-                  {t('idp.info.badge', 'IDP info about Goals - Goal Categories')}
-                </InfoBadge>
+            <LeftFormSection>
+              <GoalForm
+                goalData={{
+                  title: editingGoal.title,
+                  description: editingGoal.description,
+                  details: editingGoal.details || '',
+                  category: editingGoal.category
+                }}
+                onGoalDataChange={(data: GoalFormData) => setEditingGoal({
+                  ...editingGoal,
+                  title: data.title,
+                  description: data.description,
+                  details: data.details,
+                  category: data.category
+                })}
+                onInfoClick={() => setShowIdpModal(true)}
+                onTitleInputChange={(e) => handleTitleInputChange(e, true)}
+              />
 
-                <FormGroup>
-                  <Label>{t('idp.form.goalType', 'Typ celu')}</Label>
-                  <RadioGroup>
-                    <RadioOption>
-                      <RadioInput
-                        type="radio"
-                        name="editGoalType"
-                        value="business"
-                        checked={editingGoal.category === 'business'}
-                        onChange={(e) => setEditingGoal({...editingGoal, category: 'business'})}
-                      />
-                      <RadioLabel>{t('idp.categories.business', 'Cel biznesowy')}</RadioLabel>
-                    </RadioOption>
-                    <RadioOption>
-                      <RadioInput
-                        type="radio"
-                        name="editGoalType"
-                        value="development"
-                        checked={editingGoal.category === 'development'}
-                        onChange={(e) => setEditingGoal({...editingGoal, category: 'development'})}
-                      />
-                      <RadioLabel>{t('idp.categories.development', 'Cel rozwojowy')}</RadioLabel>
-                    </RadioOption>
-                  </RadioGroup>
-                </FormGroup>
-
-                <TitleContainer>
-                  <TextAreaLabel>{t('idp.form.goalTitle', 'Tytuł celu')}</TextAreaLabel>
-                  <StyledTitleInput
-                    value={editingGoal.title}
-                    onChange={(e) => handleTitleInputChange(e, true)}
-                    placeholder={t('idp.form.goalTitlePlaceholder', 'Wprowadź tytuł celu rozwoju')}
-                    rows={1}
-                  />
-                </TitleContainer>
-                
-                <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDescription', 'Opis celu')}</TextAreaLabel>
-                  <StyledTextArea
-                    value={editingGoal.description}
-                    onChange={(e) => setEditingGoal({...editingGoal, description: e.target.value})}
-                    placeholder={t('idp.form.goalDescriptionPlaceholder', 'Opisz swój cel...')}
-                  />
-                </TextAreaContainer>
-                
-                <TextAreaContainer>
-                  <TextAreaLabel>{t('idp.form.goalDetails', 'Szczegóły celu')}</TextAreaLabel>
-                  <StyledTextArea
-                    value={editingGoal.details}
-                    onChange={(e) => setEditingGoal({...editingGoal, details: e.target.value})}
-                    placeholder={t('idp.form.goalDetailsPlaceholder', 'Opisz szczegółowe kroki i oczekiwane wyniki...')}
-                  />
-                </TextAreaContainer>
-
-                <ButtonGroup>
-                  <ModernButton variant="cancel" onClick={() => { setEditingGoal(null); setCurrentStep('drafts'); }}>
-                    {t('idp.actions.cancel', 'Anuluj')}
-                  </ModernButton>
-                  <ModernButton 
-                    variant="save" 
-                    onClick={() => handleUpdateGoal(editingGoal)}
-                    disabled={loading}
-                  >
-                    {loading ? t('idp.actions.updating', 'Aktualizuję...') : t('idp.actions.updateGoal', 'Zaktualizuj cel')}
-                  </ModernButton>
-                </ButtonGroup>
-              </LeftFormSection>
-              
-              <RightImageSection>
-                <IDPImage 
-                  src={idpWomenPerson} 
-                  alt={t('idp.form.imageAlt', 'IDP planning illustration')}
-                />
-              </RightImageSection>
-            </MainFormLayout>
+              <ButtonGroup>
+                <ModernButton variant="cancel" onClick={() => { setEditingGoal(null); setCurrentStep('drafts'); }}>
+                  {t('idp.actions.cancel', 'Anuluj')}
+                </ModernButton>
+                <ModernButton 
+                  variant="save" 
+                  onClick={() => handleUpdateGoal(editingGoal)}
+                  disabled={loading}
+                >
+                  {loading ? t('idp.actions.updating', 'Aktualizuję...') : t('idp.actions.updateGoal', 'Zaktualizuj cel')}
+                </ModernButton>
+              </ButtonGroup>
+            </LeftFormSection>
+            
+            <RightImageSection>
+              <IDPImage 
+                src={idpWomenPerson} 
+                alt={t('idp.form.imageAlt', 'IDP planning illustration')}
+              />
+            </RightImageSection>
+          </MainFormLayout>
         </FlowStep>
       )}
 
@@ -1120,22 +603,7 @@ const IDPFlow: React.FC = () => {
             {t('idp.plan.info', 'Creation date: Assessment tools Goal details Expected outcome')}
           </InfoBadge>
 
-          <ScrollableContainer>
-            <GoalsContainer>
-              {goals.map((goal) => (
-                <PlanBox key={goal.id}>
-                  <PlanTitle>{goal.title}</PlanTitle>
-                  <PlanDetails>
-                    <div><strong>{t('idp.plan.category', 'Kategoria')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                    <div><strong>{t('idp.plan.description', 'Opis')}:</strong> {goal.description}</div>
-                    {goal.details && <div><strong>{t('idp.plan.details', 'Szczegóły')}:</strong> {goal.details}</div>}
-                    <div><strong>{t('idp.plan.year', 'Rok')}:</strong> {goal.year}</div>
-                    <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
-                  </PlanDetails>
-                </PlanBox>
-              ))}
-            </GoalsContainer>
-          </ScrollableContainer>
+          <PlanPreview goals={goals} year={2025} />
 
           <ActionButtons>
             <ActionButton variant="cancel" onClick={() => setCurrentStep('add-goal')}>
@@ -1207,135 +675,16 @@ const IDPFlow: React.FC = () => {
           
           <p>{t('idp.drafts.description', 'Przeglądaj i zarządzaj swoimi szkicami celów')}</p>
           
-          {goals.filter(goal => goal.status === 'draft').length === 0 ? (
-            <StatusMessage type="info">
-              {t('idp.drafts.empty', 'Brak szkiców celów. Zacznij od dodania nowego celu.')}
-            </StatusMessage>
-          ) : (
-            <ScrollableContainer>
-              <GoalsContainer>
-                {goals.filter(goal => goal.status === 'draft').map((goal) => (
-                  <div key={goal.id} style={{
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    marginBottom: '16px',
-                    backgroundColor: 'white'
-                  }}>
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '16px'
-                    }}>
-                      <h4 style={{
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        color: '#126678',
-                        margin: '0'
-                      }}>
-                        {String(t(`idp.categories.${goal.category}`, goal.category))} - {goal.title}
-                      </h4>
-                      <div style={{
-                        display: 'flex',
-                        gap: '12px',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{
-                          padding: '4px 8px',
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          backgroundColor: '#6b7280',
-                          color: 'white'
-                        }}>
-                          {String(t(`idp.status.${goal.status}`, goal.status))}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr 1fr',
-                      gap: '16px'
-                    }}>
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.category', 'Kategoria')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {String(t(`idp.categories.${goal.category}`, goal.category))}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.details', 'Szczegóły celu')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {goal.title}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.description', 'Opis celu')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {goal.description}
-                        </div>
-                      </div>
-                    </div>
-
-                    <ActionButtons style={{ marginTop: '12px', justifyContent: 'flex-start' }}>
-                      <ActionButton variant="submit" onClick={() => handleSaveGoal(goal.id)}>
-                        {t('idp.actions.sendToApproval', 'Wyślij do akceptacji')}
-                      </ActionButton>
-                      <ActionButton variant="save" onClick={() => handleEditGoal(goal)}>
-                        {t('idp.actions.editGoal', 'Edytuj cel')}
-                      </ActionButton>
-                      <ActionButton variant="cancel" onClick={() => handleDeleteGoal(goal)} disabled={loading || showDeleteModal}>
-                        {t('idp.actions.deleteGoal', 'Usuń cel')}
-                      </ActionButton>
-                    </ActionButtons>
-                  </div>
-                ))}
-              </GoalsContainer>
-            </ScrollableContainer>
-          )}
+          <GoalsList
+            goals={goals}
+            filterStatus="draft"
+            onEditGoal={handleEditGoal}
+            onDeleteGoal={handleDeleteGoal}
+            onSubmitGoal={handleSaveGoal}
+            loading={loading}
+            showDeleteModal={showDeleteModal}
+            emptyMessage={t('idp.drafts.empty', 'Brak szkiców celów. Zacznij od dodania nowego celu.')}
+          />
 
           <ActionButtons>
             <ActionButton variant="submit" onClick={() => setCurrentStep('add-goal')}>
@@ -1357,27 +706,16 @@ const IDPFlow: React.FC = () => {
           
           <p>{t('idp.savedGoals.description', 'View your submitted and approved goals for 2025')}</p>
           
-          {goals.filter(goal => goal.status !== 'draft').length === 0 ? (
-            <StatusMessage type="info">
-              {t('idp.savedGoals.empty', 'No saved goals for 2025 yet.')}
-            </StatusMessage>
-          ) : (
-            <ScrollableContainer>
-              <GoalsContainer>
-                {goals.filter(goal => goal.status !== 'draft').map((goal) => (
-                  <PlanBox key={goal.id}>
-                    <PlanTitle>{goal.title}</PlanTitle>
-                    <PlanDetails>
-                      <div><strong>{t('idp.plan.category', 'Category')}:</strong> {t(`idp.categories.${goal.category}`, goal.category)}</div>
-                      <div><strong>{t('idp.plan.description', 'Description')}:</strong> {goal.description}</div>
-                      <div><strong>{t('idp.plan.year', 'Year')}:</strong> {goal.year}</div>
-                      <div><strong>{t('idp.plan.status', 'Status')}:</strong> {t(`idp.status.${goal.status}`, goal.status)}</div>
-                    </PlanDetails>
-                  </PlanBox>
-                ))}
-              </GoalsContainer>
-            </ScrollableContainer>
-          )}
+          <GoalsList
+            goals={goals}
+            filterStatus="all"
+            onEditGoal={handleEditGoal}
+            onDeleteGoal={handleDeleteGoal}
+            onSubmitGoal={handleSaveGoal}
+            loading={loading}
+            showDeleteModal={showDeleteModal}
+            emptyMessage={t('idp.savedGoals.empty', 'No saved goals for 2025 yet.')}
+          />
 
           <ActionButtons>
             <ActionButton variant="submit" onClick={() => setCurrentStep('add-goal')}>
@@ -1397,396 +735,43 @@ const IDPFlow: React.FC = () => {
             <StepTitle>{t('idp.pastPlans.title', 'Historia Planów IDP')}</StepTitle>
           </StepHeader>
           
-          <RadioGroup style={{ marginBottom: '24px' }}>
-              <RadioOption>
-                <RadioInput
-                  type="radio"
-                  name="pastYear"
-                  value="2024"
-                  checked={selectedPastYear === 2024}
-                  onChange={() => setSelectedPastYear(2024)}
-                />
-                <RadioLabel>2024</RadioLabel>
-              </RadioOption>
-              <RadioOption>
-                <RadioInput
-                  type="radio"
-                  name="pastYear"
-                  value="2023"
-                  checked={selectedPastYear === 2023}
-                  onChange={() => setSelectedPastYear(2023)}
-                />
-                <RadioLabel>2023</RadioLabel>
-              </RadioOption>
-            </RadioGroup>
+          <PastPlansView
+            pastPlans={pastPlans}
+            selectedYear={selectedPastYear}
+            onYearChange={setSelectedPastYear}
+          />
 
-            <ScrollableContainer>
-              <GoalsContainer>
-                {(pastPlans[selectedPastYear] as IDPGoal[])?.map((goal: IDPGoal) => (
-                  <div key={goal.id} style={{
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    marginBottom: '16px',
-                    backgroundColor: 'white'
-                  }}>
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '16px'
-                    }}>
-                      <h4 style={{
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        color: '#126678',
-                        margin: '0'
-                      }}>
-                        {String(t(`idp.categories.${goal.category}`, goal.category))} {goal.year} - {goal.title}
-                      </h4>
-                      <div style={{
-                        display: 'flex',
-                        gap: '12px',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{
-                          padding: '4px 8px',
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          backgroundColor: goal.status === 'approved' ? '#10b981' : 
-                                          goal.status === 'submitted' ? '#3b82f6' : '#6b7280',
-                          color: 'white'
-                        }}>
-                          {String(t(`idp.status.${goal.status}`, goal.status))}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr 1fr',
-                      gap: '16px'
-                    }}>
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.category', 'Kategoria')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {String(t(`idp.categories.${goal.category}`, goal.category))}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.details', 'Szczegóły Celu')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {goal.details || t('idp.plan.noDetails', 'Brak szczegółów')}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        backgroundColor: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '12px'
-                      }}>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#6b7280',
-                          marginBottom: '8px',
-                          textTransform: 'uppercase'
-                        }}>
-                          {t('idp.plan.description', 'Opis Celu')}
-                        </div>
-                        <div style={{ color: '#374151', lineHeight: '1.5' }}>
-                          {goal.description}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </GoalsContainer>
-            </ScrollableContainer>
-
-            <ButtonGroup>
-              <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
-                {t('idp.actions.backToMain', 'Powrót do głównej')}
-              </ModernButton>
-            </ButtonGroup>
+          <ButtonGroup>
+            <ModernButton variant="cancel" onClick={() => setCurrentStep('my-idp')}>
+              {t('idp.actions.backToMain', 'Powrót do głównej')}
+            </ModernButton>
+          </ButtonGroup>
         </FlowStep>
       )}
 
       {/* IDP Info Modal */}
-      {showIdpModal && (
-        <ModalOverlay onClick={() => setShowIdpModal(false)}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
-            <ModalCloseButton onClick={() => setShowIdpModal(false)}>
-              ×
-            </ModalCloseButton>
-            <ModalTitle>{t('idp.modal.title', 'IDP Goal Categories')}</ModalTitle>
-            <ModalImage 
-              src={idpBreakdownImage} 
-              alt={t('idp.modal.alt', 'IDP goal categories diagram')}
-            />
-            <p style={{ marginTop: '16px', color: '#6b7280' }}>
-              {t('idp.modal.description', 'Business Goals focus on achieving specific business objectives and outcomes. Development Goals focus on personal and professional skill development and growth.')}
-            </p>
-          </ModalContent>
-        </ModalOverlay>
-      )}
+      <InfoModal
+        isOpen={showIdpModal}
+        onClose={() => setShowIdpModal(false)}
+        imageUrl={idpBreakdownImage}
+      />
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <ModalOverlay onClick={cancelDeleteGoal}>
-          <ConfirmModalContent onClick={(e) => e.stopPropagation()}>
-            <ModalCloseButton onClick={cancelDeleteGoal}>
-              ×
-            </ModalCloseButton>
-            <ConfirmModalTitle>
-              {t('idp.deleteModal.title', 'Czy na pewno chcesz usunąć szkic?')}
-            </ConfirmModalTitle>
-            <ConfirmModalText>
-              {t('idp.deleteModal.description', 'Ta operacja jest nieodwracalna. Szkic celu zostanie trwale usunięty.')}
-            </ConfirmModalText>
-            {goalToDelete && (
-              <GoalPreview>
-                <strong>{goalToDelete.title}</strong>
-                <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>
-                  {goalToDelete.description}
-                </div>
-              </GoalPreview>
-            )}
-            <ConfirmModalButtons>
-              <ConfirmButton variant="cancel" onClick={cancelDeleteGoal}>
-                {t('idp.actions.cancel', 'Anuluj')}
-              </ConfirmButton>
-              <ConfirmButton variant="delete" onClick={confirmDeleteGoal} disabled={loading}>
-                {loading ? t('idp.actions.deleting', 'Usuwanie...') : t('idp.actions.confirmDelete', 'Tak, usuń')}
-              </ConfirmButton>
-            </ConfirmModalButtons>
-          </ConfirmModalContent>
-        </ModalOverlay>
-      )}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        goal={goalToDelete}
+        onConfirm={confirmDeleteGoal}
+        onCancel={cancelDeleteGoal}
+        loading={loading}
+      />
 
       {/* Success Notification */}
-      {showNotification && (
-        <SuccessNotification>
-          <NotificationIcon>✓</NotificationIcon>
-          <NotificationText>
-            {t('idp.notification.deleted', 'Usunięto szkic')}
-          </NotificationText>
-        </SuccessNotification>
-      )}
+      <Notification
+        isVisible={showNotification}
+        type="success"
+      />
     </FlowContainer>
   );
 };
 
 export default IDPFlow;
-
-// Modal/Popup Styles
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow: auto;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-`;
-
-const ModalCloseButton = styled.button`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #126678;
-  
-  &:hover {
-    color: #0f5459;
-  }
-`;
-
-const ModalImage = styled.img`
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-`;
-
-const ModalTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: #1f2937;
-`;
-
-// Confirmation Modal Styles
-const ConfirmModalContent = styled.div`
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 500px;
-  width: 90vw;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-`;
-
-const ConfirmModalTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #dc2626;
-  text-align: center;
-`;
-
-const ConfirmModalText = styled.p`
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 16px;
-  text-align: center;
-  line-height: 1.5;
-`;
-
-const GoalPreview = styled.div`
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 20px;
-  border-left: 4px solid #126678;
-`;
-
-const ConfirmModalButtons = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-`;
-
-const ConfirmButton = styled.button<{ variant: 'cancel' | 'delete' }>`
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-
-  ${props => {
-    switch (props.variant) {
-      case 'cancel':
-        return `
-          background-color: white;
-          color: #6b7280;
-          border: 2px solid #d1d5db;
-          
-          &:hover {
-            background-color: #f9fafb;
-            border-color: #9ca3af;
-          }
-        `;
-      case 'delete':
-        return `
-          background-color: #dc2626;
-          color: white;
-          
-          &:hover {
-            background-color: #b91c1c;
-          }
-          
-          &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-          }
-        `;
-    }
-  }}
-
-  &:active {
-    transform: translateY(1px);
-  }
-`;
-
-// Notification Styles
-const SuccessNotification = styled.div`
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #10b981;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1001;
-  animation: slideIn 0.3s ease-out;
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-`;
-
-const NotificationIcon = styled.div`
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-`;
-
-const NotificationText = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-`;

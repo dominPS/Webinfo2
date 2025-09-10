@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trainingBreakdownImage as idpBreakdownImage } from '../../../shared/assets/images/idp';
 import idpWomenPerson from '../../../shared/assets/images/idp/idpWomenPerson.png';
+import { idpApi, type IDPGoalWithDetails, type IDPPlanWithDetails } from '../../../lib/api/idp';
+import IDPService from '../../../lib/api/services/idpService';
+import { useSubmitIDPPlanFrontend } from '../../../lib/hooks/useIDP';
 import { handleApiError } from '../../../lib/api/client';
 import {
   FlowContainer,
@@ -19,6 +22,7 @@ import {
   ActionButton,
   StatusMessage,
   IDPImage,
+  InfoBadge,
   GoalForm,
   DeleteConfirmationModal,
   Notification,
@@ -496,6 +500,7 @@ const LeaderIDPFlow: React.FC = () => {
               console.log('Submit goal:', goalId);
             }}
             loading={loading}
+            showDeleteModal={showDeleteModal}
           />
 
           {draftGoals.length === 0 && (
@@ -535,12 +540,13 @@ const LeaderIDPFlow: React.FC = () => {
 
           <GoalsList
             goals={[...submittedGoals, ...approvedGoals]}
-            onEditGoal={() => {}} // Nie można edytować zatwierdzonych celów
-            onDeleteGoal={() => {}} // Nie można usuwać zatwierdzonych celów
+            onEditGoal={() => {}}
+            onDeleteGoal={() => {}}
             onSubmitGoal={(goalId: string) => {
               console.log('Goal already submitted:', goalId);
             }}
             loading={loading}
+            showDeleteModal={false}
           />
 
           {submittedGoals.length + approvedGoals.length === 0 && (
@@ -654,12 +660,12 @@ const LeaderIDPFlow: React.FC = () => {
       {showDeleteModal && goalToDelete && (
         <DeleteConfirmationModal
           isOpen={showDeleteModal}
+          goal={goalToDelete}
           onConfirm={handleDeleteGoal}
           onCancel={() => {
             setShowDeleteModal(false);
             setGoalToDelete(null);
           }}
-          goal={goalToDelete}
           loading={loading}
         />
       )}
